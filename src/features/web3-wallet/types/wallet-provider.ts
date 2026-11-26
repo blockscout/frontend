@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// copied from node_modules/@wagmi/core/src/connectors/injected.ts
+// The types source - node_modules/@wagmi/core/src/connectors/injected.ts
+import type { Simplify } from 'type-fest';
 import type { EIP1193Provider } from 'viem';
-
-import type { Evaluate } from 'src/shared/types/utils';
 
 type WalletProviderFlags =
   'isApexWallet' |
@@ -44,16 +43,12 @@ type WalletProviderFlags =
   'isXDEFI' |
   'isZerion';
 
-export type WalletProvider = Evaluate<
+export type WalletProvider = Simplify<
 EIP1193Provider & {
   [key in WalletProviderFlags]?: true | undefined
 } & {
   providers?: Array<WalletProvider> | undefined;
-
-  /** Only exists in MetaMask as of 2022/04/03 */
   _events?: { connect?: (() => void) | undefined } | undefined;
-
-  /** Only exists in MetaMask as of 2022/04/03 */
   _state?:
   | {
     accounts?: Array<string>;

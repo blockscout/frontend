@@ -11,34 +11,26 @@ import withEnvs from './mockEnvs';
 import { buildRouterMock } from './mockRouter';
 import { mockSocket, MOCK_SOCKET_URL } from './mockSocket';
 
-// Drift check for the early-fetch primer (src/server/primedRequests): asserts that every
-// request the primer would fire for a page is also fired — with byte-identical URL and
-// headers — by the real page component on its first render. Used by the colocated
-// `<Component>.primed.spec.tsx` files; see the "Primed-requests drift tests" section of the
-// unit-testing rules.
-//
-// Mechanics: the REAL inline script runs first (fetchMock records its requests and keeps
-// them pending), the primed map is snapshotted and cleared (so the component cannot consume
-// it), then the page component mounts under the full provider stack and its own requests are
-// recorded. Responses never resolve — "first render" is everything a page requests before
-// any data arrives, and pending-forever responses keep components on their placeholder
-// states, avoiding any dependence on response shapes.
+// Drift check for the early-fetch primer: asserts that every request the primer would fire for a
+// page is also fired, with byte-identical URL and headers, by the real page component on its first
+// render. Responses never resolve, so "first render" is everything a page requests before any data
+// arrives. Call it from a `*.primed.spec.tsx` next to the page's root component; see
+// src/server/primedRequests/CONTEXT.md.
 
 export interface CheckPrimedRequestsParams {
 
-  /** Next.js page id — a key of PRIMED_PAGES */
+  // Next.js page id, a key of PRIMED_PAGES
   page: string;
 
-  /** browser url to load the page at, e.g. `/tx/${ hash }?tab=logs` */
+  // browser url to load the page at, e.g. `/tx/${ hash }?tab=logs`
   url: string;
 
-  /** loader of the page root component (with its layout); dynamic so it re-evaluates after env overrides */
+  // loader of the page root component (with its layout); dynamic so it re-evaluates after env overrides
   loadComponent: () => Promise<{ 'default': React.ComponentType }>;
 
-  /** env overrides (see src/config/test-utils/env-presets.ts), applied via withEnvs */
   envs?: Array<[ string, string ]>;
 
-  /** assert that the primer fires nothing for this url (wrong tab, disabled feature, …) */
+  // assert that the primer fires nothing for this url (wrong tab, disabled feature, …)
   expectEmpty?: boolean;
   title?: string;
 }

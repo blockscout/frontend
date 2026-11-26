@@ -9,9 +9,7 @@ import { ctPort } from './playwright/utils/ports';
 
 const isInsideWorktree = __dirname.includes('/.claude/worktrees/');
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+// The Playwright config docs - https://playwright.dev/docs/test-configuration
 const config: PlaywrightTestConfig = defineConfig({
   testDir: './',
 
@@ -100,16 +98,9 @@ const config: PlaywrightTestConfig = defineConfig({
         minify: false,
         rolldownOptions: {
           output: {
-            // Ensure __envs exists in every chunk so code (e.g. configs/app) that
-            // runs before index.ts/envs.js doesn't throw. Real envs are set when envs.js runs.
-            //
-            // Explanation:
-            // With await import(...) in useAccount/useWallet, Vite turns those into separate chunks.
-            // In Playwright CT, the component’s chunk (and its dependency graph, including useAccount → config → getEnvValue → __envs)
-            // can load and run before the main entry that runs envs.js.
-            // So when that chunk runs, window.__envs isn’t set yet and you get ReferenceError: __envs is not defined.
-            //
-            // https://rollupjs.org/configuration-options/#output-banner-output-footer
+            // A dynamically imported chunk can run before the entry that runs envs.js, and reading the
+            // config there throws `ReferenceError: __envs is not defined`. envs.js sets the real values later.
+            // The Rollup `output.banner` docs - https://rollupjs.org/configuration-options/#output-banner-output-footer
             banner: '(function(){if(typeof window!==\'undefined\')window.__envs=window.__envs||{};})();',
           },
         },
@@ -132,9 +123,7 @@ const config: PlaywrightTestConfig = defineConfig({
           // Mock for reCaptcha widget, so Google's script never loads and never fires the init error
           { find: /^react-google-recaptcha$/, replacement: './playwright/mocks/modules/react-google-recaptcha.js' },
 
-          // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
-          // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
-          // Otherwise it will complain that createWeb3Modal() is no called before the hooks are used
+          // The real module's init call pollutes the global styles and fails the tests, and its hooks fail without that call
           { find: /^@reown\/appkit\/react$/, replacement: './playwright/mocks/modules/@reown/appkit/react.js' },
 
           { find: '/playwright/index.ts', replacement: './playwright/index.ts' },
@@ -158,10 +147,6 @@ const config: PlaywrightTestConfig = defineConfig({
     },
   },
 
-  // configured projects
-  // these projects are also used for sharding tests in CI: the `pw_tests` matrix in
-  // .github/workflows/checks.yml runs one job per project, with `default` split into three shards
-  // when adding or deleting a project, or changing the shard count, make sure to update github workflow accordingly
   projects: [
     {
       name: 'default',

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// https://hexdocs.pm/phoenix/js/
+// The Phoenix JS client docs - https://hexdocs.pm/phoenix/js/
 import type { Channel, SocketConnectOption } from 'phoenix';
 import { Socket } from 'phoenix';
 import React, { useEffect, useState } from 'react';

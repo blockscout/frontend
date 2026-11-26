@@ -19,14 +19,15 @@ interface Props {
   monaco: Monaco | undefined;
   editor: monaco.editor.IStandaloneCodeEditor | undefined;
   data: Array<File>;
+  isTreePossible: boolean;
   onFileSelect: (index: number, lineNumber?: number) => void;
   selectedFile: string;
   mainFile?: string;
 }
 
-export const CONTAINER_WIDTH = 250;
+export const CONTAINER_WIDTH = 300;
 
-const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, mainFile }: Props) => {
+const CodeEditorSideBar = ({ onFileSelect, data, isTreePossible, monaco, editor, selectedFile, mainFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
   const [ isDrawerOpen, setIsDrawerOpen ] = React.useState(false);
@@ -103,6 +104,8 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
   return (
     <>
       <Box
+        role="complementary"
+        aria-label="Side bar"
         w={ `${ CONTAINER_WIDTH }px` }
         flexShrink={ 0 }
         bgColor={ themeColors['sideBar.background'] }
@@ -143,6 +146,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
           <TabsContent value="explorer" p={ 0 }>
             <CodeEditorFileExplorer
               data={ data }
+              isTreePossible={ isTreePossible }
               onFileSelect={ handleFileSelect }
               selectedFile={ selectedFile }
               mainFile={ mainFile }
@@ -153,6 +157,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
           <TabsContent value="search" p={ 0 }>
             <CodeEditorSearch
               data={ data }
+              hasRawPaths={ !isTreePossible }
               onFileSelect={ handleFileSelect }
               monaco={ monaco }
               isInputStuck={ isStuck }

@@ -247,7 +247,7 @@ Chain statistics and charts.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` | v1.29.0+ |
+| NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Path prefix the Stats API is served under on its host; it is put between the host and the path of every request to the service | - | - | `/poa/core` | v1.29.0+ |
 | NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | v2.9.0+ |
 
 &nbsp;
@@ -279,7 +279,7 @@ Solidity-to-UML smart contract visualizer.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | Required | - | `https://visualizer.services.blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_VISUALIZE_API_BASE_PATH | `string` | Base path for Visualize API endpoint url | - | - | `/poa/core` | v1.29.0+ |
+| NEXT_PUBLIC_VISUALIZE_API_BASE_PATH | `string` | Path prefix the Visualize API is served under on its host; it is put between the host and the path of every request to the service | - | - | `/poa/core` | v1.29.0+ |
 
 &nbsp;
 
@@ -618,8 +618,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
-| NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
+| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0` | Auth provider that enables basic user authentication. | - | `auth0` | `auth0` | v2.7.0+ |
 | NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code (see [HTML values](#html-values)). On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
 | NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code (see [HTML values](#html-values)). Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
@@ -627,7 +626,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 
 | Variable | Compulsoriness |
 | --- | --- |
-| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required when `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER` is `auth0` |
+| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required |
 | [NEXT_PUBLIC_CONTRACT_INFO_API_HOST](#contract-info-api) | Required for the address verification flow |
 | [NEXT_PUBLIC_ADMIN_SERVICE_API_HOST](#admin-service-api) | Required for the address verification flow |
 
@@ -1182,7 +1181,6 @@ Enables Blockscout Merits / rewards program. Requires the [Account](#account) an
 | NEXT_PUBLIC_ROLLUP_LAYER_NUMBER | `number` | Layer number of the rollup | - | `2` | `3` | v2.7.0+ |
 | NEXT_PUBLIC_ROLLUP_STAGE_INDEX | `1 \| 2` | Reflects the maturity and decentralization level of the chain based on [L2BEAT's framework](https://medium.com/l2beat/introducing-stages-a-framework-to-evaluate-rollups-maturity-d290bb22befe). The label will be added to the sidebar according to the provided stage index. Not applicable for testnets. | - | - | `1` | v2.1.0+ |
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (Optimistic stack only) | - | - | `true` | v1.31.0+ |
-| NEXT_PUBLIC_INTEROP_ENABLED | `boolean` | Enables "Interop messages" page (Optimistic stack only) | - | `false` | `true` | v1.39.0+ |
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
 | NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only) | - | `false` | `true` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the [Celenium explorer](https://celenium.io). "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |

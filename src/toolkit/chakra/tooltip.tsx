@@ -214,12 +214,7 @@ const TooltipImpl = (props: TooltipImplProps) => {
 // Mounting ChakraTooltip.Root is expensive: every instance creates a zag.js state machine
 // plus several context providers, which dominates the render time of pages with many
 // tooltips (a table row easily holds a dozen of them, all closed). So until the first
-// pointer/focus interaction we render only the bare trigger element with activation
-// handlers (gesture-safe, see useLazyActivation), and mount the real tooltip on demand.
-//
-// Trade-offs of the on-demand mount (handled in TooltipImpl):
-//  - the trigger DOM node is unmounted and remounted once upon activation;
-//  - the machine misses the activating event, so the first open is driven manually.
+// pointer/focus interaction we render only the bare trigger element.
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   function Tooltip(props, ref) {
     const { activation, handlers } = useLazyActivation();

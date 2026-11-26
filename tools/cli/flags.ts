@@ -30,10 +30,6 @@ function splitFlag(arg: string): { readonly name: string; readonly inline: strin
   return { name: arg.slice(0, equals), inline: arg.slice(equals + 1) };
 }
 
-// Apply one argv token, returning how many tokens it consumed — 2 when a value flag took the following
-// token, 1 otherwise. This is the validation half: it resolves the value form, applies the unknown-token
-// policy, and rejects a missing or unwanted value. `parseArgs` below is the reading half and does
-// nothing but walk the cursor.
 function applyArg<Options>(
   arg: string,
   next: string | undefined,

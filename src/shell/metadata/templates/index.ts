@@ -641,17 +641,6 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
-  '/interop-messages': {
-    metadata: {
-      title: {
-        'default': '%chain_name% interop messages',
-      },
-      description: {
-        'default': 'Track %chain_name% cross-chain interop messages. Monitor message status and delivery.',
-      },
-    },
-    og: OG_ROOT_PAGE,
-  },
   '/operations': {
     metadata: {
       title: {
@@ -958,16 +947,6 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
     metadata: {
       title: {
         'default': '%chain_name% node API request log',
-      },
-      description: {
-        'default': DESCRIPTION_DEFAULT,
-      },
-    },
-  },
-  '/api/tokens/[hash]/instances/[id]/media-type': {
-    metadata: {
-      title: {
-        'default': '%chain_name% node API token instance media type',
       },
       description: {
         'default': DESCRIPTION_DEFAULT,

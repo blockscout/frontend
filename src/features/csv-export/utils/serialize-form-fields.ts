@@ -5,9 +5,6 @@ import { getLocalTimeZone, toZoned } from '@internationalized/date';
 
 import type { FormFields } from '../components/dialog/types';
 
-// the date picker yields wall-clock values carrying no time zone; the toggle in the dialog decides
-// whether those wall-clock digits are read as local time or as UTC before the API receives them as
-// absolute timestamps
 const toAbsoluteString = (date: DateValue, isLocalTime: boolean): string => {
   if ('timeZone' in date) {
     return date.toAbsoluteString();

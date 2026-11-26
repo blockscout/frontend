@@ -11,13 +11,12 @@ import type { Guard } from './guards';
 import * as handlers from './handlers';
 import type { Props } from './handlers';
 
+// A nested array of guards works as OR: it passes when any of its guards returns nothing, and
+// otherwise returns the result of its first guard.
 export const factory = (guards: Array<Guard | Array<Guard>>, chainConfig = config) => {
   return async<Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props<Pathname>>> => {
     for (const guard of guards) {
       if (Array.isArray(guard)) {
-        // When a guard is an array, it works as OR conditional statement
-        // If any of the guards returns nothing, we continue to the next guard
-        // If all of the guards return something, we return the result of the first one that returns something
         const results = await Promise.all(guard.map((subGuard) => subGuard(chainConfig)(context)));
         if (results.some((result) => !result)) {
           continue;

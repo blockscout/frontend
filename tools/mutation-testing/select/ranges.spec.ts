@@ -55,9 +55,6 @@ const BEHAVIOR_TIED_WITH_NESTED_JSX = `const CELLS = [ 1, 2 ];
 const renderCells = () => CELLS.map((value) => <b>{ value }</b>);
 `;
 
-// Two near misses, where a callback shares one of its bounding lines with the render body around it
-// but not the other. Sharing one is not a tie: the callback is nested, so its own line stays
-// behavior and `sum + item` keeps its mutants.
 const CALLBACK_CLOSING_WITH_A_RENDER_BODY = `const Total = ({ items }: { items: Array<number> }) => (
   <output>{ items.reduce((sum, item) => sum + item, 0) }</output>);
 `;

@@ -2,10 +2,6 @@ import fs from 'fs';
 
 import { LOCK_FILE } from '../config';
 
-// One run per checkout. Every run writes to the same report files and the same Stryker sandbox, so a
-// second run started while the first is still going wipes the first's output and leaves either run
-// reading the other's results. The lock names the holder so the message can say what to wait for.
-
 export interface RunLock {
   readonly pid: number;
   readonly startedAt: string;

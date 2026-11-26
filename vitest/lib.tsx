@@ -28,6 +28,10 @@ import { buildRouterMock } from './utils/mockRouter';
 
 import 'src/shared/i18n/set-locale';
 
+// What a spec imports in place of `@testing-library/react`: everything RTL exports, with `render`
+// wrapping the tree in `TestApp` (below). An RTL call that takes a wrapper, such as `renderHook`, gets
+// the exported `wrapper` by hand.
+
 const PAGE_PROPS = {
   cookies: '',
   referrer: '',
@@ -64,9 +68,9 @@ interface TestAppProps {
 
 const toPathname = (asPath: string): string => new URL(asPath, 'http://localhost').pathname;
 
-// The full app provider stack (mirrors playwright/TestApp.tsx; the wallet client stays inert, and
-// so does the socket unless `socketUrl` is given) — heavy enough to mount whole page slices in jsdom.
-// The router is a frozen stand-in: `router` overrides the home-page default field by field.
+// The full app provider stack. The wallet client stays inert, and so does the socket unless `socketUrl`
+// is given. The router is a frozen stand-in: `router` overrides the home-page default field by field.
+// The provider stack source - playwright/TestApp.tsx
 const TestApp = ({ children, socketUrl, router }: TestAppProps) => {
   const routerContext = React.useMemo((): RouterContextValue => {
     const value = { ...buildRouterMock('/', '/'), ...router };

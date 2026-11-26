@@ -45,3 +45,15 @@ export const CONSENT_RESULT_ALL_ACCEPTED: UsercentricsConsentResult = {
   sevio: true,
   specify: true,
 };
+
+export const CONSENT_RESULT_ALL_DENIED: UsercentricsConsentResult = {
+  mixpanel: false,
+  posthog: false,
+  googleAnalytics: false,
+  rollbar: false,
+  growthBook: false,
+  adbutler: false,
+  slise: false,
+  sevio: false,
+  specify: false,
+};

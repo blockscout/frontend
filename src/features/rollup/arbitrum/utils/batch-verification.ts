@@ -2,7 +2,6 @@
 
 import { type ArbitrumBatchStatus } from '../types/api';
 import type { schemas } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import config from 'src/config';
 
@@ -33,7 +32,7 @@ export function getVerificationStepStatus({
   status,
   commitment_transaction: commitTx,
   confirmation_transaction: confirmTx,
-}: Pick<ExcludeUndefined<schemas['TransactionResponse']['arbitrum']>, 'status' | 'commitment_transaction' | 'confirmation_transaction'>) {
+}: Pick<Exclude<schemas['TransactionResponse']['arbitrum'], undefined>, 'status' | 'commitment_transaction' | 'confirmation_transaction'>) {
   if (status === 'Sent to base') {
     if (commitTx?.status === 'unfinalized') {
       return 'pending';

@@ -48,5 +48,4 @@ export const outputRoots = factory([ guards.outputRoots ]);
 export const disputeGames = factory([ guards.disputeGames ]);
 export const tac = factory([ guards.tac ]);
 export const celo = factory([ guards.celo ]);
-export const interopMessages = factory([ guards.interopMessages ]);
 export const multichain = factory([ guards.multichain ]);

@@ -12,9 +12,6 @@ import { useWeb3Account, subscribeConnection } from '../../utils/bridge';
 import { ensureLoaded } from '../../utils/runtime';
 import useWalletFallback from './useWalletFallback';
 
-// Bridge/Runtime-backed reown wallet hook. Replaces the old `@reown/appkit/react` + wagmi-React
-// implementation so the header no longer awaits the wallet chunks: account state comes from the Bridge,
-// and connect/disconnect/modal go through the lazily-loaded Runtime (`ensureLoaded()` on interaction).
 export function useWalletReown({ source, onConnect }: Params): Result {
   const { address, status } = useWeb3Account();
   const [ isOpening, setIsOpening ] = React.useState(false);
@@ -67,9 +64,8 @@ export function useWalletReown({ source, onConnect }: Params): Result {
 
   const connect = React.useCallback(async() => {
     const runtime = await loadAndOpenModal();
-    // Record a started connection only when the modal could actually open. A failed chunk load resolves to
-    // the disabled runtime whose `openModal` is a no-op — there is nothing for the user to complete, and no
-    // later bridge connect to attribute to this click.
+    // After a failed chunk load the modal never opens: no connection is started, and no later connect
+    // belongs to this click.
     if (runtime.isReady) {
       analytics.logEvent(analytics.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
       isConnectionStarted.current = true;
@@ -81,9 +77,8 @@ export function useWalletReown({ source, onConnect }: Params): Result {
     await runtime.disconnect();
   }, []);
 
-  // matches the old `isConnected = !isDisconnected && address !== undefined` (see wagmi getAccount);
-  // `reconnecting` (which also covers the optimistic window) keeps the address visible in the reconnecting
-  // style — no "Connect" flash for a returning user.
+  // `reconnecting` counts as connected, so a returning user sees their address, not a "Connect" flash.
+  // The `isConnected` source - node_modules/@wagmi/core/src/actions/getAccount.ts
   const isConnected = status !== 'disconnected' && status !== 'connecting' && Boolean(address);
   const isReconnecting = status === 'reconnecting';
 

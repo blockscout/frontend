@@ -5,6 +5,9 @@ description: Add a new term, update an existing definition, or remove an outdate
 
 # Update the project glossary
 
+> **Frozen copy.** This skill has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/skills/update-glossary/`. Edit it there, not here: see [Frozen copies](../../README.md#frozen-copies).
+
 `.agents/GLOSSARY.md` is the **ubiquitous-language** reference for the Blockscout
 frontend. It exists to disambiguate easily-confused terms and explain
 non-obvious names. It is **not** a feature index, a config reference, or a

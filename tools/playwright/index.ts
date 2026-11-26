@@ -1,12 +1,12 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to drive playwright and print to stdout */
 import { execFileSync, spawnSync } from 'child_process';
 import dotenv from 'dotenv';
+import { getChangedFiles, resolveBaseCommit } from 'frontend-home/code-complexity';
 import fs from 'fs';
 import path from 'path';
 
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
-import { getChangedFiles, resolveBaseCommit } from '../code-complexity/select/diff';
 import {
   DEFAULT_BASE_REF,
   ENV_FILE,
@@ -191,9 +191,8 @@ export function selectionArgs(options: CliOptions, runtime: Runtime): Array<stri
   return [ `--only-changed=${ baseCommit }` ];
 }
 
-// The three children in order: the envs script, the sprite, then Playwright itself. The sprite and
-// Playwright run under the pw app env; the envs script does not, so envs.js keeps the app env the
-// file declares.
+// The sprite and Playwright run under the pw app env; the envs script does not, so envs.js keeps
+// the app env the file declares.
 export function buildSteps(options: CliOptions, env: ProcessEnv, extraPlaywrightArgs: ReadonlyArray<string>): Array<Step> {
   const spriteEnv = { ...env, NEXT_PUBLIC_APP_ENV: SPRITE_APP_ENV };
   return [
@@ -216,9 +215,8 @@ export function run(argv: ReadonlyArray<string>, runtime: Runtime = DEFAULT_RUNT
   /* eslint-disable-next-line no-restricted-properties -- a Node CLI forwarding its own shell env to the children it spawns */
   const env = loadEnvFile(runtime, process.env);
 
-  // Playwright's own CT build cache invalidation has been reliable, so the unconditional delete is
-  // off; re-enable it if a stale CT build is ever observed.
-  // fs.rmSync(PLAYWRIGHT_CACHE_DIR, { recursive: true, force: true });
+  // PLAYWRIGHT_CACHE_DIR is not cleared: Playwright's own CT build cache invalidation has been
+  // reliable. Clear it here if a stale CT build is ever observed.
 
   for (const step of buildSteps(options, env, extraPlaywrightArgs)) {
     const status = runtime.spawn(step);
@@ -228,8 +226,7 @@ export function run(argv: ReadonlyArray<string>, runtime: Runtime = DEFAULT_RUNT
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the
-// process entry. The guard exists so index.spec.ts can import the module without starting a run —
-// under vitest the entry is vitest's own binary.
+// process entry.
 const CLI_ENTRY_PATH = 'playwright/dist/playwright/index.js';
 
 function isProcessEntryPoint(): boolean {

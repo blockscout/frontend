@@ -35,7 +35,6 @@ const externalFontsDomains = (() => {
 export function app(isPrivateMode = false, primerScriptHashes: Array<string> = []): CspDev.DirectiveDescriptor {
   return {
     'default-src': [
-      // KEY_WORDS.NONE,
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1242902
       // need 'self' here to avoid an error with prefetch nextjs chunks in firefox
       KEY_WORDS.SELF,
@@ -108,18 +107,10 @@ export function app(isPrivateMode = false, primerScriptHashes: Array<string> = [
       KEY_WORDS.DATA,
       ...MAIN_DOMAINS,
 
-      // we agreed that using wildcard for images is mostly safe
-      // why do we have to use it? the main reason is that for NFT and inventory pages we get resources urls from API only on the client
-      // so they cannot be added to the policy on the server
-      // there could be 3 possible workarounds
-      //    a/ use server side rendering approach, that we don't want to do
-      //    b/ wrap every image/video in iframe with a source to static page for which we enforce certain img-src rule;
-      //        the downsides is page performance slowdown and code complexity (have to manage click on elements, color mode for
-      //        embedded page, etc)
-      //    c/ use wildcard for img-src directive; this can lead to some security vulnerabilities but we were unable to find evidence
-      //        that loose img-src directive alone could cause serious flaws on the site as long as we keep script-src and connect-src strict
-      //
-      // feel free to propose alternative solution and fix this
+      // a wildcard: NFT and inventory pages get image urls from the API on the client only, so the server
+      // cannot list them. Server-side rendering is not wanted, and wrapping every image in an iframe with
+      // its own img-src costs performance and code complexity. No evidence was found that a loose img-src
+      // alone opens a serious flaw as long as script-src and connect-src stay strict.
       '*',
     ],
 

@@ -27,7 +27,9 @@ import addFileImportDecorations from './utils/addFileImportDecorations';
 import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
 import { defGeas, configGeas } from './utils/defGeas';
 import { defScilla, configScilla } from './utils/defScilla';
-import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
+import { findImportedFileIndex } from './utils/find-imported-file-index';
+import { getImportLinkPath } from './utils/get-import-link-path';
+import { splitFilesByModelKey } from './utils/split-files-by-model-key';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
 
@@ -51,8 +53,11 @@ const TABS_HEIGHT = 35;
 const BREADCRUMBS_HEIGHT = 22;
 const EDITOR_HEIGHT = 500;
 
+const EMPTY_FILES: Array<File> = [];
+
 interface Props {
   data: Array<File>;
+  isTreePossible: boolean;
   remappings?: Array<string>;
   libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
@@ -60,13 +65,13 @@ interface Props {
   contractName?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractName }: Props) => {
+const CodeEditor = ({ data, isTreePossible, remappings, libraries, language, mainFile, contractName }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
-  const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
+  const [ tabs, setTabs ] = React.useState([ data[index].key ]);
   const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
-  const handleTabCloseRef = React.useRef<(path: string, isActive?: boolean) => void>(() => {});
+  const handleTabCloseRef = React.useRef<(key: string, isActive?: boolean) => void>(() => {});
 
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
@@ -131,17 +136,22 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     }
 
     const loadedModels = monaco.editor.getModels();
-    const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
-    const newModels = data.slice(1)
-      .filter((file) => !loadedModelsPaths.includes(file.file_path))
-      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
+    const { filesToCreate, repeatedKeys } = splitFilesByModelKey(data, loadedModels.map((model) => model.uri.path));
+    const newModels = filesToCreate.map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.key)));
+
+    repeatedKeys.forEach((key) => {
+      rollbar?.warn('Code editor skipped a file with a repeated model key', { key });
+    });
 
     if (language === 'solidity') {
+      const displayPathByKey = new Map(data.map((file) => [ file.key, file.display_path ]));
+
       loadedModels.concat(newModels)
         .forEach((model) => {
-          contractName && mainFile === model.uri.path && addMainContractCodeDecoration(model, contractName, editor);
+          const key = model.uri.path;
+          contractName && mainFile === key && addMainContractCodeDecoration(model, contractName, editor);
           addFileImportDecorations(model);
-          libraries?.length && addExternalLibraryWarningDecoration(model, libraries);
+          libraries?.length && addExternalLibraryWarningDecoration(model, displayPathByKey.get(key) ?? key, libraries);
         });
     }
 
@@ -155,9 +165,9 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       contextMenuOrder: 1.7,
       run: function(editor) {
         const model = editor.getModel();
-        const path = model?.uri.path;
-        if (path) {
-          handleTabCloseRef.current(path, true);
+        const key = model?.uri.path;
+        if (key) {
+          handleTabCloseRef.current(key, true);
         }
       },
     });
@@ -167,7 +177,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
   const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
     setIndex(index);
-    setTabs((prev) => prev.some((item) => item === data[index].file_path) ? prev : ([ ...prev, data[index].file_path ]));
+    setTabs((prev) => prev.some((item) => item === data[index].key) ? prev : ([ ...prev, data[index].key ]));
     if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
       window.setTimeout(() => {
         editor?.revealLineInCenter(lineNumber);
@@ -176,28 +186,32 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     editor?.focus();
   }, [ data, editor ]);
 
-  const handleTabSelect = React.useCallback((path: string) => {
-    const index = data.findIndex((item) => item.file_path === path);
+  const handleTabSelect = React.useCallback((key: string) => {
+    const index = data.findIndex((item) => item.key === key);
     if (index > -1) {
       setIndex(index);
     }
   }, [ data ]);
 
-  const handleTabClose = React.useCallback((path: string, _isActive?: boolean) => {
+  const handleTabClose = React.useCallback((key: string, _isActive?: boolean) => {
     if (tabs.length <= 1) {
       return;
     }
 
-    const tabIndex = tabs.findIndex((item) => item === path);
-    const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
+    const tabIndex = tabs.findIndex((item) => item === key);
+    const isActive = _isActive !== undefined ? _isActive : data[index].key === key;
 
     if (isActive) {
-      const nextActiveIndex = data.findIndex((item) => item.file_path === tabs[(tabIndex === 0 ? 1 : tabIndex - 1)]);
+      const nextActiveIndex = data.findIndex((item) => item.key === tabs[(tabIndex === 0 ? 1 : tabIndex - 1)]);
       setIndex(nextActiveIndex);
     }
 
-    setTabs(tabs.filter((item) => item !== path));
+    setTabs(tabs.filter((item) => item !== key));
   }, [ data, index, tabs ]);
+
+  const openFiles = React.useMemo(() => {
+    return tabs.flatMap((key) => data.find((file) => file.key === key) ?? EMPTY_FILES);
+  }, [ data, tabs ]);
 
   React.useEffect(() => {
     handleTabCloseRef.current = handleTabClose;
@@ -208,20 +222,14 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       return;
     }
 
-    const target = event.target as HTMLSpanElement;
-    const isImportLink = target.classList.contains('import-link');
-    if (isImportLink) {
-      const path = [
-        target.previousElementSibling as HTMLSpanElement,
-        target,
-        target.nextElementSibling as HTMLSpanElement,
-      ]
-        .filter((element) => element?.classList.contains('import-link'))
-        .map((element: HTMLSpanElement) => element.innerText)
-        .join('');
+    // Not `event.target`: Monaco captures the pointer on mousedown, so a click is dispatched to the lines container,
+    // and the text cursor covers the token it stands on.
+    const importLinkToken = document.elementsFromPoint(event.clientX, event.clientY)
+      .find((element) => element.classList.contains('import-link'));
 
-      const fullPath = getFullPathOfImportedFile(data[index].file_path, path, remappings);
-      const fileIndex = data.findIndex((file) => file.file_path === fullPath);
+    if (importLinkToken) {
+      const path = getImportLinkPath(importLinkToken);
+      const fileIndex = findImportedFileIndex(data, data[index], path, remappings);
       if (fileIndex > -1) {
         event.stopPropagation();
         handleSelectFile(fileIndex);
@@ -292,8 +300,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
   // Reported with the error as plain data, not the Error instance: passing the instance makes Rollbar
   // build a stack trace, and an editor render crash's frames run through the Monaco CDN bundle, so
-  // `isMonacoCdnError` would drop the very report we want to keep. Fires only when the editor subtree
-  // actually crashed in render and the user saw the fallback — the signal worth keeping.
+  // `isMonacoCdnError` would drop the very report we want to keep.
   const handleEditorError = React.useCallback((error: Error) => {
     rollbar?.error('Code editor failed to render', { cause: error.cause, stack: error.stack });
   }, [ rollbar ]);
@@ -315,7 +322,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
           <MonacoEditor
             className="editor-container"
             language={ editorLanguage }
-            path={ data[index].file_path }
+            path={ data[index].key }
             defaultValue={ data[index].source_code }
             options={ EDITOR_OPTIONS }
             onMount={ handleEditorDidMount }
@@ -343,18 +350,19 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleEditorError }>
         <Box flexGrow={ 1 }>
           <CodeEditorTabs
-            tabs={ tabs }
-            activeTab={ data[index].file_path }
+            tabs={ openFiles }
+            activeTab={ data[index].key }
             mainFile={ mainFile }
+            hasRawPaths={ !isTreePossible }
             onTabSelect={ handleTabSelect }
             onTabClose={ handleTabClose }
           />
-          <CodeEditorBreadcrumbs path={ data[index].file_path }/>
+          <CodeEditorBreadcrumbs path={ data[index].display_path } hasRawPaths={ !isTreePossible }/>
           <MonacoEditor
             className="editor-container"
             height={ `${ EDITOR_HEIGHT }px` }
             language={ editorLanguage }
-            path={ data[index].file_path }
+            path={ data[index].key }
             defaultValue={ data[index].source_code }
             options={ EDITOR_OPTIONS }
             onMount={ handleEditorDidMount }
@@ -363,10 +371,11 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         </Box>
         <CodeEditorSideBar
           data={ data }
+          isTreePossible={ isTreePossible }
           onFileSelect={ handleSelectFile }
           monaco={ instance }
           editor={ editor }
-          selectedFile={ data[index].file_path }
+          selectedFile={ data[index].key }
           mainFile={ mainFile }
         />
       </ErrorBoundary>

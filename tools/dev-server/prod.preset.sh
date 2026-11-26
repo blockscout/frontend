@@ -8,19 +8,21 @@
 # Builds with Turbopack (the Next.js default), like the shipped image does — see
 # .agents/adr/0003-turbopack-for-production-builds.md.
 #
-# Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build] [--profile]
+# Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build | --build-only] [--profile]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
+#   --build-only  Build and exit without starting the server; a later --skip-build run starts it.
 #   --profile     Build a React-profileable production bundle (`next build --profile`).
 #                 What it's good for: tools/profiling/CONTEXT.md.
 
 source ./tools/dev-server/run_steps.sh
 
-usage="Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build] [--profile]"
+usage="Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build | --build-only] [--profile]"
 
 port=""
 skip_build=false
+build_only=false
 profile=false
 positional=()
 while [ "$#" -gt 0 ]; do
@@ -36,6 +38,8 @@ while [ "$#" -gt 0 ]; do
       port="${1#--port=}"; shift ;;
     --skip-build)
       skip_build=true; shift ;;
+    --build-only)
+      build_only=true; shift ;;
     --profile)
       profile=true; shift ;;
     --)
@@ -46,7 +50,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-if [ "${#positional[@]}" -ne 1 ]; then
+if [ "${#positional[@]}" -ne 1 ] || { [ "$skip_build" = true ] && [ "$build_only" = true ]; }; then
   echo "$usage"
   exit 1
 fi
@@ -73,13 +77,18 @@ if [ "$skip_build" = false ]; then
   # build the app
   run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && pnpm lint:tsc && next build${build_flags}" || exit 1
   echo ""
+
+  if [ "$build_only" = true ]; then
+    exit 0
+  fi
 else
+  # to stderr: a caller that discards the server's log on stdout still shows why the server did not start
   if [ ! -f ./.env.tmp ]; then
-    echo "Error: .env.tmp not found. Run a full build first: $cmd"
+    echo "Error: .env.tmp not found. Run a full build first: $cmd" >&2
     exit 1
   fi
   if [ ! -d ./.next ]; then
-    echo "Error: .next build output not found. Run a full build first: $cmd"
+    echo "Error: .next build output not found. Run a full build first: $cmd" >&2
     exit 1
   fi
 

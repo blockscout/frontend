@@ -14,7 +14,7 @@ interface QueuedCall {
   timestamp: number;
 };
 
-/** Subset of the Rollbar instance call sites use; return value is unused so we omit `LogResult`. */
+// Calls made before the SDK has loaded are queued and sent once it does, so nothing is returned.
 export interface RollbarClient {
   warn: (...args: Array<Rollbar.LogArgument>) => void;
   error: (...args: Array<Rollbar.LogArgument>) => void;
@@ -45,10 +45,6 @@ function isEnabled(): boolean {
   return Boolean(config.services.rollbar.clientToken) && !hasInitFailed;
 }
 
-/**
- * Returns the buffering client when Rollbar is configured, else `undefined` — same contract the
- * previous `@rollbar/react` + `FallbackProvider` split gave call sites.
- */
 export function getClient(): RollbarClient | undefined {
   return isEnabled() ? client : undefined;
 }
@@ -71,11 +67,6 @@ function log(level: LogLevel, args: Array<Rollbar.LogArgument>): void {
   enqueue({ level, args, timestamp: Date.now() });
 }
 
-/**
- * Loads the SDK chunk, constructs the instance, and replays every call buffered while it was
- * loading. Idempotent: concurrent and repeated calls share one init. Never rejects — a chunk-load
- * failure resolves to `false` and permanently disables the wrapper for this page load.
- */
 export function init(): Promise<boolean> {
   initPromise = initPromise ?? initOnce();
   return initPromise;
@@ -135,13 +126,8 @@ function withClientTimestamp(args: Array<Rollbar.LogArgument>, timestamp: number
 
 const UNCAUGHT_ERROR_FALLBACK_MESSAGE = 'Uncaught error';
 
-/**
- * Coerces a thrown value into arguments Rollbar can build an occurrence from. Passed a bare
- * non-Error object (or `null`) as its sole argument, Rollbar discards the payload and files a
- * generic "Item sent with null or missing arguments." occurrence — so anything that is not an
- * `Error` or `string` is reported under {@link UNCAUGHT_ERROR_FALLBACK_MESSAGE} with the raw value
- * preserved as custom data.
- */
+// Passed a lone non-Error object or `null`, Rollbar drops it and files an empty "Item sent with null or
+// missing arguments." occurrence, so such a value goes in as custom data under a message.
 function toReport(value: unknown, message: string): Array<Rollbar.LogArgument> {
   if (value instanceof Error || typeof value === 'string') {
     return [ value ];
@@ -152,14 +138,6 @@ function toReport(value: unknown, message: string): Array<Rollbar.LogArgument> {
   return [ message || UNCAUGHT_ERROR_FALLBACK_MESSAGE, { error: value } ];
 }
 
-/**
- * Captures uncaught errors during (and after) the SDK deferral window. Kept for the page lifetime
- * on success — removed if init fails. Rollbar's own `captureUncaught` stays off to avoid
- * double-reporting; `captureUnhandledRejections` is left off deliberately — on public instances
- * unhandled rejections are dominated by wallet-extension / third-party noise with no usable
- * payload (they file empty "null or missing arguments" items), and genuine page crashes surface as
- * `critical` through the React error boundary, not here.
- */
 const APP_BUNDLE_PATH = '/_next/';
 
 function isOwnBundleError(event: ErrorEvent): boolean {
@@ -188,6 +166,8 @@ export function installEarlyListeners(): () => void {
     log('error', toReport(event.error, event.message));
   };
 
+  // No `unhandledrejection` listener: on public instances those are wallet-extension and third-party noise
+  // with no usable payload, and real page crashes reach Rollbar through the React error boundary.
   window.addEventListener('error', handleError, true);
 
   const uninstall = () => {
@@ -202,7 +182,6 @@ export function installEarlyListeners(): () => void {
   return uninstall;
 }
 
-/** Schedules `init` after first paint / on idle. Returns a cancel function. */
 export function scheduleInit(): () => void {
   if (!isEnabled()) {
     return () => {};

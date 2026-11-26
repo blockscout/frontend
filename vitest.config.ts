@@ -24,12 +24,12 @@ export default defineConfig({
   test: {
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],
-    // the design-readout calibration set is read with fs, not imported, so a `--changed` run would
-    // not see an edited entry; its spec is what keeps the committed set green
-    forceRerunTriggers: [ 'tools/design-readout/calibration/**' ],
+    // these are read with fs, not imported, so a `--changed` run would not see an edit: the
+    // design-readout calibration set, and the Renovate config and PR template that the PR check's
+    // spec holds together
+    forceRerunTriggers: [ 'tools/design-readout/calibration/**', '.github/renovate.json', 'docs/PULL_REQUEST_TEMPLATE.md' ],
     // specs in the shared project run in one module registry and one global scope per worker, so
-    // whatever a spec stubs or spies on is undone before every test rather than left to the spec;
-    // vitest/setup.ts undoes it after every test too, which is what covers the last test of a file
+    // whatever a spec stubs or spies on is undone before every test rather than left to the spec
     restoreMocks: true,
     unstubGlobals: true,
     unstubEnvs: true,
@@ -41,9 +41,6 @@ export default defineConfig({
       '.claude/worktrees/**',
       'tools/mutation-testing/.stryker-tmp/**',
     ],
-    // Two projects, split by file name. Evaluating the shared module graph once per spec file is the
-    // largest single cost of a run, so a spec shares its worker's module registry unless its name says
-    // it needs a fresh one. The rule for which is which: .agents/rules/tests-unit.md -> "Isolation".
     projects: [
       {
         test: {

@@ -205,10 +205,8 @@ export interface VotingColor extends ColorValue {
   readonly role?: ColorRole;
 }
 
-// The mode a color leans to: the one where it serves more semantic tokens that the other mode does not
-// share. A token the color serves in both modes says nothing, and neither do palette names, which are
-// mode-free. The role matters: `gray.600` is a light-mode text and a dark-mode background, so a
-// text fill of it must not be read as a dark vote.
+// The role matters: `gray.600` is a light-mode text and a dark-mode background, so a text fill of it
+// must not be read as a dark vote.
 function leaningMode(map: ColorMap, value: VotingColor): ColorMode | undefined {
   const inLight = lookupTokens(map, value, 'light', value.role);
   const inDark = lookupTokens(map, value, 'dark', value.role);

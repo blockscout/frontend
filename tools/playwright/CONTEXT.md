@@ -21,6 +21,7 @@ The `pnpm test:pw` entry point runs Playwright component tests (`*.pw.tsx`) loca
 - **`--only-changed --list` reports zero tests in CT mode** (list mode never sets up the CT plugin), so there is no dry-run of what `--changed` would select. Run it and read `playwright-results/report.json`.
 - **Running `playwright test` directly skips the pre-run steps**, so the harness loads whatever `playwright/envs.js` and sprite the last `pnpm test:pw` run left behind.
 - **The json report lives under `outputDir`, not next to the html report.** The html reporter deletes `playwright-report/` when the run ends, so a second reporter writing there loses its file.
+- **The projects in `../../playwright-ct.config.ts` and the `pw_tests` matrix in `.github/workflows/checks.yml` move together.** CI runs one job per project, so a project added only to the config never runs in CI, and one removed only from the config fails its job.
 - **The Docker image name and OS suffix in `./config.ts` are paired with `container.image` in `.github/workflows/checks.yml`**, so a Mac `--docker` run renders with the same browsers as CI. The tag follows the installed `@playwright/test` version on its own.
 
 ## File map

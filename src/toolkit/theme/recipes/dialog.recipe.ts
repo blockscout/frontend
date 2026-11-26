@@ -126,9 +126,6 @@ export const recipe = defineSlotRecipe({
           overflow: 'hidden',
         },
         content: {
-          // source code has minH: 'auto', but I am not sure why
-          // anyway it will override the minH from the "full" size variant
-          // minH: 'auto',
           maxH: 'calc(100% - 7.5rem)',
         },
         body: {

@@ -4,9 +4,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 type ModalStateCb = (state: { open: boolean }) => void;
 
-// wagmi's imperative actions the runtime binds to the config. The provider (`<WagmiProvider>`) owns
-// hydration/reconnection now, so the runtime no longer touches `hydrate`/`watchAccount` — it only prepares
-// the config + AppKit and exposes these actions for boot-time consumers that call before a provider exists.
 const actionsMock = vi.hoisted(() => ({
   disconnect: vi.fn<() => Promise<void>>(),
   signMessage: vi.fn<() => Promise<string>>(),
@@ -187,21 +184,6 @@ describe('connect-wallet runtime', () => {
       expect(runtime.config).toBe(wagmiConfigMock.config);
       expect(appKitMock.createAppKit).not.toHaveBeenCalled();
       await expect(runtime.openModal()).resolves.toBeUndefined();
-    });
-  });
-
-  describe('dynamic mode', () => {
-    it('exposes config + actions without building AppKit (DynamicProvider owns the provider)', async() => {
-      state.connectWallet = { isEnabled: true, connectorType: 'dynamic' };
-      const { getWeb3Runtime } = await importRuntime();
-      const runtime = await getWeb3Runtime();
-
-      expect(runtime.isReady).toBe(true);
-      expect(runtime.config).toBe(wagmiConfigMock.config);
-      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
-      // actions stay bound to the config for the shared signing consumers (rewards, sign-in, verification)
-      await runtime.signMessage({ message: 'hi' });
-      expect(actionsMock.signMessage).toHaveBeenCalledWith(wagmiConfigMock.config, { message: 'hi' });
     });
   });
 

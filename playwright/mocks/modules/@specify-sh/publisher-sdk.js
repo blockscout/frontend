@@ -1,5 +1,3 @@
-// Mock for @specify-sh/publisher-sdk to avoid build issues in Playwright component tests
-
 export const ImageFormat = {
   LANDSCAPE: 'LANDSCAPE',
   LONG_BANNER: 'LONG_BANNER',

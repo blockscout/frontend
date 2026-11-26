@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// https://schema.org
+// The structured-data vocabulary - https://schema.org
 
 import type { StructuredData, ApiData } from '../types';
 import type { RouteParams } from 'src/server/types';

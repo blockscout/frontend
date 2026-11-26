@@ -2,12 +2,7 @@
 
 import React from 'react';
 
-// React tracks pending removals in a key -> fiber map, so rows that share a key are never
-// unmounted and stay in the DOM through every subsequent page. No per-entity key is immune:
-// an ERC-1155 batch may legally transfer the same token id twice in one log.
-// https://github.com/blockscout/frontend/issues/3631
-//
-// Collisions get an ordinal by position within their group, not within the list, so prepending
+// A repeated base key gets an ordinal by its position among the repeats, not within the list, so prepending
 // items (socket updates) leaves the keys of the existing rows unchanged.
 export function getUniqueKeys<T>(items: ReadonlyArray<T> | undefined, getBaseKey: (item: T) => string): Array<string> {
   if (!items) {

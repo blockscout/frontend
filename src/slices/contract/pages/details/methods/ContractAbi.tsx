@@ -103,10 +103,6 @@ const ContractAbiContent = ({ abi, addressHash, sourceAddress, tab, visibleItems
   );
 };
 
-// Both read and write calls go through wagmi hooks (`useFormSubmit` → public/wallet client), so the
-// methods form lives inside a wallet island: the runtime loads lazily and provides the wagmi config to
-// just this subtree. Reads matter even when the wallet feature is disabled, so the island also carries
-// the read tab through its public client.
 const ContractAbi = (props: Props) => (
   <Web3Boundary fallback={ <ContentLoader w="fit-content"/> }>
     <ContractAbiContent { ...props }/>

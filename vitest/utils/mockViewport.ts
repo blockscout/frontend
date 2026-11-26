@@ -1,5 +1,8 @@
 import breakpoints from 'src/toolkit/theme/foundations/breakpoints';
 
+// A test that needs a breakpoint other than the desktop default calls `mockViewport` before it
+// renders, with `base` for the mobile layout.
+
 export type ViewportBreakpoint = 'base' | keyof typeof breakpoints;
 
 export const DEFAULT_VIEWPORT_BREAKPOINT: ViewportBreakpoint = 'lg';

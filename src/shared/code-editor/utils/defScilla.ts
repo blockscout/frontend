@@ -21,8 +21,6 @@ export const configScilla: monaco.languages.LanguageConfiguration = {
 };
 
 export const defScilla: monaco.languages.IMonarchLanguage = {
-//   defaultToken: 'invalid',
-
   brackets: [
     { token: 'delimiter.curly', open: '{', close: '}' },
     { token: 'delimiter.parenthesis', open: '(', close: ')' },

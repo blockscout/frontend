@@ -13,9 +13,8 @@ export const isPublicClientAvailable = !currentChain || Boolean(rpcUrl);
 
 let publicClientPromise: Promise<PublicClient | undefined> | undefined;
 
-// Lazily builds (once) the viem public client, importing viem only on the first call. Every consumer
-// calls this inside an async query/watch function, so viem stays out of the critical bundle. Memoized,
-// so callers share a single client instance (viem request batching / multicall behaviour is preserved).
+// The first call imports viem, so call it from the async function that needs the client, not at module
+// load. All callers share one client, so its multicall batching spans them.
 export function getPublicClient(): Promise<PublicClient | undefined> {
   if (!isPublicClientAvailable) {
     return Promise.resolve(undefined);

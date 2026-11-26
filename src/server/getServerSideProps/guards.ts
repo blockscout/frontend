@@ -318,15 +318,6 @@ export const celo: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const interopMessages: Guard = (chainConfig: typeof config) => async() => {
-  const rollupFeature = chainConfig.features.rollup;
-  if (!rollupFeature.isEnabled || !rollupFeature.interopEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
 export const crossChainTxs: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.crossChainTxs.isEnabled) {
     return {

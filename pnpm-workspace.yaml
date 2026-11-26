@@ -26,16 +26,24 @@ peerDependencyRules:
 
 overrides:
   '@wagmi/connectors': "6.2.0"
-  ws: "8.21.0"
-  axios: "1.12.0"
-  tar-fs: "2.1.4"
-  node-forge: "1.3.2"
-  brace-expansion: "1.1.12"
-  js-yaml: "4.1.1"
   "@noble/hashes@1": "1.8.0"
-  "vite-plugin-dts>brace-expansion": "2.0.2"
-  "minimatch@10>brace-expansion": "5.0.9"
-  protobufjs: "7.5.5"
+  # Security overrides. Each is here because a parent pins a vulnerable version, named on the line; drop
+  # the entry once that parent moves past it. A floor is a range: an exact pin stops receiving patches and
+  # becomes the source of the next alerts. A removal ("-") is for a dependency the parent declares but
+  # never imports.
+  handlebars: "^4.7.10" # eslint-plugin-boundaries and @boundaries/elements pin 4.7.9
+  js-yaml: "^4.3.2" # swagger-ui-react pins 4.1.1
+  'viem>ws': "^8.21.0" # viem pins 8.18.x
+  # @walletconnect/utils 2.21.x pins query-string 7.1.3, which holds decode-uri-component 0.2.2, and never
+  # imports it (2.21.9 dropped it as unused: WalletConnect/walletconnect-monorepo#6855)
+  '@walletconnect/utils@2.21>query-string': "-"
+
+# Advisories accepted because no fix can reach them yet, each with its reason on the line. Each is also
+# dismissed on GitHub with the same reason; drop the entry once the fix it waits for ships.
+# cspell:ignore mrhx
+audit:
+  ignore:
+    - GHSA-mrhx-c7xc-m3w5 # zod: no 3.x fix; @reown/appkit-wallet and @coinbase/cdp-sdk hold 3.x at their latest; their zod parses run only in the browser; drop when reown-com/appkit#5830 or #5844, or coinbase/cdp-sdk#867, ships
 
 # pnpm 11+: allowlisted dependency install scripts (required for native addons).
 # Replaces pnpm 10's onlyBuiltDependencies — same policy: only these two packages may run build scripts.
@@ -45,11 +53,13 @@ allowBuilds:
   '@scarf/scarf': false
   '@specify-sh/publisher-sdk': false
   '@tree-sitter-grammars/tree-sitter-yaml': false
-  bigint-buffer: false
   bufferutil: false
   core-js: false
   core-js-pure: false
   esbuild: false
+  # The home repo, whose `prepare` builds the doc-links command. pnpm wants the exact commit here;
+  # change it with `pnpm home:bump`, never by hand (tools/home/CONTEXT.md).
+  'frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f': true
   iso-constants: false
   keccak: false
   protobufjs: false

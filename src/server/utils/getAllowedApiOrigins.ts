@@ -5,16 +5,6 @@ import multichainConfig from 'src/features/multichain/chains-config';
 
 import config from 'src/config';
 
-// Collects the set of origins (scheme + host + port) that the Next.js proxy
-// (src/pages/api/proxy.ts) is allowed to forward requests to.
-//
-// The proxy picks its target host from the user-controlled "x-endpoint" header,
-// which would otherwise allow server-side request forgery (CWE-918). To prevent
-// that, the resolved request origin is checked against this allow-list, which is
-// derived solely from server-side configuration:
-//   - the local instance API endpoints (config.apis)
-//   - every chain endpoint in the multichain cluster config
-//   - every chain core endpoint in the essential dapps config
 function toOrigin(endpoint: string | undefined): string | undefined {
   if (!endpoint) {
     return;
@@ -39,6 +29,8 @@ function collectApiEndpoints(apis: Record<string, { endpoint?: string } | undefi
 
 let cache: Set<string> | undefined;
 
+// The proxy takes its target from the user-controlled "x-endpoint" header, so this allow-list against
+// server-side request forgery (CWE-918) is derived solely from server-side configuration.
 export default function getAllowedApiOrigins(): Set<string> {
   if (cache) {
     return cache;

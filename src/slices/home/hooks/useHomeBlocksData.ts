@@ -17,7 +17,6 @@ import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 import config from 'src/config';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 
-/** Max blocks kept in React Query cache for `core:homepage_blocks` (fetch + socket). */
 const HOME_BLOCKS_QUERY_LIMIT = 5;
 
 const isHomepageBlocksDataEnabled = (() => {

@@ -58,12 +58,6 @@ npm-debug.log*
 # compiled preset-list sync tool
 /tools/dev-server/sync-presets/dist/
 
-# compiled code-complexity gate
-/tools/code-complexity/dist/
-
-# compiled doc-link checker
-/tools/doc-links/dist/
-
 # react-doctor standalone install (not part of the root workspace)
 /tools/react-doctor/node_modules/
 
@@ -98,6 +92,8 @@ npm-debug.log*
 /playwright/.browser/
 /playwright/envs.js
 /.playwright-mcp/
+/tools/smoke/results/
+/tools/smoke/report/
 
 **.dec**
 

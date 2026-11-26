@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// https://eips.ethereum.org/EIPS/eip-6963
+// The EIP-6963 spec - https://eips.ethereum.org/EIPS/eip-6963
 
 import React from 'react';
 

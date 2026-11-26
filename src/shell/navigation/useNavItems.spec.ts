@@ -20,7 +20,6 @@ interface NavItems {
 const OPTIMISTIC_ROLLUP_FULL: Envs = [
   ...ENVS_MAP.optimisticRollup,
   [ 'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED', 'true' ],
-  [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
 ];
 
 const BEACON_CHAIN_WITHDRAWALS_ONLY: Envs = [
@@ -147,8 +146,8 @@ describe('useNavItems', () => {
         [ 'Blocks', 'Txn batches', 'Dispute games' ],
         ROLLUP_ACCOUNTS_COLUMN,
       ] ],
-      [ 'an optimistic rollup with output roots and interop', OPTIMISTIC_ROLLUP_FULL, [
-        [ ...ROLLUP_TXS_COLUMN, 'Interop messages' ],
+      [ 'an optimistic rollup with output roots', OPTIMISTIC_ROLLUP_FULL, [
+        ROLLUP_TXS_COLUMN,
         [ 'Blocks', 'Txn batches', 'Dispute games', 'Output roots' ],
         ROLLUP_ACCOUNTS_COLUMN,
       ] ],
@@ -281,12 +280,6 @@ describe('useNavItems', () => {
       [ ALL_OPTIONAL_ITEMS, { text: 'Duck', url: 'https://duck.io' } ],
       [ OPTIMISTIC_ROLLUP_FULL, { text: 'Deposits (L1→L2)', nextRoute: { pathname: '/deposits' }, icon: 'navigation/deposits', isActive: false } ],
       [ OPTIMISTIC_ROLLUP_FULL, { text: 'Withdrawals (L2→L1)', nextRoute: { pathname: '/withdrawals' }, icon: 'navigation/withdrawals', isActive: false } ],
-      [ OPTIMISTIC_ROLLUP_FULL, {
-        text: 'Interop messages',
-        nextRoute: { pathname: '/interop-messages' },
-        icon: 'navigation/cross_chain_txs',
-        isActive: false,
-      } ],
       [ OPTIMISTIC_ROLLUP_FULL, { text: 'Txn batches', nextRoute: { pathname: '/batches' }, icon: 'navigation/txn_batches', isActive: false } ],
       [ OPTIMISTIC_ROLLUP_FULL, { text: 'Dispute games', nextRoute: { pathname: '/dispute-games' }, icon: 'navigation/games', isActive: false } ],
       [ OPTIMISTIC_ROLLUP_FULL, { text: 'Output roots', nextRoute: { pathname: '/output-roots' }, icon: 'navigation/output_roots', isActive: false } ],
@@ -351,7 +344,6 @@ describe('useNavItems', () => {
       [ '/name-services/domains/[name]', [ 'Blockchain', 'Name services lookup' ] ],
       [ '/deposits', [ 'Blockchain', 'Deposits (L1→L2)' ], OPTIMISTIC_ROLLUP_FULL ],
       [ '/withdrawals', [ 'Blockchain', 'Withdrawals (L2→L1)' ], OPTIMISTIC_ROLLUP_FULL ],
-      [ '/interop-messages', [ 'Blockchain', 'Interop messages' ], OPTIMISTIC_ROLLUP_FULL ],
       [ '/batches', [ 'Blockchain', 'Txn batches' ], OPTIMISTIC_ROLLUP_FULL ],
       [ '/dispute-games', [ 'Blockchain', 'Dispute games' ], OPTIMISTIC_ROLLUP_FULL ],
       [ '/output-roots', [ 'Blockchain', 'Output roots' ], OPTIMISTIC_ROLLUP_FULL ],

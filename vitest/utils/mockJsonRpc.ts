@@ -1,15 +1,7 @@
 /* global fetchMock -- provided by vitest-fetch-mock in vitest/setup.ts */
 
-// Routes the global fetch mock between the REST API and the JSON-RPC node.
-//
-// viem's http transport posts `{ jsonrpc, id, method, params }` through the global `fetch`, so the same
-// `vitest-fetch-mock` that serves API responses can answer RPC calls. Every RPC method not listed in
-// `rpc` answers `null`, which viem turns into its *NotFound errors (transaction, receipt, block).
-//
-//   mockApiAndRpc({
-//     api: (url) => url.includes('/transactions/') ? { status: 404, body: '{"message":"Not found"}' } : undefined,
-//     rpc: { eth_getTransactionByHash: RPC_TX },
-//   });
+// Routes the global fetch mock between the REST API and the JSON-RPC node. Every RPC method not
+// listed in `rpc` answers `null`.
 
 interface ApiResponse {
   status?: number;

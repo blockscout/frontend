@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-/**
- * Sankey node color tokens from Figma (Universal Bridge Indexer).
- * Light theme: Chakra 300 palette. Resolved via useToken in the chart.
- * @see https://www.figma.com/design/3mGpZEE65cSuLnhtJBfKkO?node-id=6867-20752
- */
 export const SANKEY_NODE_COLOR_TOKENS_LIGHT: Array<string> = [
   'blue.300',
   'purple.300',
@@ -17,11 +12,6 @@ export const SANKEY_NODE_COLOR_TOKENS_LIGHT: Array<string> = [
   'red.300',
 ];
 
-/**
- * Sankey node color tokens from Figma (Universal Bridge Indexer).
- * Dark theme: Chakra 700 palette. Resolved via useToken in the chart.
- * @see https://www.figma.com/design/3mGpZEE65cSuLnhtJBfKkO?node-id=6867-21363
- */
 export const SANKEY_NODE_COLOR_TOKENS_DARK: Array<string> = [
   'blue.700',
   'purple.700',

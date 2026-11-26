@@ -2,6 +2,8 @@
 
 import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
+// d3 declares no side effects, so a bundle drops the one that adds selection.transition()
+import 'd3-transition';
 import React from 'react';
 
 export interface LineChartGridLineProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {

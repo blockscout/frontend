@@ -42,7 +42,6 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Flashblocks** | feature | Code name for the sub-second pre-confirmation block streaming feature. Surfaced to users as **Subblocks** or **Flashblocks** on OP Stack chains, whichever name the chain uses (OP Labs renamed it from "Flashblocks"), and as **mini-blocks** on MegaETH. The `flashblocks` code name and `FLASHBLOCKS` env vars are retained. |
 | **Hot Contracts** | feature | Ranked list of the most recently and frequently interacted-with smart contracts on the network. |
 | **Interchain Indexer** | service | Microservice that indexes cross-chain messages and token transfers across heterogeneous chains. General-purpose interop indexer, not ZetaChain-specific. Provides "Cross chain txs" feature. Distinct from **CCTX**. |
-| **Interop Messages** | entity | **Deprecated** Cross-rollup messages passed between OP Stack chains using the native interoperability protocol. Distinct from **Interchain Indexer** messages. |
 | **Kettle** | entity | In the **SUAVE** architecture, a Kettle is a trusted execution environment (TEE) node that processes MEV bundles. SUAVE transactions are associated with a Kettle. |
 | **Marketplace** | feature | Curated directory of dApps and DeFi applications integrated with Blockscout. |
 | **MetaSuites** | service | Third-party browser extension that enhances the Blockscout UI with additional data and links. |

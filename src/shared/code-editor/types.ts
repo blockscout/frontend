@@ -3,8 +3,9 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export interface File {
-  file_path: string;
-  source_code: string;
+  readonly key: string;
+  readonly display_path: string;
+  readonly source_code: string;
 }
 
 export interface FileTreeFile extends File {
@@ -21,7 +22,8 @@ export type FileTree = Array<FileTreeFile | FileTreeFolder>;
 export type Monaco = typeof monaco;
 
 export interface SearchResult {
-  file_path: string;
+  readonly key: string;
+  readonly display_path: string;
   matches: Array<SearchResultMatch>;
 }
 

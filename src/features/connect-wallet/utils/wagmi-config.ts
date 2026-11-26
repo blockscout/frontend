@@ -64,7 +64,7 @@ installEip6963AnnounceGuard();
 
 const wagmi = (() => {
 
-  if (!feature.isEnabled || feature.connectorType === 'dynamic') {
+  if (!feature.isEnabled) {
     const wagmiConfig = createConfig({
       chains: chains as [Chain, ...Array<Chain>],
       transports: {
@@ -76,7 +76,7 @@ const wagmi = (() => {
       // <Hydrate> restores persisted state and reconnects synchronously; no manual hydration is needed.
       ssr: false,
       batch: { multicall: { wait: 100, batchSize: 1024 } },
-      multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? false : true,
+      multiInjectedProviderDiscovery: true,
     });
 
     return { config: wagmiConfig, adapter: null };

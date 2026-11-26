@@ -1,11 +1,3 @@
-// Keeps the preset/alias dropdowns in the GitHub workflows and .vscode/tasks.json in sync with
-// tools/dev-server/registry.json (the single source of truth). Each target file brackets its
-// registry-managed aliases with `presets:start` / `presets:end` marker comments; only the lines
-// between the markers are touched, so the rest of the file and its formatting survive untouched.
-//
-// Kept free of fs and process access so the specs can exercise block building and splicing without
-// a working tree; ./cli.ts is what reads and writes the files.
-
 const START = 'presets:start';
 const END = 'presets:end';
 

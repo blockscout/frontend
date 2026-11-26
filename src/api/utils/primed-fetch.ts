@@ -1,20 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Early-fetch primer, consuming side. Pages registered in src/server/primedRequests embed an
-// inline script into the HTML document that fires their first-render API requests before the
-// JS bundle boots; the fetch layer (useFetch) picks up the primed request here instead of
-// hitting the network a second time.
-//
-// Semantics:
-//  - consume-once: an entry is removed from the map on first take, whether it is used or not;
-//  - GET only (enforced by the caller);
-//  - safety net: if the headers the primer sent differ from the headers the client would
-//    send (e.g. the inline script's cookie logic drifted from build-headers.ts), the primed
-//    response is discarded and the caller falls back to a normal network request;
-//  - AbortSignal: when the caller passes a signal (React Query does), an abort rejects the
-//    returned promise like a normal fetch — the in-flight primed request cannot be cancelled,
-//    but the consumer must not observe its result after cancel.
-
 export function normalizeHeaders(headers: HeadersInit | undefined): string {
   const entries: Array<[ string, string ]> = [];
   new Headers(headers).forEach((value, key) => {
@@ -56,6 +41,10 @@ function withAbortSignal(promise: Promise<Response>, signal: AbortSignal): Promi
   });
 }
 
+// GET requests only. An entry is removed from the map on first take, whether it is used or not.
+// Returns undefined, for the caller to fetch as usual, when the url has no entry or the primed
+// headers differ from `headers`. An abort of `signal` rejects the returned promise like a normal
+// fetch, though the primed request itself cannot be cancelled.
 export default function takePrimedFetch(
   url: string,
   headers: HeadersInit | undefined,

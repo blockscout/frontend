@@ -9,6 +9,9 @@ disable-model-invocation: true
 
 # Resolve review
 
+> **Frozen copy.** This skill has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/skills/resolve-review/`. Edit it there, not here: see [Frozen copies](../../README.md#frozen-copies).
+
 Work through a change's review findings and close them out. The hard part is not fixing — it is deciding
 *which* findings deserve a fix. So the centre of this skill is **adjudication**: every finding gets a
 **verdict**, reached skeptically, by checking the claim against the real code and the project's intent

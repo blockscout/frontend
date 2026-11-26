@@ -3,7 +3,7 @@
 import type { ConsentDetails } from './lib-types';
 import type { ServiceId, UsercentricsConsentResult } from './types';
 
-import { SERVICES, SERVICES_NAMES } from './services';
+import { CONSENT_RESULT_ALL_DENIED, SERVICES, SERVICES_NAMES } from './services';
 
 export default function getConsentStatus(details: ConsentDetails): UsercentricsConsentResult | undefined {
   try {
@@ -21,7 +21,7 @@ export default function getConsentStatus(details: ConsentDetails): UsercentricsC
           result[id] = item.given;
         }
         return result;
-      }, {} as UsercentricsConsentResult);
+      }, { ...CONSENT_RESULT_ALL_DENIED });
 
     return result;
   } catch {

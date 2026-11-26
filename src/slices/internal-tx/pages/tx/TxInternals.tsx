@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { createListCollection } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -16,13 +16,14 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import compareBns from 'src/shared/numbers/compareBns';
 import Pagination from 'src/shared/pagination/Pagination';
-import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import { default as getNextSortValueShared } from 'src/shared/sort/get-next-sort-value';
 import Sort from 'src/shared/sort/Sort';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
+import InternalTxsZeroValueSwitch from '../../components/InternalTxsZeroValueSwitch';
+import { useInternalTxsPaginatedQuery } from '../../hooks/useInternalTxsPaginatedQuery';
 import type { Sort as SortValue, SortField } from '../../utils/utils';
 import { SORT_OPTIONS, SORT_SEQUENCE } from './sort';
 import TxInternalsTable from './TxInternalsTable';
@@ -57,24 +58,14 @@ const sortFn = (sort: SortValue) => (a: schemas['InternalTransaction'], b: schem
   }
 };
 
-// const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
-//   const formattedSearchTerm = searchTerm.toLowerCase();
-//   return item.type.toLowerCase().includes(formattedSearchTerm) ||
-//     item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
-//     item.to.hash.toLowerCase().includes(formattedSearchTerm);
-// };
-
 interface Props {
   txQuery: TxQuery;
 }
 
 const TxInternals = ({ txQuery }: Props) => {
-  // filters are not implemented yet in api
-  // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
-  // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const isMobile = useIsMobile();
   const [ sort, setSort ] = React.useState<SortValue>('default');
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash, isZeroValueShown, onZeroValueToggle } = useInternalTxsPaginatedQuery({
     resourceName: 'core:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
@@ -82,10 +73,6 @@ const TxInternals = ({ txQuery }: Props) => {
       placeholderData: generateListStub<'core:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null, meta: { message: null, status: 1 } }),
     },
   });
-
-  // const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
-  //   setFilters(nextValue);
-  // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
     if (isInitialLoading) {
@@ -105,8 +92,6 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const filteredData = data?.items
     .slice()
-  // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
-  // .filter(searchFn(searchTerm))
     .sort(sortFn(sort));
 
   const content = filteredData ? (
@@ -115,38 +100,53 @@ const TxInternals = ({ txQuery }: Props) => {
         data={ filteredData }
         sort={ sort }
         onSortToggle={ handleSortToggle }
-        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
         isLoading={ isInitialLoading }
         resetKey={ queryHash }
       />
     </TableContainerScrollable>
   ) : null;
 
-  const actionBar = (isMobile || pagination.isVisible) ? (
-    <ActionBar mt={ -6 }>
-      { /* <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/> */ }
-      <Sort
-        name="tx_internal_txs_sorting"
-        defaultValue={ [ sort ] }
-        collection={ sortCollection }
-        onValueChange={ handleSortValueChange }
-        isLoading={ isInitialLoading }
-        hideFrom="lg"
-      />
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
-  ) : null;
+  const zeroValueSwitch = (
+    <InternalTxsZeroValueSwitch
+      isChecked={ isZeroValueShown }
+      onChange={ onZeroValueToggle }
+      isLoading={ pagination.isLoading }
+      ml={{ base: 'auto', lg: 0 }}
+    />
+  );
+
+  const actionBar = (
+    <>
+      { isMobile && (
+        <Flex mb={ 6 } alignItems="center">
+          <Sort
+            name="tx_internal_txs_sorting"
+            defaultValue={ [ sort ] }
+            collection={ sortCollection }
+            onValueChange={ handleSortValueChange }
+            isLoading={ isInitialLoading }
+          />
+          { zeroValueSwitch }
+        </Flex>
+      ) }
+      { (!isMobile || pagination.isVisible) && (
+        <ActionBar mt={ -6 }>
+          { !isMobile && zeroValueSwitch }
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
+    </>
+  );
 
   return (
     <DataList
       isError={ isError || txQuery.isError }
       itemsNum={ data?.items.length }
       emptyText="There are no internal transactions for this transaction."
-      // filterProps={{
-      // emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`.
-      // hasActiveFilters: Boolean(filters.length || searchTerm),
-      // }}
       actionBar={ actionBar }
+      showActionBarIfEmpty
+      showActionBarIfError
       isTransitioning={ isTransitioning }
     >
       { content }

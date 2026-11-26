@@ -8,16 +8,8 @@ import { accountSchema } from './account';
 const SUPPORTED = { NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: 'true' };
 
 describe('accountSchema', () => {
-  it('accepts the auth0 provider without an environment id', () => {
+  it('accepts the auth0 provider', () => {
     expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'auth0' })).toEqual([]);
-  });
-
-  it('accepts the dynamic provider with an environment id', () => {
-    expect(getValidationErrors(accountSchema, {
-      ...SUPPORTED,
-      NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic',
-      NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID: 'xxx',
-    })).toEqual([]);
   });
 
   it('accepts the expedited review HTML when the account is supported', () => {
@@ -37,38 +29,15 @@ describe('accountSchema', () => {
     ]);
   });
 
-  it('rejects an unsupported auth provider', () => {
-    expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'okta' })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: Invalid type: Expected ("auth0" | "dynamic") but received "okta"',
+  it('rejects an unsupported auth provider, the removed dynamic one included', () => {
+    expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic' })).toEqual([
+      'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: Invalid type: Expected "auth0" but received "dynamic"',
     ]);
   });
 
   it('rejects the auth provider when the account is not supported', () => {
     expect(getValidationErrors(accountSchema, { NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'auth0' })).toEqual([
       'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER can only be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is set to \'true\'',
-    ]);
-  });
-
-  it('rejects the dynamic provider without an environment id', () => {
-    expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic' })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
-    ]);
-    expect(getValidationErrors(accountSchema, {
-      ...SUPPORTED,
-      NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic',
-      NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID: '',
-    })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
-    ]);
-  });
-
-  it('rejects the environment id with a provider other than dynamic', () => {
-    expect(getValidationErrors(accountSchema, {
-      ...SUPPORTED,
-      NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'auth0',
-      NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID: 'xxx',
-    })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID can only be used if NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set to \'dynamic\' ',
     ]);
   });
 

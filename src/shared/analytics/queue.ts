@@ -30,14 +30,9 @@ let initPromise: Promise<boolean> | undefined;
 let liveProviders: ReadonlyArray<AnalyticsProvider> | undefined;
 const queue: Array<QueuedCall> = [];
 
-/**
- * The queue is flushed only after `setup` has run on a provider, so super-props and identity
- * apply to the replayed events. A provider whose init or setup throws is dropped for this page
- * load without affecting the others.
- *
- * Idempotent: concurrent and repeated calls share one init. Never rejects — resolves to `false`
- * when no provider could be initialized, which permanently disables the queue for this page load.
- */
+// Queued calls are replayed to a provider only after `setup` has run on it, so what `setup` sets applies to them. A
+// provider whose init or setup throws is dropped, and the others stay. Concurrent and repeated calls share one init.
+// Never rejects: with no provider initialized it resolves to `false`, and calls are dropped from then on.
 export function init(
   providers: ReadonlyArray<ProviderInitEntry>,
   setup: (provider: AnalyticsProvider) => void,

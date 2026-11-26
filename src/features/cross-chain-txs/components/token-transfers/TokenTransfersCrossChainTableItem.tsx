@@ -10,7 +10,6 @@ import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityIntercha
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { mdash } from 'src/toolkit/utils/htmlEntities';
@@ -19,6 +18,7 @@ import CrossChainBridgeLink from '../CrossChainBridgeLink';
 import CrossChainFromToTag from '../CrossChainFromToTag';
 import CrossChainMessageEntity from '../CrossChainMessageEntity';
 import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
+import TokenValueInterchain from '../TokenValueInterchain';
 
 interface Props {
   data: InterchainTransfer;

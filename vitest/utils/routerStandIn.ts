@@ -8,16 +8,13 @@ import { DefaultLink } from 'src/toolkit/router/defaults';
 import { vi } from 'vitest';
 import { wrapper as TestApp } from 'vitest/lib';
 
-// A live router stand-in for Vitest, installed through the toolkit router provider.
+// A live router stand-in for Vitest, installed through the toolkit router provider; the frozen
+// alternative is mockRouter.ts. It holds `pathname` and `query` in a store: every `useRouter` consumer
+// re-renders on `push`/`replace`/`setQuery`, and `push` resolves only after that render has committed,
+// so a spec can count requests and renders per user action, not just check the final state.
 //
-// `buildRouterMock` (mockRouter.ts) freezes `query`, so a hook under test never sees the URL it
-// pushed. This one holds `pathname` and `query` in a store: every `useRouter` consumer re-renders
-// on `push`/`replace`/`setQuery`, and `push` resolves only after that render has committed — the
-// same ordering the real pages router gives `.then` callbacks — so a spec can count requests and
-// renders per user action, not just check the final state.
-//
-// Install from the spec with the `wrapper`; it is the innermost provider, so it wins over the frozen
-// `buildRouterMock` value that `vitest/lib`'s TestApp mounts when the two are nested:
+// Install from the spec with the `wrapper`, as the innermost router provider, so it wins over any
+// router provider around it:
 //
 //   import { routerStandIn } from 'vitest/utils/routerStandIn';
 //

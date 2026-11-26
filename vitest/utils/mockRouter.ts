@@ -2,20 +2,11 @@ import type { Router } from 'src/toolkit/router/types';
 
 import { vi } from 'vitest';
 
-// A frozen router value for Vitest, installed through the toolkit router provider.
-//
-// Default: `vitest/lib`'s TestApp mounts the provider with `buildRouterMock('/', '/')`, so a suite
-// mounts without wiring the router. Suites that need a specific route/query pass the `router` prop
-// (`<TestApp router={ buildRouterMock('/tx/[hash]', '/tx/0xabc') }>`), or a `Partial<Router>` with just
-// the fields the component reads; the primed drift tests (checkPrimedRequests.tsx) do the former.
-//
-// The provider only reaches a component from the same module graph. `withEnvs` (mockEnvs.ts) calls
-// `vi.resetModules()`, so a component imported inside its callback holds a fresh router context that a
-// statically imported `render` / `wrapper` never feeds: the component sees the no-provider default
-// (`pathname: ''`, no-op `push`). Import `vitest/lib` (or routerStandIn.ts) inside the callback too.
+// A frozen router value for Vitest, installed through the `router` prop of the `vitest/lib` wrapper.
+// `page` is the route pattern (`/tx/[hash]`), `url` the path and query the page is opened at.
 //
 // `query` never changes after a `push`/`replace` — the calls are `vi.fn` spies to assert on. A hook
-// that must observe the URL it pushed uses the live stand-in in routerStandIn.ts instead.
+// that must observe the URL it pushed uses routerStandIn.ts instead.
 
 export interface RouterMock extends Router {
   push: ReturnType<typeof vi.fn<Router['push']>>;

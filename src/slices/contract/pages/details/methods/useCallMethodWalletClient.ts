@@ -6,15 +6,12 @@ import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
-import useWallet from 'src/features/connect-wallet/hooks/useWallet';
 import { useMultichainContext } from 'src/features/multichain/context';
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
 import config from 'src/config';
 
-import { estimateTransactionGas, getNativeCoinValue, withGasEstimateBuffer } from './utils';
-
-const feature = config.features.connectWallet;
+import { getNativeCoinValue } from './utils';
 
 interface Params {
   item: SmartContractMethod;
@@ -32,7 +29,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
   const { writeContractAsync } = useWriteContract();
   const { sendTransactionAsync } = useSendTransaction();
-  const { type: walletType } = useWallet({ source: 'Smart contracts' });
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {
@@ -51,13 +47,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const _args = args.slice(0, inputs.length);
     const value = getNativeCoinValue(args[inputs.length]);
 
-    // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
-    // so we do it manually here (with a buffer to avoid OOG between estimate and inclusion)
-    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
-      withGasEstimateBuffer(
-        await estimateTransactionGas({ account, to: address, value, abiItem: item, args: _args, chainId: targetChainId }),
-      ) : undefined;
-
     if (item.type === 'receive' || item.type === 'fallback') {
       // if the fallback method acts as a read method, it can only have one input of type bytes
       // so we pass the input value as data without encoding it
@@ -66,7 +55,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       const hash = await sendTransactionAsync({
         to: address,
         value,
-        gas: estimatedGas,
         chainId: targetChainId,
         ...(data ? { data } : {}),
       });
@@ -98,7 +86,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       address,
       value,
       account,
-      gas: estimatedGas,
       chainId: targetChainId,
     });
 
@@ -113,7 +100,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     targetChainId,
     trackTransaction,
     account,
-    walletType,
     writeContractAsync,
     switchChainAsync,
     sendTransactionAsync,

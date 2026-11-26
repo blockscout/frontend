@@ -14,11 +14,11 @@ See `./rules/design-system.md` for Chakra UI v3 design system configuration and 
 
 ## Code Style & Quality
 
-See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch, and the complexity/CRAP scores.
+See `./rules/code-quality.md` for code style and the conventions linters don't catch, and `./rules/code-quality-local.md` for the lint commands, the complexity/CRAP scores and this repo's own conventions.
 
 ## TypeScript Conventions
 
-See `./rules/typescript.md` for established rules how to write Typescript code.
+See `./rules/typescript.md` for established rules how to write Typescript code, and `./rules/typescript-local.md` for what this repo adds to them.
 
 ## Environment Variables
 
@@ -26,8 +26,20 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 
 ## Testing
 
-- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
+- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose and conventions, and `vitest/CONTEXT.md` for the setup and utilities.
 - Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
+
+## Temporary files
+
+Throwaway files you make while working go in your session scratchpad. When one has to live inside the repo,
+because a test runner has to find it or it imports app code, put it in `.ai/tmp/<slug>/`, the slug a short
+kebab-case name for your work. That folder is gitignored, and you create it if it's missing. Import app code
+there through the `src/*` alias. Name a Vitest probe `*.isolated.spec.ts(x)`, so a mock in it cannot leak into
+other specs.
+
+Delete these files when you're done. The gitignore keeps them out of commits, not out of test runs: an
+unfiltered `pnpm test:vitest` or `pnpm test:pw` still runs a leftover. If you can't delete them, list them in
+your report.
 
 ## Running locally
 
@@ -53,22 +65,24 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against valibot schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
-- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
 - `src/shared/entities/` — the entity-link base: the root context and parts, the `defineEntity` contract, the chain rule, and what a definition must tolerate.
 - `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.
 - `src/shared/pagination/` — the paginated-list components and utils.
+- `src/shared/values/` — which value component fits which kind of value (native coin, token, asset, fiat, gas price, plain number).
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
-- `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
 - `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
-- `tools/doc-links/` — the doc-link checker.
+- `tools/home/` — the home repo dependency: the pin and its bump, and the registry of the tools it supplies.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 - `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
+- `tools/smoke/` — the smoke set against a production build.
+- `vitest/` — the unit-test setup: the shared and isolated projects, the conventions a spec keeps, and where the setup files and helpers are described.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.

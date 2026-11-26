@@ -104,23 +104,12 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, fullscreen, ...rest
       } : undefined }
       { ...rest }
     >
-      { /*
-        Sandbox split (see also `public/nft-html-embed.html`):
-
-        - `allow-scripts` — interactive NFT previews require JavaScript.
-
-        - `allow-same-origin` — the **direct** document is our trusted `/nft-html-embed.html` shell
-          (first-party). Same origin makes `postMessage` report a real tuple `origin` to the parent
-          (opaque origins serialize as the string `"null"`), and matches how we lock the shell to
-          `event.origin === window.location.origin`. MDN warns against `allow-scripts` +
-          `allow-same-origin` when the framed document is **untrusted**, because script could reach
-          `frameElement` and strip `sandbox`. We only use both here because the framed **top** document
-          is that small shell; API-supplied HTML loads in a **nested** iframe with `allow-scripts` only
-          (no `allow-same-origin`), so the NFT stays on an opaque origin and cannot read site cookies.
-
-        We omit e.g. `allow-top-navigation`, `allow-popups`, and `allow-forms` by default to limit what
-        even the shell could do if it were ever compromised.
-      */ }
+      { /* `allow-same-origin` beside `allow-scripts` lets a framed script reach `frameElement` and strip `sandbox`.
+           It is safe only because the framed document is our own `/nft-html-embed.html` shell, which needs a real
+           origin for `postMessage` and its `event.origin` check, and which loads the API-supplied HTML in a nested
+           iframe with `allow-scripts` only, so the NFT stays on an opaque origin and cannot read site cookies.
+           Flags such as `allow-top-navigation`, `allow-popups` or `allow-forms` stay off to limit what even the
+           shell could do if it were ever compromised. */ }
       <chakra.iframe
         ref={ ref }
         h="100%"

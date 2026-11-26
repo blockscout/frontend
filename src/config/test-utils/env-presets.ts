@@ -2,11 +2,7 @@
 
 /* eslint-disable max-len */
 
-// Curated env bundles for exercising feature-config branches in tests.
-// Shared by the Playwright `mockEnvs` fixture (playwright/fixtures/mockEnvs.ts) and the
-// Vitest `withEnvs` utility (vitest/utils/mockEnvs.ts) so both test layers speak the same
-// env vocabulary. Keep this module dependency-free (plain data) — it must not import
-// src/config, which both consumers re-evaluate with these values applied.
+// Keep this module plain data: it must not import src/config, which is re-evaluated with these envs applied.
 
 export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   optimisticRollup: [
@@ -99,12 +95,6 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   externalTxs: [
     [ 'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG', '{"chain_name": "Solana", "chain_logo_url": "http://example.url", "explorer_url_template": "https://scan.io/tx/{hash}"}' ],
-  ],
-  interop: [
-    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'optimistic' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"baseUrl":"https://localhost:3101"}' ],
-    [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
-    [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
   ],
   tac: [
     [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3010' ],

@@ -15,18 +15,6 @@ import {
   isMonacoCdnError,
 } from './utils';
 
-/**
- * Rollbar client options — imported only once the SDK chunk is loaded so the ignore helpers and
- * message constants stay out of the critical path until then (they ride along with `rollbar`).
- *
- * This `checkIgnore` reads `window` (the bot / headless checks) and only ever runs in the browser.
- * The server-side error-page instance has its own config in `serverConfig.ts` and must not reuse
- * this predicate — see the note there.
- *
- * Uncaught errors are already filtered by origin in the queue's early listener (only our own
- * `/_next/` bundle is forwarded), so the rules here handle what still gets through: explicit
- * `rollbar` calls, and own-bundle traces that reach third-party code deeper in the stack.
- */
 export function buildClientConfig(accessToken: string): Configuration {
   return {
     accessToken,
@@ -74,13 +62,9 @@ export function buildClientConfig(accessToken: string): Configuration {
       // Filter out client-side navigation cancellations
       'cancelled navigation',
 
-      // Browser auto-translate (Google Translate et al.) and DOM-mutating extensions move nodes
-      // React owns, so React's commit-phase removeChild / insertBefore / replaceChild then fails
-      // with a NotFoundError. Environmental and unactionable — React owns that DOM, the only way a
-      // node "is not a child" is an outside mutation. The NotFoundError class is already dropped via
-      // checkIgnore, but our error boundary re-reports it as a message (no body.trace), which the
-      // class check can't see — so match the shared DOM-exception tail here too. Covers all three
-      // node ops (…removeChild/insertBefore/replaceChild… "is not a child of this node.").
+      // Browser auto-translate and DOM-mutating extensions move nodes React owns, so its removeChild /
+      // insertBefore / replaceChild fails with a NotFoundError. checkIgnore drops that class, but our error
+      // boundary re-reports it as a message with no trace, so match the tail all three errors share.
       'is not a child of this node',
 
       // WalletConnect/AppKit rejects a pending pairing when its TTL elapses before the user

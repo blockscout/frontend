@@ -2,9 +2,7 @@
 
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import type { ExcludeUndefined } from 'src/shared/types/utils';
-
-const durations: ExcludeUndefined<ThemingConfig['tokens']>['durations'] = {
+const durations: Exclude<ThemingConfig['tokens'], undefined>['durations'] = {
   'ultra-fast': { value: '50ms' },
   faster: { value: '100ms' },
   fast: { value: '150ms' },

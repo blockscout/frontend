@@ -19,13 +19,8 @@ export interface Options {
   extraHeaders?: HeadersInit;
 }
 
-// Builds the headers of an API resource request.
-//
 // Works on both the client and the server. On the server there are no cookies, so only the
-// cookie-independent part is produced (proxy routing + static per-resource headers) — the
-// early-fetch primer (src/server/primedRequests) relies on this to compute the server-known
-// part of the headers and lets its inline script resolve the cookie-derived part
-// (see cookie-headers.ts) in the browser.
+// cookie-independent part is produced (proxy routing + static per-resource headers).
 export default function buildHeaders(resourceName: ResourceName, { chain, csrfToken, method, extraHeaders }: Options = {}): HeadersInit {
   const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
   const rewardsApiToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);

@@ -21,13 +21,6 @@ export default function useGetCsrfToken() {
         const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
 
         if (!csrfFromHeader) {
-          // I am not sure should we log this error or not
-          // so I commented it out for now
-          // rollbar?.warn('Client fetch failed', {
-          //   resource: 'csrf',
-          //   status_code: 500,
-          //   status_text: 'Unable to obtain csrf token from header',
-          // });
           return;
         }
 

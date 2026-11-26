@@ -165,19 +165,6 @@ function getRollupWithdrawalsItem(pathname: Pathname): NavItem {
   };
 }
 
-function getRollupInteropMessagesItem(pathname: Pathname): NavItem | null {
-  if (!getFeaturePayload(config.features.rollup)?.interopEnabled) {
-    return null;
-  }
-
-  return {
-    text: 'Interop messages',
-    nextRoute: { pathname: '/interop-messages' as const },
-    icon: 'navigation/cross_chain_txs',
-    isActive: pathname === '/interop-messages',
-  };
-}
-
 function getRollupTxnBatchesItem(pathname: Pathname): NavItem {
   return {
     text: 'Txn batches',
@@ -250,7 +237,6 @@ function getOptimisticStackColumns(location: NavLocation): Array<Array<NavItem>>
       getInternalTxsItem(pathname),
       getRollupDepositsItem(pathname),
       getRollupWithdrawalsItem(pathname),
-      getRollupInteropMessagesItem(pathname),
     ].filter(Boolean),
     [
       getBlocksItem(pathname),

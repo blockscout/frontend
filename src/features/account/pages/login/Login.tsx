@@ -29,7 +29,6 @@ const Login = () => {
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
     setFormVisibility(Boolean(!token && config.features.account.isEnabled));
-    // throw new Error('Render error');
   }, []);
 
   const checkRollbar = React.useCallback(() => {

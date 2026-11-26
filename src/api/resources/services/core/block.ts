@@ -4,6 +4,7 @@ import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
 import type { TxsWithBlobsFilters } from 'src/features/data-availability/types/api';
 import type { BlockFilters } from 'src/slices/block/types/api';
+import type { ZeroValueFilter } from 'src/slices/internal-tx/types/api';
 
 export const CORE_API_BLOCK_RESOURCES = {
   blocks: {
@@ -28,6 +29,7 @@ export const CORE_API_BLOCK_RESOURCES = {
   block_internal_txs: {
     path: '/api/v2/blocks/:height_or_hash/internal-transactions',
     pathParams: [ 'height_or_hash' as const ],
+    filterFields: [ 'include_zero_value' as const ],
     paginated: true,
   },
   block_deposits: {
@@ -62,5 +64,6 @@ never;
 export type CoreApiBlockPaginationFilters<R extends CoreApiBlockResourceName> =
 R extends 'core:blocks' ? BlockFilters :
 R extends 'core:block_txs' ? TxsWithBlobsFilters :
+R extends 'core:block_internal_txs' ? ZeroValueFilter :
 never;
 /* eslint-enable @stylistic/indent */

@@ -22,7 +22,7 @@ describe('account feature config', () => {
     expect((await loadConfig([ [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', '' ] ])).isEnabled).toBe(false);
   });
 
-  it('is disabled without a dynamic environment id or a reCaptcha site key', async() => {
+  it('is disabled without a reCaptcha site key', async() => {
     expect((await loadConfig([ [ 'NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY', '' ] ])).isEnabled).toBe(false);
   });
 
@@ -31,17 +31,6 @@ describe('account feature config', () => {
       isEnabled: true,
       authProvider: 'auth0',
       verifiedAddresses: { isEnabled: true },
-    });
-  });
-
-  it('signs in through dynamic with its environment id', async() => {
-    expect(await loadConfig([
-      [ 'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER', 'dynamic' ],
-      [ 'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID', 'env-1' ],
-    ])).toMatchObject({
-      isEnabled: true,
-      authProvider: 'dynamic',
-      dynamic: { environmentId: 'env-1' },
     });
   });
 

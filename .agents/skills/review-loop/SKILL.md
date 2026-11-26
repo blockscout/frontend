@@ -9,6 +9,9 @@ disable-model-invocation: true
 
 # Review loop
 
+> **Frozen copy.** This skill has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/skills/review-loop/`. Edit it there, not here: see [Frozen copies](../../README.md#frozen-copies).
+
 Close the loop between `review-changes`, `resolve-review` and CI on one PR. Each **round**: the reviewer
 reviews the PR from its own CLI, and the orchestrator reads the outcome from the PR. While the outcome is
 `blocked` a fresh resolver fixes. The round then waits for the Checks run on the branch, fixes it when red,

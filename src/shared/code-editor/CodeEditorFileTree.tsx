@@ -99,17 +99,17 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               pl={ `${ 26 + (level * 8) }px` }
               pr="8px"
               onClick={ onItemClick }
-              data-file-path={ leaf.file_path }
+              data-file-key={ leaf.key }
               display="flex"
               position="relative"
               alignItems="center"
               overflow="hidden"
               _hover={{
-                bgColor: selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : themeColors['custom.list.hoverBackground'],
+                bgColor: selectedFile === leaf.key ? themeColors['list.inactiveSelectionBackground'] : themeColors['custom.list.hoverBackground'],
               }}
-              bgColor={ selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : 'none' }
+              bgColor={ selectedFile === leaf.key ? themeColors['list.inactiveSelectionBackground'] : 'none' }
             >
-              { mainFile === leaf.file_path && (
+              { mainFile === leaf.key && (
                 <CodeEditorMainFileIndicator
                   position="absolute"
                   top={ `${ (22 - 12) / 2 }px` }

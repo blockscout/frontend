@@ -140,7 +140,7 @@ describe('lookupTokens over the real theme', () => {
   it('narrows by role through the token path prefix and misses when the role has no token at that hex', () => {
     expect(lookupTokens(themeMap(), opaque('#ffffff'), 'light', 'background')).toEqual([ 'bg.primary' ]);
     expect(lookupTokens(themeMap(), opaque('#ffffff'), 'light', 'text')).toEqual([]);
-    expect(lookupTokens(themeMap(), opaque('#718096'), 'light', 'text')).toEqual([ 'link.secondary', 'text.secondary' ]);
+    expect(lookupTokens(themeMap(), opaque('#718096'), 'light', 'text')).toEqual([ 'text.secondary' ]);
     expect(lookupTokens(themeMap(), opaque('#718096'), 'light', 'icon')).toEqual([ 'icon.primary' ]);
   });
 
@@ -185,7 +185,6 @@ describe('detectColorMode over the real theme', () => {
     const gray600 = opaque('#4A5568');
     expect(detectColorMode(themeMap(), [ gray600 ], undefined)).toMatchObject({ mode: 'dark', decidedBy: 'majority' });
     expect(detectColorMode(themeMap(), [ { ...gray600, role: 'text' } ], undefined)).toMatchObject({ mode: 'light', votes: { light: 1, dark: 0 } });
-    expect(detectColorMode(themeMap(), [ { ...opaque('#718096'), role: 'text' } ], undefined)).toMatchObject({ mode: 'light', votes: { light: 1, dark: 0 } });
   });
 
   it('breaks a tie with the frame background', () => {
