@@ -1,8 +1,5 @@
 import type { EssentialDappsConfig } from 'src/features/marketplace/types/client';
 
-// the cookies module and src/config import each other; entered through the cookies module, the graph reads its
-// cookie names before they are initialized
-import 'src/config';
 import { parseEnvJson, replaceQuotes } from 'src/config/utils/envs';
 import { NAMES as COOKIE_NAMES } from 'src/shared/storage/cookies';
 
