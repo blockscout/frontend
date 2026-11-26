@@ -264,11 +264,11 @@ const AddressPageContent = () => {
           component: <AddressBlocksValidated shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      addressTabsCountersQuery.data?.logs_count ?
+      addressTabsCountersQuery.data?.logs_count || addressQuery.data?.has_logs ?
         {
           id: 'logs',
           title: 'Logs',
-          count: addressTabsCountersQuery.data?.logs_count,
+          count: addressTabsCountersQuery.data?.logs_count || undefined,
           component: <AddressLogs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
