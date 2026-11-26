@@ -13,4 +13,4 @@ ROOT="$(cd "$DIR/../.." && pwd)"
 
 # Use the repo-local TypeScript so the wrapper is self-contained (no global tsc needed).
 "$ROOT/node_modules/.bin/tsc" -p "$DIR/tsconfig.json"
-node "$DIR/dist/index.js" "$@"
+node "$DIR/dist/index.js"

@@ -53,11 +53,10 @@ function checkSpecifier(
   return declaredPackages.has(getPackageName(specifier)) ? undefined : 'undeclared-package';
 }
 
-// `declarations` maps a path relative to the package's dist folder, with forward slashes, to the file's text.
-export function findUnresolvableImports(declarations: Declarations, declaredPackages: ReadonlySet<string>): Array<Violation> {
+export function findUnresolvableImports(declarationTextByDistPath: Declarations, declaredPackages: ReadonlySet<string>): Array<Violation> {
   const violations: Array<Violation> = [];
 
-  for (const [ file, source ] of declarations) {
+  for (const [ file, source ] of declarationTextByDistPath) {
     const info = ts.preProcessFile(source, true, false);
     const specifiers = new Set([
       ...info.importedFiles.map(({ fileName }) => fileName),
@@ -66,7 +65,7 @@ export function findUnresolvableImports(declarations: Declarations, declaredPack
     ]);
 
     for (const specifier of specifiers) {
-      const reason = checkSpecifier(file, specifier, declarations, declaredPackages);
+      const reason = checkSpecifier(file, specifier, declarationTextByDistPath, declaredPackages);
       if (reason) {
         violations.push({ file, specifier, reason });
       }

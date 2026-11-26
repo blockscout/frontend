@@ -20,8 +20,8 @@ not any other `package.json` in the repo, and not the toolkit folder root
 
 Every import in the built declarations must resolve for a consumer: a relative path to a file inside
 `dist`, or a package among the manifest's `dependencies` or `peerDependencies`. An import that does not
-resolve turns the type into `any` for a consumer with `skipLibCheck` on, with no error anywhere.
-`pnpm lint:toolkit-declarations` checks it on the built package, in CI and before publishing.
+resolve turns the type into `any` for a consumer with `skipLibCheck` on, and the consumer's compile reports
+nothing. So `pnpm lint:toolkit-declarations` checks it on the built package, in CI and before publishing.
 
 So an exported signature must not name a type from an application module (`src/config`, `src/shared`, a
 slice), and a package whose types it names has to be added to the manifest. A new source folder or file
