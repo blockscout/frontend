@@ -29,6 +29,7 @@
     "lint:tsc": "tsc -p ./tsconfig.json",
     "lint:cspell": "cspell .",
     "lint:doc-links": "doc-links",
+    "lint:toolkit-declarations": "./tools/toolkit-declarations/run.sh",
     "lint:react-doctor": "./tools/react-doctor/run.sh",
     "react-doctor": "./tools/react-doctor/run.sh",
     "lint:license:check": "license-report > ./license.json && license-report-check --source=./license.json --output=table --forbidden=n/a",

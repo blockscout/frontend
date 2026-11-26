@@ -815,12 +815,24 @@ importers:
       '@internationalized/date':
         specifier: '>=3.12.2'
         version: 3.12.2
+      '@types/d3':
+        specifier: ^7.4.3
+        version: 7.4.3
+      '@types/d3-sankey':
+        specifier: ^0.12.5
+        version: 0.12.5
       '@uidotdev/usehooks':
         specifier: '>=2.4.1'
         version: 2.4.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      bignumber.js:
+        specifier: '>=9.3.1'
+        version: 9.3.1
       d3:
         specifier: '>=7.9.0'
         version: 7.9.2
+      d3-sankey:
+        specifier: '>=0.12.3'
+        version: 0.12.3
       dayjs:
         specifier: '>=1.11.21'
         version: 1.11.23
