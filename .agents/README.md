@@ -37,8 +37,7 @@ repo has it under the same name. A frozen copy opens with a `Frozen copy` note n
   differently is `rules/typescript-local.md` and `rules/code-quality-local.md`. They are not copies and are
   edited here. Local content never goes into the frozen copy, because a home session skips that file.
 - **`review-changes` and `review-loop` have local parts.** What this repo adds to a file of the home skill
-  is the `<file>-local.md` beside its frozen copy: `SKILL-local.md`, `smells-local.md` and
-  `prose-smells-local.md` in `skills/review-changes/`, and `ci-fixes-local.md` in `skills/review-loop/`.
+  is the `<file>-local.md` beside its frozen copy.
   They are not copies and are edited here. Only a home session reads them. The frozen copies still carry
   the same content and are not kept in step.
 
