@@ -76,10 +76,6 @@ export const CORE_API_TX_RESOURCES = {
     path: '/api/v2/transactions/:hash/summary',
     pathParams: [ 'hash' as const ],
   },
-  tx_external_transactions: {
-    path: '/api/v2/transactions/:hash/external-transactions',
-    pathParams: [ 'hash' as const ],
-  },
   internal_txs: {
     path: '/api/v2/internal-transactions',
     paginated: true,
@@ -105,7 +101,6 @@ R extends 'core:tx_raw_trace' ? paths['/api/v2/transactions/{transaction_hash_pa
 R extends 'core:tx_state_changes' ? paths['/api/v2/transactions/{transaction_hash_param}/state-changes']['get'] :
 R extends 'core:tx_blobs' ? paths['/api/v2/transactions/{transaction_hash_param}/blobs']['get'] :
 R extends 'core:tx_interpretation' ? TxInterpretationResponse :
-R extends 'core:tx_external_transactions' ? paths['/api/v2/transactions/{transaction_hash_param}/external-transactions']['get'] :
 R extends 'core:internal_txs' ? paths['/api/v2/internal-transactions']['get'] :
 never;
 /* eslint-enable @stylistic/indent */

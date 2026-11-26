@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { singleChainConfig, txExternalTxsConfig } from './mocks/instance';
+import { singleChainConfig } from './mocks/instance';
 import schema from './schema';
 import { toEnvValue } from './test-utils';
 import { getValidationErrors } from './utils';
@@ -167,19 +167,6 @@ describe('single-chain schema', () => {
     it('rejects a config without an api url template', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_ADDRESS_USERNAME_TAG: toEnvValue({ tag_icon: 'https://example.com/icon.svg' }) })).toEqual([
         'NEXT_PUBLIC_ADDRESS_USERNAME_TAG.api_url_template: Invalid key: Expected "api_url_template" but received undefined',
-      ]);
-    });
-  });
-
-  describe('NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG', () => {
-    it('accepts a full config', () => {
-      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: toEnvValue(txExternalTxsConfig) })).toEqual([]);
-    });
-
-    it('rejects a config without the explorer url template', () => {
-      const incomplete = { chain_name: txExternalTxsConfig.chain_name, chain_logo_url: txExternalTxsConfig.chain_logo_url };
-      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: toEnvValue(incomplete) })).toEqual([
-        'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG.explorer_url_template: Invalid key: Expected "explorer_url_template" but received undefined',
       ]);
     });
   });

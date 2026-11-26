@@ -83,7 +83,6 @@ The value is used as set: apostrophes and single-quoted attribute values stay as
   - [DeFi dropdown](#defi-dropdown)
   - [DEX pools](#dex-pools)
   - [Easter eggs](#easter-eggs)
-  - [External transactions](#external-transactions)
   - [Flashblocks](#flashblocks)
   - [Gas tracker](#gas-tracker)
   - [Get gas button](#get-gas-button)
@@ -975,14 +974,6 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg runner game feature | - | - | `https://example.com` | v1.37.0+ |
 | NEXT_PUBLIC_PUZZLE_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg puzzle game feature | - | - | `https://example.com` | v2.2.0+ |
-
-&nbsp;
-
-### External transactions
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG | `{ chain_name: string; chain_logo_url: string; explorer_url_template: string; }` | Configuration of the external transactions links that should be added to the transaction details. | - | - | `{ chain_name: 'ethereum', chain_logo_url: 'https://example.com/logo.png', explorer_url_template: 'https://explorer.com/tx/{hash}' }` | v1.38.0+ |
 
 &nbsp;
 
