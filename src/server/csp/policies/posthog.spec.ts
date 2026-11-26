@@ -57,11 +57,20 @@ describe('posthog policy', () => {
     });
   });
 
+  it('allows a custom host served over plain http', async() => {
+    expect(await getPolicy(withOverrides(`{'flags_api_host':'http://flags.example.com'}`))).toEqual({
+      ...CLOUD_ONLY_POLICY,
+      'connect-src': [ '*.posthog.com', 'http://flags.example.com' ],
+    });
+  });
+
   it('adds nothing for a PostHog Cloud api_host', async() => {
     expect(await getPolicy(withOverrides(`{'api_host':'https://us.i.posthog.com'}`))).toEqual(CLOUD_ONLY_POLICY);
   });
 
   it.each([
+    [ 'the posthog.com apex', `{'api_host':'https://posthog.com'}` ],
+    [ 'a URL wrapped in an array', `{'api_host':['https://posthog.example.com']}` ],
     [ 'a same-origin path', `{'api_host':'/ingest'}` ],
     [ 'a host without a scheme', `{'api_host':'posthog.example.com'}` ],
     [ 'a non-web scheme', `{'api_host':'ftp://posthog.example.com'}` ],
