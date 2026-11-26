@@ -65,6 +65,6 @@ How to verify: `pnpm dev:preset eth`, open
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Decode util for the event's non-indexed inputs, with its Vitest spec
-- [ ] 2 `[agent]` "Data" row component with the display type selector, wired into `LogItem`
-- [ ] 3 `[agent]` Log mock with `decoded.abi` for the tuple-array case
+- [x] 1 `[agent]` Decode util for the event's non-indexed inputs, with its Vitest spec
+- [x] 2 `[agent]` "Data" row component with the display type selector, wired into `LogItem`
+- [x] 3 `[agent]` Log mock with `decoded.abi` for the tuple-array case

@@ -10,7 +10,6 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import type { DataType } from 'src/shared/data/RawInputData';
-import RawInputData from 'src/shared/data/RawInputData';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import { route } from 'src/shared/router/routes';
 
@@ -21,6 +20,7 @@ import { space } from 'src/toolkit/utils/htmlEntities';
 
 import LogDecodedInputData from './LogDecodedInputData';
 import LogIndex from './LogIndex';
+import LogItemData from './LogItemData';
 import LogTopic from './LogTopic';
 
 interface Props {
@@ -124,19 +124,7 @@ const LogItem = ({
         )) }
       </GridItem>
       <RowHeader isLoading={ isLoading }>Data</RowHeader>
-      { defaultDataType ? (
-        <RawInputData hex={ data.data } isLoading={ isLoading } defaultDataType={ defaultDataType } minHeight="53px"/>
-      ) : (
-        <Skeleton
-          loading={ isLoading }
-          p={ 4 }
-          fontSize="sm"
-          borderRadius="md"
-          bgColor={ isLoading ? undefined : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
-        >
-          { data.data }
-        </Skeleton>
-      ) }
+      <LogItemData data={ data } isLoading={ isLoading } defaultDataType={ defaultDataType }/>
     </Grid>
   );
 };
