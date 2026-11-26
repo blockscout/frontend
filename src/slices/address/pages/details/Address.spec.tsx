@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 // @vitest-environment jsdom
 
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
@@ -17,6 +19,7 @@ import { buildRouterMock } from 'vitest/utils/mockRouter';
 
 const SCAM_ALERT_TEXT = 'This address has been flagged as a potential scam.';
 const ADDRESS_PATH = `/api/v2/addresses/${ addressParamMock.hash }`;
+const TABS_COUNTERS_PATH = `${ ADDRESS_PATH }/tabs-counters`;
 const ENS_LOOKUP_PATH = '/api/v1/addresses:lookup';
 
 // .env.vitest turns both name services on; an empty host turns one off again
@@ -36,12 +39,16 @@ function jsonResponse(body: unknown): { headers: Record<string, string>; body: s
   return { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
 }
 
-function mockAddress(address: schemas['AddressResponse']): void {
+function mockAddress(address: schemas['AddressResponse'], tabsCounters?: schemas['AddressTabsCounters']): void {
   fetchMock.mockResponse((request) => {
     const { pathname } = new URL(request.url);
 
     if (pathname === ADDRESS_PATH) {
       return jsonResponse(address);
+    }
+
+    if (tabsCounters && pathname === TABS_COUNTERS_PATH) {
+      return jsonResponse(tabsCounters);
     }
 
     if (pathname.endsWith('/metadata')) {
@@ -104,6 +111,17 @@ describe('address scam flag', () => {
       // so the page reads "Contract details" until the EOA response replaces it
       expect(await screen.findByText('Address details')).toBeTruthy();
       expect(screen.queryByText(SCAM_ALERT_TEXT)).toBeNull();
+    });
+  });
+});
+
+describe('logs tab', () => {
+  it('shows the Logs tab without a counter when the address has logs but the tabs counters omit them', { timeout: TEST_TIMEOUT }, async() => {
+    await withEnvs([], async() => {
+      mockAddress({ ...addressMock.eoa, has_logs: true }, omit(addressTabCountersMock.base, [ 'logs_count' ]));
+      await renderAddressPage();
+
+      expect(await screen.findByRole('tab', { name: 'Logs' })).toBeTruthy();
     });
   });
 });
