@@ -130,3 +130,27 @@ describe('checkPr', () => {
     expect(checkPr(TEMPLATE, [ 'release', 'bug', 'chore' ], TEMPLATE)).toEqual([]);
   });
 });
+
+interface RenovatePrConfig {
+  readonly prBodyTemplate: string;
+  readonly labels: ReadonlyArray<string>;
+}
+
+describe('a Renovate pull request', () => {
+  const template = fs.readFileSync(path.resolve(__dirname, '../../docs/PULL_REQUEST_TEMPLATE.md'), 'utf8');
+  const renovate = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../.github/renovate.json'), 'utf8')) as RenovatePrConfig;
+
+  it('passes the check as Renovate opens it', () => {
+    const body = renovate.prBodyTemplate.replace(/\{\{\{(\w+)\}\}\}/g, (_, section: string) => `Renovate's ${ section } section.\n\n`);
+
+    expect(checkPr(body, renovate.labels, template)).toEqual([]);
+  });
+
+  it('keeps every template heading ahead of the release notes, which Renovate cuts from a body past the length limit', () => {
+    const releaseNotesAt = renovate.prBodyTemplate.indexOf('{{{changelogs}}}');
+    const headingsAt = parseTemplate(template).map(({ heading }) => renovate.prBodyTemplate.indexOf(heading));
+
+    expect(releaseNotesAt).toBeGreaterThan(0);
+    expect(headingsAt.every((index) => index >= 0 && index < releaseNotesAt)).toBe(true);
+  });
+});

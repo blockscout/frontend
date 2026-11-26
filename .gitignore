@@ -92,6 +92,8 @@ npm-debug.log*
 /playwright/.browser/
 /playwright/envs.js
 /.playwright-mcp/
+/tools/smoke/results/
+/tools/smoke/report/
 
 **.dec**
 

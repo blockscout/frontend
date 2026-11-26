@@ -27,14 +27,23 @@ peerDependencyRules:
 overrides:
   '@wagmi/connectors': "6.2.0"
   "@noble/hashes@1": "1.8.0"
-  # Security floors. Each is here because a parent pins a vulnerable version, named on the line; drop the
-  # entry once that parent moves past the floor. Keep them ranges: an exact pin stops receiving patches
-  # and becomes the source of the next alerts.
-  axios: "^1.20.0" # @coinbase/cdp-sdk pins 1.16.0
+  # Security overrides. Each is here because a parent pins a vulnerable version, named on the line; drop
+  # the entry once that parent moves past it. A floor is a range: an exact pin stops receiving patches and
+  # becomes the source of the next alerts. A removal ("-") is for a dependency the parent declares but
+  # never imports.
   handlebars: "^4.7.10" # eslint-plugin-boundaries and @boundaries/elements pin 4.7.9
   js-yaml: "^4.3.2" # swagger-ui-react pins 4.1.1
-  protobufjs: "^7.6.5" # @opentelemetry/otlp-transformer pins 8.0.1
-  ws: "^8.21.0" # viem pins 8.18.x, @walletconnect/jsonrpc-ws-connection asks for ^7
+  'viem>ws': "^8.21.0" # viem pins 8.18.x
+  # @walletconnect/utils 2.21.x pins query-string 7.1.3, which holds decode-uri-component 0.2.2, and never
+  # imports it (2.21.9 dropped it as unused: WalletConnect/walletconnect-monorepo#6855)
+  '@walletconnect/utils@2.21>query-string': "-"
+
+# Advisories accepted because no fix can reach them yet, each with its reason on the line. Each is also
+# dismissed on GitHub with the same reason; drop the entry once the fix it waits for ships.
+# cspell:ignore mrhx
+audit:
+  ignore:
+    - GHSA-mrhx-c7xc-m3w5 # zod: no 3.x fix; @reown/appkit-wallet and @coinbase/cdp-sdk hold 3.x at their latest; their zod parses run only in the browser; drop when reown-com/appkit#5830 or #5844, or coinbase/cdp-sdk#867, ships
 
 # pnpm 11+: allowlisted dependency install scripts (required for native addons).
 # Replaces pnpm 10's onlyBuiltDependencies — same policy: only these two packages may run build scripts.
