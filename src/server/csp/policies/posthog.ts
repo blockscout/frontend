@@ -20,9 +20,9 @@ function getCustomOrigin(host: unknown): string | undefined {
 
   const url = new URL(host);
   const isWebUrl = url.protocol === 'https:' || url.protocol === 'http:';
-  const isPosthogCloud = url.hostname === 'posthog.com' || url.hostname.endsWith('.posthog.com');
+  const isCoveredByWildcard = url.hostname.endsWith('.posthog.com');
 
-  return isWebUrl && !isPosthogCloud ? url.origin : undefined;
+  return isWebUrl && !isCoveredByWildcard ? url.origin : undefined;
 }
 
 export function posthog(isPrivateMode: boolean): CspDev.DirectiveDescriptor {

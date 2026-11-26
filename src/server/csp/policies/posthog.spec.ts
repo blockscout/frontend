@@ -68,8 +68,14 @@ describe('posthog policy', () => {
     expect(await getPolicy(withOverrides(`{'api_host':'https://us.i.posthog.com'}`))).toEqual(CLOUD_ONLY_POLICY);
   });
 
+  it('allows the posthog.com apex, which the wildcard does not match', async() => {
+    expect(await getPolicy(withOverrides(`{'flags_api_host':'https://posthog.com'}`))).toEqual({
+      ...CLOUD_ONLY_POLICY,
+      'connect-src': [ '*.posthog.com', 'https://posthog.com' ],
+    });
+  });
+
   it.each([
-    [ 'the posthog.com apex', `{'api_host':'https://posthog.com'}` ],
     [ 'a URL wrapped in an array', `{'api_host':['https://posthog.example.com']}` ],
     [ 'a same-origin path', `{'api_host':'/ingest'}` ],
     [ 'a host without a scheme', `{'api_host':'posthog.example.com'}` ],
