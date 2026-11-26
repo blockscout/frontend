@@ -8,10 +8,7 @@ name: Dependency checks
 on:
   workflow_dispatch:
   pull_request:
-    # Every job skips a draft pull request with the condition checks.yml uses, and the checks start when
-    # it is marked ready. The paths filter matches the pull request's whole diff, so without the skip a
-    # draft that adds one package would run all of this on every push. Renovate's pull requests are not
-    # drafts. A manual dispatch carries no pull request, so it runs on any branch.
+    # Every job skips a draft pull request with the condition checks.yml uses.
     types: [ opened, synchronize, reopened, ready_for_review ]
     paths:
       - 'pnpm-lock.yaml'
@@ -54,7 +51,6 @@ jobs:
     if: ${{ github.event.pull_request.draft != true }}
     timeout-minutes: 30
     env:
-      # If GitHub runners cannot reach staging, the fallback is eth_sepolia.
       PRESET: staging
     steps:
       - name: Checkout repo
