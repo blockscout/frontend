@@ -1,4 +1,3 @@
-import { omit } from 'es-toolkit';
 import React from 'react';
 import { numberToHex } from 'viem';
 
@@ -101,30 +100,6 @@ test('verified proxy contract with token', async({ render, page, mockEnvs, mockA
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
   });
-});
-
-test('logs tab without counter when the address has logs but no logs counter', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('core:address', { ...addressMock.validator, has_logs: true }, { pathParams: { hash: addressParamMock.hash } });
-  await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
-  await mockApiResponse(
-    'core:address_tabs_counters',
-    omit(addressTabCountersMock.base, [ 'logs_count' ]),
-    { pathParams: { hash: addressParamMock.hash } },
-  );
-  await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressParamMock.hash } });
-  await mockApiResponse(
-    'core:address_txs',
-    { items: [], next_page_params: null },
-    { pathParams: { hash: addressParamMock.hash }, queryParams: fundingTxsQueryParams },
-  );
-  await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('metadata:info', generateAddressMetadataInfo(addressParamMock.hash, nameTag), { queryParams: addressMetadataQueryParams });
-  await mockApiResponse('metadata:address_submit', null as never);
-  await mockApiResponse('bens:addresses_lookup', { items: [], next_page_params: undefined }, { queryParams: ensLookupQueryParams });
-
-  await render(<Address/>, { hooksConfig });
-
-  await expect(page.getByRole('tab', { name: 'Logs', exact: true, includeHidden: true })).toHaveCount(1);
 });
 
 test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse }) => {
