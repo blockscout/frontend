@@ -25,6 +25,22 @@ describe('relative imports', () => {
     })).toEqual([]);
   });
 
+  it('accepts the bare current folder and the bare parent folder', () => {
+    expect(check({
+      'chakra/index.d.ts': 'export {};',
+      'chakra/button.d.ts': `export * from '.';`,
+      'chakra/parts/icon.d.ts': `export * from '..';`,
+    })).toEqual([]);
+  });
+
+  it('reports the bare parent folder of the dist folder', () => {
+    expect(check({
+      'index.d.ts': `export * from '..';`,
+    })).toEqual([
+      { file: 'index.d.ts', specifier: '..', reason: 'outside-package' },
+    ]);
+  });
+
   it('reports a path that leaves the dist folder', () => {
     expect(check({
       'components/forms/fields/FormFieldEmail.d.ts': `import { PartialBy } from '../../../../shared/types/utils';`,

@@ -61,6 +61,23 @@ describe('runCheck', () => {
     expect(runCheck(packageDir).exitCode).toBe(1);
   });
 
+  it.each([ 'null', '42' ])('reads a manifest of %s as one that declares no packages', (manifest) => {
+    writeFile('package.json', manifest);
+    writeFile('dist/index.d.ts', `import { default as React } from 'react';`);
+
+    expect(runCheck(packageDir).output[0]).toEqual({
+      stream: 'err',
+      text: `✗ dist/index.d.ts: 'react' is not among the dependencies or peer dependencies`,
+    });
+  });
+
+  it('reads a dependencies field of null as one that declares no packages', () => {
+    writeManifest({ dependencies: null, peerDependencies: { react: '>=18' } });
+    writeFile('dist/index.d.ts', `import { default as React } from 'react';`);
+
+    expect(runCheck(packageDir).exitCode).toBe(0);
+  });
+
   it('ignores files in dist that are not declarations', () => {
     writeManifest({});
     writeFile('dist/index.js', `import x from 'not-declared';`);

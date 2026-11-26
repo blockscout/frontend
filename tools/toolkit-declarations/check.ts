@@ -57,7 +57,7 @@ export function findUnresolvableImports(declarationTextByDistPath: Declarations,
   const violations: Array<Violation> = [];
 
   for (const [ file, source ] of declarationTextByDistPath) {
-    const info = ts.preProcessFile(source, true, false);
+    const info = ts.preProcessFile(source, true);
     const specifiers = new Set([
       ...info.importedFiles.map(({ fileName }) => fileName),
       ...info.typeReferenceDirectives.map(({ fileName }) => fileName),
