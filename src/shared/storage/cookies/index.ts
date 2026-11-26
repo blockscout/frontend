@@ -9,7 +9,12 @@ import { get, getFromCookieString, isPrivateMode } from './read';
 
 export { NAMES, PRIVATE_MODE_DISALLOWED, get, getFromCookieString, isPrivateMode };
 
-export const getDefaultAttributes = () => ({
+interface DefaultAttributes {
+  readonly path: string;
+  readonly secure: boolean;
+}
+
+export const getDefaultAttributes = (): DefaultAttributes => ({
   path: '/',
   secure: config.app.protocol === 'https',
 });
@@ -18,7 +23,7 @@ function isDisallowedInPrivateMode(name: NAMES): boolean {
   return PRIVATE_MODE_DISALLOWED.includes(name);
 }
 
-export function set(name: NAMES, value: string, attributes: Cookies.CookieAttributes = {}, serverCookie?: string) {
+export function set(name: NAMES, value: string, attributes: Cookies.CookieAttributes = {}, serverCookie?: string): string | undefined {
   // Check if we're in private mode and this cookie is disallowed
   if (isPrivateMode(serverCookie) && isDisallowedInPrivateMode(name)) {
     // Don't set the cookie in private mode
@@ -28,6 +33,6 @@ export function set(name: NAMES, value: string, attributes: Cookies.CookieAttrib
   return Cookies.set(name, value, { ...getDefaultAttributes(), ...attributes });
 }
 
-export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}) {
+export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}): void {
   return Cookies.remove(name, { ...getDefaultAttributes(), ...attributes });
 }
