@@ -156,6 +156,7 @@
 	| "profile"
 	| "publictags"
 	| "qr_code"
+	| "receipt"
 	| "refresh"
 	| "repeat"
 	| "return"

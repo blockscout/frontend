@@ -245,6 +245,22 @@ export const pending: schemas['TransactionResponse'] = {
   value: '0',
 };
 
+export const pendingContractCall: schemas['TransactionResponse'] = {
+  ...pending,
+  method: '0x6af57517',
+  to: addressParamMock.contract,
+};
+
+export const failedCallToLongNamedContract: schemas['TransactionResponse'] = {
+  ...withRawRevertReason,
+  to: {
+    ...addressParamMock.contract,
+    hash: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+    name: 'Uniswap V3: Swap Router',
+    implementations: [],
+  },
+};
+
 export const base2 = {
   ...base,
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',

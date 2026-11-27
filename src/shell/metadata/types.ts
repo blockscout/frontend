@@ -14,6 +14,7 @@ export type ApiData<Pathname extends Route['pathname']> =
 (
     Pathname extends '/address/[hash]' ? { domain_name: string } :
     Pathname extends '/tx/[hash]' ? TxOgDescriptionParams :
+    Pathname extends '/tx/[hash]/receipt' ? TxOgDescriptionParams :
     Pathname extends '/token/[hash]' ? schemas['Token'] & { symbol_or_name: string; description?: string; projectName?: string } :
     Pathname extends '/token/[hash]/instance/[id]' ? { symbol_or_name: string } :
     Pathname extends '/apps/[id]' ? MarketplaceDapp :

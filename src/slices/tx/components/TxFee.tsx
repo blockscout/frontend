@@ -7,10 +7,11 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
+import type { Props as AssetValueProps } from 'src/shared/values/entity/AssetValue';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
-interface Props extends BoxProps {
+interface Props extends BoxProps, Pick<AssetValueProps, 'usdColor'> {
   loading?: boolean;
   tx: Partial<Pick<schemas['TransactionResponse'], 'fee' | 'celo' | 'stability_fee' | 'exchange_rate' | 'historic_exchange_rate'>>;
   hasExchangeRateToggle?: boolean;
@@ -20,9 +21,11 @@ interface Props extends BoxProps {
   noSymbol?: boolean;
   noUsd?: boolean;
   layout?: 'horizontal' | 'vertical';
+  // the coin of the transaction's chain, where it is not the one the app is configured with
+  nativeCoin?: { readonly symbol?: string; readonly decimals: number };
 }
 
-const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, hasExchangeRateToggle, ...rest }: Props) => {
+const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, hasExchangeRateToggle, nativeCoin, ...rest }: Props) => {
 
   if ('celo' in tx && tx.celo?.gas_token) {
     return (
@@ -67,6 +70,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
       noTooltip={ noTooltip }
       flexWrap="wrap"
       { ...rest }
+      { ...(nativeCoin ? { asset: nativeCoin.symbol, decimals: nativeCoin.decimals } : undefined) }
     />
   );
 };
