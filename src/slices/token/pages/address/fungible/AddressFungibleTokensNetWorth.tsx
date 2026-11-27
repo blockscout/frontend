@@ -68,7 +68,7 @@ const AddressFungibleTokensNetWorth = ({ addressHash }: Props) => {
       <Separator height="16px" orientation="vertical" hideBelow="lg"/>
       <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
         <NativeTokenIcon boxSize={ 5 } flexShrink={ 0 }/>
-        <Text fontWeight="medium">{ currencyUnits.ether } balance</Text>
+        <Text>{ currencyUnits.ether } balance</Text>
         <NativeCoinValue
           amount={ coinBalance || '0' }
           exchangeRate={ exchangeRate }
@@ -81,7 +81,7 @@ const AddressFungibleTokensNetWorth = ({ addressHash }: Props) => {
       <Separator height="16px" orientation="vertical" hideBelow="lg"/>
       <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
         <SpriteIcon name="tokens" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
-        <Text fontWeight="medium">Tokens</Text>
+        <Text>Tokens</Text>
         <HStack gap={ 1 } minW={ 0 }>
           <Skeleton loading={ isLoading } fontWeight="semibold">
             <Box as="span">{ summary.isOverflow ? `>${ thinsp }` : '' }{ BigNumber(summary.tokensNum).toFormat() }</Box>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Text, Flex, HStack, VStack, Box, chakra } from '@chakra-ui/react';
+import { Flex, HStack, VStack, Box, chakra } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
@@ -113,15 +113,10 @@ const AddressPortfolioNetWorth = ({
           textStyle="sm"
           alignItems="center"
         >
-          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } maxW="100%">
-            <HStack display={{ base: 'contents', lg: 'flex' }} minH={{ base: 'auto', lg: '32px' }}>
-              <HStack w={{ base: 'full', lg: 'auto' }}>
-                <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
-                <Text fontWeight={ 500 }>
-                  Total net worth
-                  <chakra.span color="text.secondary" fontWeight={ 400 }> (without NFT)</chakra.span>
-                </Text>
-              </HStack>
+          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={{ base: 3, lg: 2 }} maxW="100%">
+            <HStack w={{ base: 'full', lg: 'auto' }} display="flex" minH={{ base: 'auto', lg: '32px' }}>
+              <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
+              <span>Total net worth (without NFT)</span>
               <SimpleValue
                 value={ BigNumber(netWorth ?? 0) }
                 prefix="$"
