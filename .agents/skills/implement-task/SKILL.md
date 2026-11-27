@@ -68,7 +68,8 @@ list as it stands, one line per ticket, and a last line naming the running ticke
 The list tells the developer when they will be needed, and it is not a question. When no ticket is
 runnable, the list opens the step 5 report instead.
 
-The next turn resumes at step 3, item 3, with the worker this step spawned.
+When this step spawned a worker, the next turn resumes at step 3, item 3, with that worker. The step 5
+report ends the run instead.
 
 **Done when**: the turn's last message holds the list and names the running ticket, or it is the step 5
 report that the list opens.

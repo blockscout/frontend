@@ -89,9 +89,16 @@ deviation.
   leaves lands here once the last one is checked.
 - **An open touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when no
   unchecked `[human]` leaf remains but an unconfirmed `(human)` criterion or an unruled spec deviation
-  does, after implementing the leaves and **before** committing. **Stage** the work (`git add -A`, then `git reset -- '*/inbox.md'`:
-  an `inbox.md` that appeared mid-run belongs to `process-task-inbox`, not to the ticket) and stop — nothing is committed or stashed. From
-  here the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
+  does, after implementing the leaves and **before** committing. **Stage** the work and stop — nothing is
+  committed or stashed. How to stage depends on whether the ticket has handed off before, by any path
+  into this stop:
+
+  - **The ticket's first hand-off** → `git add -A`, then `git reset -- '*/inbox.md'`: an `inbox.md` that
+    appeared mid-run belongs to `process-task-inbox`, not to the ticket.
+  - **Every later hand-off** → skip `git add -A`: the working tree holds the developer's fixes by then.
+    Put what you changed since the previous hand-off into the index by the procedure below.
+
+  From the first hand-off on, the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
   **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
   the hand-off and the agent fixes it, the index must still hold only the agent's hunks afterwards. `git
   add` cannot do that — it stages the whole file, developer hunks included — and no patch can be relied on
@@ -134,8 +141,7 @@ deviation.
     - Every leaf is checked and another touchpoint is still open → hand off again.
     - No touchpoint is open → commit (Step 7).
 
-    A repeated hand-off skips `git add -A`: the working tree holds the developer's fixes by then. Put
-    what you changed since the first hand-off into the index by the procedure above.
+    A hand-off reached through either of the first two is a later hand-off, and stages as one.
 
   When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
   `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.
