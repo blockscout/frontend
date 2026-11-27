@@ -5,7 +5,7 @@ import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { thinsp } from 'src/toolkit/utils/htmlEntities';
 
@@ -22,12 +22,15 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'> {
 
 const GasPriceValue = ({
   amount,
-  asset = currencyUnits.ether,
+  asset: assetProp,
   accuracy = 0,
   noTooltip,
   loading,
   ...rest
 }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+  const asset = assetProp ?? currencyUnits.ether;
+
   return (
     <chakra.span
       display="inline-flex"

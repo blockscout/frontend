@@ -9,7 +9,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
@@ -27,6 +27,7 @@ import BeaconChainWithdrawalsTable from './BeaconChainWithdrawalsTable';
 const feature = config.features.beaconChain;
 
 const BeaconChainWithdrawals = () => {
+  const currencyUnits = useCurrencyUnits();
   const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:withdrawals',
     options: {

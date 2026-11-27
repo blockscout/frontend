@@ -5,10 +5,10 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
-import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -27,6 +27,8 @@ type Props = {
 const getBaseKey = (item: schemas['ScrollBridge']): string => String(item.id);
 
 const ScrollL2WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(items, getBaseKey);
 
@@ -43,7 +45,7 @@ const ScrollL2WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props) =>
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader>{ layerLabels.parent } txn hash</TableColumnHeader>
-            <TableColumnHeader isNumeric>{ `Value ${ config.chain.currency.symbol }` }</TableColumnHeader>
+            <TableColumnHeader isNumeric>{ `Value ${ currencyUnits.ether }` }</TableColumnHeader>
           </TableRow>
         </TableHeaderSticky>
         <TableBody>

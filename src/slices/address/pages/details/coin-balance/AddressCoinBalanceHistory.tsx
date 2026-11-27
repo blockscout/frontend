@@ -5,7 +5,7 @@ import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -25,6 +25,7 @@ interface Props {
 }
 
 const AddressCoinBalanceHistory = ({ query, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const items = query.data?.items ?? [];

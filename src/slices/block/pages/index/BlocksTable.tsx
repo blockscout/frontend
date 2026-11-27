@@ -10,7 +10,7 @@ import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import BlocksTableItem from 'src/slices/block/pages/index/BlocksTableItem';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 
 import config from 'src/config';
@@ -40,6 +40,7 @@ const FEES_COL_WEIGHT = 22;
 const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert, chainData, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (item) => item.height,

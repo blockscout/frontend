@@ -14,7 +14,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
@@ -38,6 +38,7 @@ interface Props {
 }
 
 const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 

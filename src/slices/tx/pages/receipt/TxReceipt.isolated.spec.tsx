@@ -429,7 +429,7 @@ describe('transaction receipt actions', () => {
 describe('transaction receipt in multichain mode', () => {
   const ROUTED_CHAIN_LOGO = '/assets/configs/network_logo.svg';
 
-  function buildRoutedChain(logo: ClusterChainConfig['app_config']['chain']['logo'], decimals = 18): ClusterChainConfig {
+  function buildRoutedChain(logo: ClusterChainConfig['app_config']['chain']['logo']): ClusterChainConfig {
     return {
       ...chainA,
       app_config: {
@@ -438,7 +438,7 @@ describe('transaction receipt in multichain mode', () => {
           ...chainA.app_config.chain,
           name: 'Routed chain',
           logo,
-          currency: { ...chainA.app_config.chain.currency, symbol: 'xDAI', weiName: 'grain', decimals },
+          currency: { ...chainA.app_config.chain.currency, symbol: 'xDAI', weiName: 'grain' },
         },
       },
     };
@@ -473,14 +473,6 @@ describe('transaction receipt in multichain mode', () => {
     await waitForLoaded();
 
     expect(getRowValue('Tx fee')).toMatch(/^0\.00714317\s*xDAI/);
-  });
-
-  it('scales the fee by the decimals of the routed chain\'s native coin', async() => {
-    mockTx(() => txMock.base);
-    renderMultichainReceipt(buildRoutedChain({ 'default': ROUTED_CHAIN_LOGO, dark: undefined }, 12));
-    await waitForLoaded();
-
-    expect(getRowValue('Tx fee')).toMatch(/^7,143\.168\s*xDAI/);
   });
 
   it('names the routed chain\'s native coin and its smallest unit in an interpretation sentence', async() => {

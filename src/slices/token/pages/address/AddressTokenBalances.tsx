@@ -5,7 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
 import config from 'src/config';
@@ -22,6 +22,7 @@ import useFetchTokens from './useFetchTokens';
 import { getTokensTotalInfo } from './utils';
 
 const AddressTokenBalances = () => {
+  const currencyUnits = useCurrencyUnits();
   const router = useRouter();
 
   const hash = router.query.hash?.toString();

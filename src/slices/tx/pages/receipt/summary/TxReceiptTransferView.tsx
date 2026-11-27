@@ -6,12 +6,12 @@ import React from 'react';
 import type { TransferAsset } from './types';
 import type { schemas } from '@blockscout/api-types';
 
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import TokenIconNative from 'src/slices/token/components/icon/TokenIconNative';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import { useTxReceiptChainConfig } from '../useTxReceiptChainConfig';
 import { formatTransferAmount } from './format-transfer-amount';
 import TxReceiptParties from './TxReceiptParties';
 import TxReceiptSummaryPanel from './TxReceiptSummaryPanel';
@@ -19,12 +19,12 @@ import TxReceiptSummaryPanel from './TxReceiptSummaryPanel';
 const TOKEN_ICON = { marginRight: 1 };
 
 const TxReceiptNativeCoinView = () => {
-  const { symbol } = useTxReceiptChainConfig().currency;
+  const currencyUnits = useCurrencyUnits();
 
   return (
     <Flex alignItems="center" columnGap={ 1 } flexShrink={ 0 }>
       <TokenIconNative boxSize={ 5 }/>
-      <span>{ symbol }</span>
+      <span>{ currencyUnits.ether }</span>
     </Flex>
   );
 };

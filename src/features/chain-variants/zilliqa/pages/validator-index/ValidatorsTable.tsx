@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import config from 'src/config';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
+
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -22,6 +23,8 @@ interface Props {
 const getBaseKey = (item: schemas['ZilliqaStaker']): string => item.bls_public_key;
 
 const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(data, getBaseKey);
 
@@ -32,7 +35,7 @@ const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
           <TableColumnHeader width="50%">BLS public key</TableColumnHeader>
           <TableColumnHeader width="15%">Index</TableColumnHeader>
           <TableColumnHeader width="35%" isNumeric>
-            Staked { config.chain.currency.symbol }
+            Staked { currencyUnits.ether }
           </TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

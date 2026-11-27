@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import TxFee from 'src/slices/tx/components/TxFee';
 import TxStatus from 'src/slices/tx/components/TxStatus';
 
@@ -26,6 +26,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: schemas['Transaction'] | schemas['TransactionResponse']; isLoading?: boolean }) => {
   const multichainContext = useMultichainContext();
+  const currencyUnits = useCurrencyUnits();
 
   const handleReceiptClick = React.useCallback(() => {
     analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Additional info' });

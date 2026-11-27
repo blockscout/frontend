@@ -8,7 +8,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'src/features/roll
 
 import type { ResourceError } from 'src/api/resources';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'src/features/rollup/zk-sync/utils/format-txn-batch-status';
@@ -40,6 +40,7 @@ interface Props {
 }
 
 const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const router = useRouter();
 
   const { data, isPlaceholderData, isError, error } = query;

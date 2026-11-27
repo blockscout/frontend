@@ -8,7 +8,7 @@ import type {
   ValidatorsBlackfortSortingValue,
 } from 'src/features/chain-variants/blackfort/types/api';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -31,6 +31,7 @@ interface Props {
 const getBaseKey = (item: ValidatorBlackfort): string => item.address.hash;
 
 const ValidatorsTable = ({ data, sort, setSorting, isLoading, top, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(data, getBaseKey);
 

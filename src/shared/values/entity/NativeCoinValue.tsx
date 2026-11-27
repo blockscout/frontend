@@ -4,6 +4,8 @@ import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
+
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { thinsp } from 'src/toolkit/utils/htmlEntities';
@@ -11,7 +13,7 @@ import { thinsp } from 'src/toolkit/utils/htmlEntities';
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';
 import type { Unit } from './utils';
-import { GWEI, getUnitName, getUnitDecimals } from './utils';
+import { GWEI, getUnitDecimals } from './utils';
 
 export interface Props extends AssetValueProps {
   units?: Unit;
@@ -37,6 +39,7 @@ const NativeCoinValue = ({
   noTooltip,
   ...rest
 }: Props) => {
+  const currencyUnits = useCurrencyUnits();
 
   const units = React.useMemo(() => {
     if (amount && gweiThreshold && unitsProp === 'wei') {
@@ -57,14 +60,14 @@ const NativeCoinValue = ({
         return assetProp;
       }
 
-      return getUnitName(units);
+      return currencyUnits[units];
     }
   })();
 
   const tooltipContent = React.useMemo(() => {
     if (unitsTooltip && unitsTooltip !== units) {
       const unitDecimals = getUnitDecimals(unitsTooltip);
-      const unitName = getUnitName(unitsTooltip);
+      const unitName = currencyUnits[unitsTooltip];
       const displayedValue = BigNumber(amount || 0).div(new BigNumber(10).pow(unitDecimals));
       const valueToCopy = copyOriginalValue ? BigNumber(amount || 0).div(new BigNumber(10).pow(decimals)).toFixed() : displayedValue.toFixed();
 
@@ -75,7 +78,7 @@ const NativeCoinValue = ({
         </Box>
       );
     }
-  }, [ unitsTooltip, units, amount, copyOriginalValue, decimals ]);
+  }, [ unitsTooltip, units, amount, copyOriginalValue, decimals, currencyUnits ]);
 
   return (
     <AssetValue

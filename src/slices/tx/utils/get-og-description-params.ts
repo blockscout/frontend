@@ -4,6 +4,8 @@ import type { schemas } from '@blockscout/api-types';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { TxOgDescriptionParams } from 'src/slices/tx/types/api';
 
+import { getCurrencyUnits } from 'src/slices/chain/units';
+
 import addressToPlainText from 'src/features/tx-interpretation/common/utils/address-to-plain-text';
 import summaryToPlainText from 'src/features/tx-interpretation/common/utils/summary-to-plain-text';
 
@@ -38,7 +40,7 @@ function getActionText(tx: schemas['TransactionPreview'] | undefined, interpreta
   }
 
   const summary = interpretation?.data?.summaries?.[0];
-  const summaryText = summary ? summaryToPlainText(summary) : undefined;
+  const summaryText = summary ? summaryToPlainText(summary, getCurrencyUnits(config.chain.currency)) : undefined;
 
   if (summaryText) {
     return summaryText;

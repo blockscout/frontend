@@ -2,8 +2,6 @@
 
 import BigNumber from 'bignumber.js';
 
-import { currencyUnits } from 'src/slices/chain/units';
-
 import config from 'src/config';
 
 import { ZERO } from 'src/toolkit/utils/consts';
@@ -51,14 +49,4 @@ export const getUnitDecimals = (units: Unit) => {
     return GWEI_DECIMALS;
   }
   return WEI_DECIMALS;
-};
-
-export const getUnitName = (units: Unit) => {
-  if (units === 'wei') {
-    return currencyUnits.wei;
-  }
-  if (units === 'gwei') {
-    return currencyUnits.gwei;
-  }
-  return currencyUnits.ether;
 };

@@ -6,6 +6,8 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { GasUnit } from 'src/slices/gas/types/config';
 
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
+
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
@@ -27,6 +29,7 @@ interface Props {
 const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
   const multichainContext = useMultichainContext();
   const feature = multichainContext?.chain?.app_config.features.gasTracker || config.features.gasTracker;
+  const gweiName = useCurrencyUnits().gwei;
 
   if (!data || !feature.isEnabled) {
     return null;
@@ -52,7 +55,7 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
         return null;
       }
 
-      const formattedValue = formatGasValue(data, secondaryUnits);
+      const formattedValue = formatGasValue(data, secondaryUnits, gweiName);
       return <span className={ className }>{ prefix }{ formattedValue }</span>;
     }
     case 'primary': {
@@ -73,13 +76,13 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
         if (!secondaryUnits || !valueInSecondaryUnits) {
           // in primary mode we always want to show something
           // this will return "N/A <units>"
-          return <span className={ className }>{ formatGasValue(data, primaryUnits) }</span>;
+          return <span className={ className }>{ formatGasValue(data, primaryUnits, gweiName) }</span>;
         } else {
-          return <span className={ className }>{ prefix }{ formatGasValue(data, secondaryUnits) }</span>;
+          return <span className={ className }>{ prefix }{ formatGasValue(data, secondaryUnits, gweiName) }</span>;
         }
       }
 
-      return <span className={ className }>{ prefix }{ formatGasValue(data, primaryUnits) }</span>;
+      return <span className={ className }>{ prefix }{ formatGasValue(data, primaryUnits, gweiName) }</span>;
     }
   }
 };

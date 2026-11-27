@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -26,6 +26,7 @@ interface Props {
 }
 
 const TxDetailsOptimismL1Fees = ({ data, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }

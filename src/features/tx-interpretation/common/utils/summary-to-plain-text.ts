@@ -2,7 +2,7 @@
 
 import type { TxInterpretationSummary, TxInterpretationVariable } from 'src/features/tx-interpretation/common/types/api';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import type { CurrencyUnits } from 'src/slices/chain/units';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
 
@@ -54,7 +54,7 @@ function variableToPlainText(variable: TxInterpretationVariable | undefined): st
 }
 
 // Renders what `TxInterpretation` renders, as a single line of text.
-export default function summaryToPlainText(summary: TxInterpretationSummary) {
+export default function summaryToPlainText(summary: TxInterpretationSummary, currencyUnits: CurrencyUnits) {
   const template = summary.summary_template;
   const variables = summary.summary_template_variables;
 

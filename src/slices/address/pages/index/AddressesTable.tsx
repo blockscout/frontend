@@ -5,9 +5,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
-
-import { useMultichainContext } from 'src/features/multichain/context';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -32,8 +30,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, re
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(items, getBaseKey);
   const hasPercentage = !totalSupply.eq(ZERO);
-  const multichainContext = useMultichainContext();
-  const currencySymbol = multichainContext?.chain.app_config.chain.currency.symbol ?? currencyUnits.ether;
+  const currencySymbol = useCurrencyUnits().ether;
   return (
     <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>

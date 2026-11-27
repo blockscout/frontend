@@ -7,6 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
@@ -19,7 +20,8 @@ interface Props {
 }
 
 const TxStateTableItem = ({ data, chainData, isLoading }: Props) => {
-  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading, chainData?.app_config);
+  const currencyUnits = useCurrencyUnits();
+  const { before, after, change, tag, tokenId } = getStateElements(data, currencyUnits, isLoading, chainData?.app_config);
 
   return (
     <TableRow>

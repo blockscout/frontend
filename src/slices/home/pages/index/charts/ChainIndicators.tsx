@@ -7,6 +7,7 @@ import type { TChainIndicator } from 'src/slices/home/types/client';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import useChartDataQuery from 'src/slices/home/hooks/useChartDataQuery';
 import { isIndicatorEnabled, sortIndicators } from 'src/slices/home/utils/indicators';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
@@ -26,6 +27,7 @@ const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'op
 const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 
 const ChainIndicators = () => {
+  const nativeCoinSymbol = useCurrencyUnits().ether;
   const statsMicroserviceQueryResult = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
@@ -117,14 +119,14 @@ const ChainIndicators = () => {
       },
       {
         id: 'coin_price' as const,
-        title: `${ config.chain.currency.symbol } price`,
+        title: `${ nativeCoinSymbol } price`,
         value: typeof statsApiQueryResult.data?.coin_price !== 'string' ?
           '$N/A' :
           '$' + Number(statsApiQueryResult.data?.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
         valueDiff: typeof statsApiQueryResult.data?.coin_price_change_percentage === 'number' ?
           statsApiQueryResult.data.coin_price_change_percentage :
           undefined,
-        hint: `${ config.chain.currency.symbol } token daily price in USD.`,
+        hint: `${ nativeCoinSymbol } token daily price in USD.`,
         icon: <NativeTokenIcon boxSize={ 6 }/>,
       },
       {
@@ -158,7 +160,7 @@ const ChainIndicators = () => {
     ]
       .filter(isIndicatorEnabled)
       .sort(sortIndicators);
-  }, [ statsApiQueryResult?.data, statsMicroserviceQueryResult?.data ]);
+  }, [ statsApiQueryResult?.data, statsMicroserviceQueryResult?.data, nativeCoinSymbol ]);
 
   const [ selectedIndicatorId, selectIndicatorId ] = React.useState(indicators[0]?.id);
   const selectedIndicator = indicators.find(({ id }) => id === selectedIndicatorId);

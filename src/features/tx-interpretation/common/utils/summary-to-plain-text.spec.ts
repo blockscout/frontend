@@ -1,6 +1,6 @@
 import type { TxInterpretationSummary } from 'src/features/tx-interpretation/common/types/api';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import type { CurrencyUnits } from 'src/slices/chain/units';
 
 import { txInterpretation } from 'src/features/tx-interpretation/blockscout/mocks';
 import { TX_INTERPRETATION } from 'src/features/tx-interpretation/blockscout/stubs';
@@ -9,6 +9,8 @@ import { it, expect, beforeEach, vi } from 'vitest';
 
 import summaryToPlainText from './summary-to-plain-text';
 
+const CURRENCY_UNITS: CurrencyUnits = { wei: 'grain', gwei: 'kilograin', ether: 'xDAI' };
+
 // A timestamp variable is rendered in local time, as on the page — pin the zone so the assertion holds
 // wherever the suite runs.
 beforeEach(() => {
@@ -16,19 +18,20 @@ beforeEach(() => {
 });
 
 it('renders every variable type the way the page does', () => {
-  expect(summaryToPlainText(txInterpretation.data.summaries[0])).toBe('Transfer 100 DUCK to 0xd7...5859 on Jun 17 2023');
+  expect(summaryToPlainText(txInterpretation.data.summaries[0], CURRENCY_UNITS)).toBe('Transfer 100 DUCK to 0xd7...5859 on Jun 17 2023');
 });
 
-it('renders the native coin symbol variable', () => {
+it('renders the native coin symbol and the smallest unit variables with the given unit names', () => {
   const summary: TxInterpretationSummary = {
-    summary_template: '{action_type} {amount} {native}',
+    summary_template: '{action_type} {amount} {native} for {gas} {wei}',
     summary_template_variables: {
       action_type: { type: 'string', value: 'Send' },
       amount: { type: 'currency', value: '1.5' },
+      gas: { type: 'currency', value: '21' },
     },
   };
 
-  expect(summaryToPlainText(summary)).toBe(`Send 1.5 ${ currencyUnits.ether }`);
+  expect(summaryToPlainText(summary, CURRENCY_UNITS)).toBe('Send 1.5 xDAI for 21 grain');
 });
 
 it('collapses the template whitespace into single spaces', () => {
@@ -37,7 +40,7 @@ it('collapses the template whitespace into single spaces', () => {
     summary_template: '  {action_type}   {source_amount} Ether  into   {destination_amount} {destination_token}  ',
   };
 
-  expect(summaryToPlainText(summary)).toBe('Wrap 0.7 Ether into 0.7 STUB');
+  expect(summaryToPlainText(summary, CURRENCY_UNITS)).toBe('Wrap 0.7 Ether into 0.7 STUB');
 });
 
 it('returns nothing when a template variable has no value', () => {
@@ -49,5 +52,5 @@ it('returns nothing when a template variable has no value', () => {
     },
   };
 
-  expect(summaryToPlainText(summary)).toBeUndefined();
+  expect(summaryToPlainText(summary, CURRENCY_UNITS)).toBeUndefined();
 });

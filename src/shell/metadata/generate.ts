@@ -5,7 +5,7 @@ import { kebabCase, upperFirst } from 'es-toolkit';
 import type { ApiData, Metadata, OgTemplateValue, TemplateValue } from './types';
 import type { RouteParams } from 'src/server/types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { getCurrencyUnits } from 'src/slices/chain/units';
 
 import config from 'src/config';
 import type { Route } from 'src/shared/router/routes';
@@ -40,7 +40,7 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     ...apiData,
     chain_name: config.chain.name,
     chain_explorer_title: getChainExplorerTitle(),
-    gwei_name: currencyUnits.gwei,
+    gwei_name: getCurrencyUnits(config.chain.currency).gwei,
     id_formatted: idFormatted,
     hash_short: hashParam ? shortenString(hashParam, HASH_SHORT_CHAR_NUMBER) : undefined,
   };

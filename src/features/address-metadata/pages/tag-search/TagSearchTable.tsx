@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 
@@ -21,6 +21,7 @@ interface Props {
 const getBaseKey = (item: schemas['TopAddress']): string => item.hash;
 
 const TagSearchTable = ({ items, top, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const keys = useUniqueKeys(items, getBaseKey);
 
   return (

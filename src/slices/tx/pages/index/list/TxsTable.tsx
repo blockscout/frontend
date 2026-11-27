@@ -7,7 +7,7 @@ import type { TransactionsSortingField, TransactionsSortingValue } from 'src/sli
 import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 import type { TxsTranslationQuery } from 'src/features/tx-interpretation/noves/hooks/useDescribeTxs';
@@ -64,6 +64,7 @@ const TxsTable = ({
     enabled: !isLoading,
   });
   const multichainContext = useMultichainContext();
+  const currencyUnits = useCurrencyUnits();
   const chainData = multichainContext?.chain;
   const isMobile = useIsMobile();
   const keys = useUniqueKeys(txs, getBaseKey);

@@ -10,6 +10,7 @@ import React from 'react';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import GasInfoUpdateTimer from 'src/slices/gas/components/GasInfoUpdateTimer';
 import discriminateDetailedPrices from 'src/slices/gas/utils/price';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
@@ -27,6 +28,8 @@ import { Heading } from 'src/toolkit/chakra/heading';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const GasTracker = () => {
+  const currencyUnits = useCurrencyUnits();
+
   const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useStatsQuery();
 
   if (isError) {
@@ -65,7 +68,7 @@ const GasTracker = () => {
       { data?.coin_price && (
         <Skeleton loading={ isLoading } ml={{ base: 0, lg: 'auto' }} whiteSpace="pre" display="flex" alignItems="center">
           <NativeTokenIcon mr={ 2 } boxSize={ 6 }/>
-          <chakra.span color="text.secondary">{ config.chain.currency.symbol }</chakra.span>
+          <chakra.span color="text.secondary">{ currencyUnits.ether }</chakra.span>
           <span> ${ Number(data.coin_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
         </Skeleton>
       ) }

@@ -5,10 +5,7 @@ import type { ColumnsIds, TxTableColumn } from '../types/client';
 import type { ColumnStates } from 'src/shared/lists/columns/types';
 import type { ChainConfig } from 'src/slices/token/types/client';
 
-import { toTokenModel } from 'src/slices/token/utils/model';
 import { isTokenMultiplierEnabled } from 'src/slices/token/utils/ui-multiplier';
-
-import config from 'src/config';
 
 export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
@@ -88,13 +85,7 @@ export function getColumnStates(chainConfig?: ChainConfig): ColumnStates<Columns
   };
 }
 
-export const NATIVE_TOKEN = toTokenModel({
-  name: config.chain.currency.name || '',
-  icon_url: '',
-  symbol: config.chain.currency.symbol || '',
-  address_hash: 'native',
-  type: 'ERC-20',
-});
+export const NATIVE_TOKEN_ADDRESS_HASH = 'native';
 
 export const FILTER_PARAM_NAMES: Record<keyof AdvancedFilterParams, string> = {
   // we don't show address_relation as filter tag

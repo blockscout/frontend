@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import config from 'src/config';
 
@@ -12,7 +12,7 @@ import { Heading } from 'src/toolkit/chakra/heading';
 
 import GasTrackerFaqItem from './GasTrackerFaqItem';
 
-const FAQ_ITEMS = [
+const getFaqItems = (gweiName: string): ReadonlyArray<{ readonly question: string; readonly answer: string }> => [
   {
     question: 'What does gas refer to on the blockchain?',
     answer: 'Gas is the amount of native tokens required to perform a transaction on the blockchain.',
@@ -20,7 +20,7 @@ const FAQ_ITEMS = [
   {
     question: `How can I check ${ config.chain.name } gas fees?`,
     // eslint-disable-next-line max-len
-    answer: `You can easily check live ${ config.chain.name } gas fees on Blockscout by visiting our gas tracker. It displays current gas fees in ${ currencyUnits.gwei } for all ${ config.chain.name } transactions.`,
+    answer: `You can easily check live ${ config.chain.name } gas fees on Blockscout by visiting our gas tracker. It displays current gas fees in ${ gweiName } for all ${ config.chain.name } transactions.`,
   },
   {
     question: `What is the average gas fee for ${ config.chain.name } transactions?`,
@@ -34,11 +34,14 @@ const FAQ_ITEMS = [
 ];
 
 const GasTrackerFaq = () => {
+  const gweiName = useCurrencyUnits().gwei;
+  const faqItems = React.useMemo(() => getFaqItems(gweiName), [ gweiName ]);
+
   return (
     <Box mt={ 12 }>
       <Heading level="2" mb={ 4 }>FAQ</Heading>
       <AccordionRoot variant="faq">
-        { FAQ_ITEMS.map((item, index) => (
+        { faqItems.map((item, index) => (
           <GasTrackerFaqItem key={ index } question={ item.question } answer={ item.answer }/>
         )) }
       </AccordionRoot>

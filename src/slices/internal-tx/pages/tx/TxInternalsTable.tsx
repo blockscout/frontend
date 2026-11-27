@@ -5,7 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -27,6 +27,7 @@ interface Props {
 const getBaseKey = (item: schemas['InternalTransaction']): string => item.index.toString();
 
 const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(data, getBaseKey);
 

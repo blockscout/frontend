@@ -6,6 +6,7 @@ import React from 'react';
 import type { TxInterpretationVariable } from 'src/features/tx-interpretation/common/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
@@ -18,8 +19,6 @@ import Time from 'src/shared/date-and-time/Time';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { SECOND } from 'src/toolkit/utils/consts';
-
-import { useTxReceiptChainConfig } from '../useTxReceiptChainConfig';
 
 const nameServicesFeature = config.features.nameServices;
 const isEnsEnabled = nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled;
@@ -36,14 +35,14 @@ interface Props {
 }
 
 const TxReceiptSentenceVariable = ({ name, variable }: Props) => {
-  const { symbol, weiName } = useTxReceiptChainConfig().currency;
+  const currencyUnits = useCurrencyUnits();
 
   if (name === NATIVE_COIN_SYMBOL_VAR_NAME) {
-    return <Value>{ symbol || 'ETH' }</Value>;
+    return <Value>{ currencyUnits.ether }</Value>;
   }
 
   if (name === WEI_VAR_NAME) {
-    return <Value>{ weiName || 'wei' }</Value>;
+    return <Value>{ currencyUnits.wei }</Value>;
   }
 
   if (!variable) {

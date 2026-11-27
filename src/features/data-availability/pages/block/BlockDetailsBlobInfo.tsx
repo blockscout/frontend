@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
@@ -22,6 +22,7 @@ interface Props {
 }
 
 const BlockDetailsBlobInfo = ({ data }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   if (
     !data.blob_gas_price ||
     !data.blob_gas_used ||

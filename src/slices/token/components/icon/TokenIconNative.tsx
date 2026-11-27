@@ -4,9 +4,8 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import TokenIconPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
-
-import config from 'src/config';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -18,6 +17,8 @@ type Props = {
 };
 
 const TokenIconNative = ({ isLoading, className, type }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   const statsQueryResult = useStatsQuery();
 
   if (isLoading || statsQueryResult.isPlaceholderData) {
@@ -31,7 +32,7 @@ const TokenIconNative = ({ isLoading, className, type }: Props) => {
       className={ className }
       borderRadius="base"
       src={ src || undefined }
-      alt={ `${ config.chain.currency.symbol } logo` }
+      alt={ `${ currencyUnits.ether } logo` }
       fallback={ <TokenIconPlaceholder/> }
     />
   );
