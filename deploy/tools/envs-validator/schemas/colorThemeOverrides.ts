@@ -4,19 +4,17 @@ import * as v from 'valibot';
 
 import { DEFAULT_THEME_COLORS } from 'src/toolkit/theme/foundations/colorsDefault';
 
-import { jsonRecord } from '../utils';
+import { isJsonObject, jsonRecord } from '../utils';
 
 type ColorTree = Record<string, unknown>;
 
 const COLOR_MODE_KEYS: ReadonlyArray<string> = [ '_light', '_dark' ];
 
-const isColorTree = (value: unknown): value is ColorTree => typeof value === 'object' && value !== null && !Array.isArray(value);
-
 const isColorModeKey = (key: string): boolean => COLOR_MODE_KEYS.includes(key);
 
 const hasColorModes = (tree: ColorTree): boolean => COLOR_MODE_KEYS.some((key) => key in tree);
 
-const isColorModeValue = (value: unknown): boolean => isColorTree(value) && typeof value.value === 'string' && value.value !== '';
+const isColorModeValue = (value: unknown): boolean => isJsonObject(value) && typeof value.value === 'string' && value.value !== '';
 
 function findColorModeErrors(tokenPath: string, value: unknown, defaults: ColorTree): Array<string> {
   if (!hasColorModes(defaults)) {
@@ -26,10 +24,10 @@ function findColorModeErrors(tokenPath: string, value: unknown, defaults: ColorT
 }
 
 function findNestedErrors(tokenPath: string, value: unknown, defaults: unknown): Array<string> {
-  if (!isColorTree(defaults)) {
+  if (!isJsonObject(defaults)) {
     return [ `Unknown color token "${ tokenPath }"` ];
   }
-  return isColorTree(value) ? findColorOverrideErrors(value, defaults, tokenPath) : [ `Color token "${ tokenPath }" must be an object` ];
+  return isJsonObject(value) ? findColorOverrideErrors(value, defaults, tokenPath) : [ `Color token "${ tokenPath }" must be an object` ];
 }
 
 // The app merges the overrides under the default colors, so a key the defaults do not have is never read:

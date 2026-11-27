@@ -85,7 +85,7 @@ export const envJson = <TSchema extends v.GenericSchema>(schema: TSchema): v.Gen
 export const envJsonFile = <TSchema extends v.GenericSchema>(schema: TSchema): v.GenericSchema<string, v.InferOutput<TSchema>> =>
   jsonString(schema, (value) => JSON.parse(value));
 
-const isJsonObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
+export const isJsonObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 
 // `v.record` alone accepts a list, reading its indexes as keys.
 export const jsonRecord = <TSchema extends v.GenericSchema>(valueSchema: TSchema): v.GenericSchema<unknown, Record<string, v.InferOutput<TSchema>>> => v.pipe(
