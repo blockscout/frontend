@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import config from 'src/config';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
+
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -20,6 +21,8 @@ interface Props {
 };
 
 const EpochsTable = ({ items, isLoading, top, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
@@ -32,9 +35,9 @@ const EpochsTable = ({ items, isLoading, top, resetKey }: Props) => {
           </TableColumnHeader>
           <TableColumnHeader w="120px">Status</TableColumnHeader>
           <TableColumnHeader w="25%">Block range</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Community { config.chain.currency.symbol }</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Carbon offset { config.chain.currency.symbol }</TableColumnHeader>
-          <TableColumnHeader w="25%" isNumeric>Total { config.chain.currency.symbol }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Community { currencyUnits.ether }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Carbon offset { currencyUnits.ether }</TableColumnHeader>
+          <TableColumnHeader w="25%" isNumeric>Total { currencyUnits.ether }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

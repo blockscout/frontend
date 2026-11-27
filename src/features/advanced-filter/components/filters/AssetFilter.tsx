@@ -22,7 +22,8 @@ import { Tag } from 'src/toolkit/chakra/tag';
 import { ClearButton } from 'src/toolkit/components/buttons/ClearButton';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
-import { NATIVE_TOKEN } from '../../utils/consts';
+import { useNativeToken } from '../../hooks/useNativeToken';
+import { NATIVE_TOKEN_ADDRESS_HASH } from '../../utils/consts';
 
 const FILTER_PARAM_INCLUDE = 'token_contract_address_hashes_to_include';
 const FILTER_PARAM_EXCLUDE = 'token_contract_address_hashes_to_exclude';
@@ -49,6 +50,7 @@ type Props = {
 };
 
 const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
+  const nativeToken = useNativeToken();
   const [ currentValue, setCurrentValue ] = React.useState<Value>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -151,7 +153,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
       { tokensQuery.data && !searchTerm && (
         <ColumnFilterContentSection title="Popular">
           <Flex flexWrap="wrap" gap={ 2 }>
-            { [ NATIVE_TOKEN, ...tokensQuery.data.items ].map(token => (
+            { [ nativeToken, ...tokensQuery.data.items ].map(token => (
               <Tag
                 key={ token.address_hash }
                 data-id={ token.address_hash }
@@ -159,7 +161,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
                 variant="select"
               >
                 <Flex flexGrow={ 1 } alignItems="center">
-                  { token.address_hash === NATIVE_TOKEN.address_hash ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
+                  { token.address_hash === NATIVE_TOKEN_ADDRESS_HASH ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
                   { token.symbol || token.name || token.address_hash }
                 </Flex>
               </Tag>

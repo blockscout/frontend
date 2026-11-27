@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 import type { schemas } from '@blockscout/api-types';
 import type { ChainConfig } from 'src/slices/token/types/client';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import type { CurrencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -24,7 +24,7 @@ import { nbsp, space } from 'src/toolkit/utils/htmlEntities';
 
 const FULL_PRECISION = 0;
 
-export function getStateElements(data: schemas['StateChange'], isLoading?: boolean, chainConfig?: ChainConfig) {
+export function getStateElements(data: schemas['StateChange'], currencyUnits: CurrencyUnits, isLoading?: boolean, chainConfig?: ChainConfig) {
   const tag = (() => {
     if (data.is_miner) {
       return (

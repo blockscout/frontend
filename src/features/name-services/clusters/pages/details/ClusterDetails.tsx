@@ -6,7 +6,7 @@ import type { ClusterByNameResponse } from 'src/features/name-services/clusters/
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { isEvmAddress } from 'src/slices/address/utils/is-evm-address';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import ClustersEntity from 'src/features/name-services/clusters/components/ClustersEntity';
 
@@ -23,6 +23,7 @@ interface Props {
 }
 
 const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   if (!clusterData && !isLoading) {
     throw new Error('Cluster not found', { cause: { status: 404 } });
   }

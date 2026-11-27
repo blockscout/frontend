@@ -10,7 +10,7 @@ import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -22,6 +22,7 @@ interface Props {
 }
 
 const AddressBalance = ({ data, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const [ lastBlockNumber, setLastBlockNumber ] = React.useState<number>(data.block_number_balance_updated_at || 0);
   const queryClient = useQueryClient();
 

@@ -6,7 +6,7 @@ import React from 'react';
 import type { AddressCeloAccount as TAddressCeloAccount } from 'src/features/chain-variants/celo/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'src/shared/detailed-info/DetailedInfoItemBreakdown';
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const AddressCeloAccount = ({ isLoading, data }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   return (
     <>
       <DetailedInfo.ItemLabel

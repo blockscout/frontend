@@ -8,7 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { TxInterpretationSummary } from 'src/features/tx-interpretation/common/types/api';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
@@ -35,6 +35,8 @@ interface Props extends BoxProps {
 
 const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chainData, isNoves, ...rest }: Props) => {
   const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
+  const currencyUnits = useCurrencyUnits();
+
   if (!summary) {
     return null;
   }

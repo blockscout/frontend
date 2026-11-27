@@ -10,12 +10,12 @@ import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import { formatUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import AssetValue from 'src/shared/values/entity/AssetValue';
 import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
@@ -52,6 +52,8 @@ const renderAddressEntity = (address: Address, item: Props['item'], isLoading?: 
 };
 
 const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   switch (column) {
     case 'tx_hash':
       return <TxEntity truncation="constant" hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>;
@@ -125,7 +127,7 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
     case 'asset':
       return item.token ?
         <TokenEntity token={ item.token } isLoading={ isLoading } fontWeight={ 700 } onlySymbol noCopy/> :
-        <Skeleton loading={ isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
+        <Skeleton loading={ isLoading } fontWeight={ 700 }>{ currencyUnits.ether }</Skeleton>;
     case 'fee':
       return (
         <NativeCoinValue

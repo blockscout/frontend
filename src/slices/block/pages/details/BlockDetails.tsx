@@ -8,6 +8,7 @@ import React from 'react';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'src/slices/block/utils/get-block-reward';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'src/slices/gas/components/GasUsed';
 
@@ -53,6 +54,7 @@ interface Props {
 }
 
 const BlockDetails = ({ query }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const multichainContext = useMultichainContext();
@@ -311,7 +313,7 @@ const BlockDetails = ({ query }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint={
-              `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
+              `Amount of ${ currencyUnits.ether } burned from transactions included in the block.
               Equals Block Base Fee per Gas * Gas Used`
             }
             isLoading={ isPlaceholderData }

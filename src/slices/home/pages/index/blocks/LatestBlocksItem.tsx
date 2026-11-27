@@ -9,7 +9,7 @@ import type { schemas } from '@blockscout/api-types';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'src/slices/block/utils/get-block-total-reward';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 
 import config from 'src/config';
@@ -28,6 +28,7 @@ type Props = {
 };
 
 const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const totalReward = getBlockTotalReward(block);
   return (
     <Box

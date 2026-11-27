@@ -5,7 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import config from 'src/config';
 import { useChartsConfig } from 'src/shared/stats/line-chart-config';
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const { data, isPending, isError } = useApiQuery('core:address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
@@ -39,7 +40,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
         units: currencyUnits.ether,
       },
     ];
-  }, [ chartsConfig, data ]);
+  }, [ chartsConfig, data, currencyUnits.ether ]);
 
   return (
     <LineChartWidget

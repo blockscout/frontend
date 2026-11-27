@@ -21,11 +21,9 @@ interface Props extends BoxProps, Pick<AssetValueProps, 'usdColor'> {
   noSymbol?: boolean;
   noUsd?: boolean;
   layout?: 'horizontal' | 'vertical';
-  // the coin of the transaction's chain, where it is not the one the app is configured with
-  nativeCoin?: { readonly symbol?: string; readonly decimals: number };
 }
 
-const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, hasExchangeRateToggle, nativeCoin, ...rest }: Props) => {
+const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, hasExchangeRateToggle, ...rest }: Props) => {
 
   if ('celo' in tx && tx.celo?.gas_token) {
     return (
@@ -70,7 +68,6 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
       noTooltip={ noTooltip }
       flexWrap="wrap"
       { ...rest }
-      { ...(nativeCoin ? { asset: nativeCoin.symbol, decimals: nativeCoin.decimals } : undefined) }
     />
   );
 };

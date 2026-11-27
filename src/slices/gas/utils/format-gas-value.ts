@@ -3,20 +3,18 @@
 import type { schemas } from '@blockscout/api-types';
 import type { GasUnit } from 'src/slices/gas/types/config';
 
-import { currencyUnits } from 'src/slices/chain/units';
-
-export default function formatGasValue(data: schemas['StatsGasPriceInfo'], unit: GasUnit) {
+export default function formatGasValue(data: schemas['StatsGasPriceInfo'], unit: GasUnit, gweiName: string) {
   switch (unit) {
     case 'gwei': {
       if (!data.price) {
-        return `N/A ${ currencyUnits.gwei }`;
+        return `N/A ${ gweiName }`;
       }
 
       if (Number(data.price) < 0.1) {
-        return `< 0.1 ${ currencyUnits.gwei }`;
+        return `< 0.1 ${ gweiName }`;
       }
 
-      return `${ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 1 }) } ${ currencyUnits.gwei }`;
+      return `${ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 1 }) } ${ gweiName }`;
     }
 
     case 'usd': {

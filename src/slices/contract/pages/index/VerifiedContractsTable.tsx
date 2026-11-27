@@ -7,7 +7,7 @@ import type { VerifiedContractsSortingField, VerifiedContractsSortingValue } fro
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import { SORT_SEQUENCE } from 'src/slices/contract/pages/index/sort';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -32,6 +32,7 @@ interface Props {
 const getBaseKey = (item: schemas['SmartContractListItem']): string => item.address?.hash ?? '';
 
 const VerifiedContractsTable = ({ data, sort, setSorting, isLoading, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });

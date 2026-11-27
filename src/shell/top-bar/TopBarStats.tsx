@@ -4,6 +4,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'src/slices/gas/components/GasPrice';
 import discriminateDetailedPrices from 'src/slices/gas/utils/price';
@@ -19,6 +20,8 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const TopBarStats = () => {
+  const currencyUnits = useCurrencyUnits();
+
   const isMobile = useIsMobile();
 
   const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useStatsQuery();
@@ -63,7 +66,7 @@ const TopBarStats = () => {
         { hasNativeCoinPrice && (
           <Flex columnGap={ 1 }>
             <Skeleton loading={ isPlaceholderData }>
-              <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
+              <chakra.span color="text.secondary">{ currencyUnits.ether } </chakra.span>
               <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
             </Skeleton>
             { data.coin_price_change_percentage !== null && !(isMobile && Boolean(config.shell.topBar.chainMenu.items)) && (

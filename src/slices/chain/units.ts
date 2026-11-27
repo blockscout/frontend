@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'src/config';
+import type config from 'src/config';
 import type { Unit } from 'src/shared/values/entity/utils';
 
-const weiName = config.chain.currency.weiName || 'wei';
-const gweiName = config.chain.currency.gweiName || `G${ weiName }`;
+export type CurrencyUnits = Readonly<Record<Unit, string>>;
 
-export const currencyUnits: Record<Unit, string> = {
-  wei: weiName,
-  gwei: gweiName,
-  ether: config.chain.currency.symbol || 'ETH',
-};
+type CurrencyConfig = Pick<typeof config.chain.currency, 'symbol' | 'weiName' | 'gweiName'>;
+
+// In a React tree use `useCurrencyUnits`, which follows the chain of a multichain view.
+export function getCurrencyUnits(currency: CurrencyConfig): CurrencyUnits {
+  const weiName = currency.weiName || 'wei';
+
+  return {
+    wei: weiName,
+    gwei: currency.gweiName || `G${ weiName }`,
+    ether: currency.symbol || 'ETH',
+  };
+}

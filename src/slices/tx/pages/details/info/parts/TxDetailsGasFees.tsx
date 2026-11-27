@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 
 import config from 'src/config';
@@ -18,6 +18,8 @@ interface Props {
 }
 
 const TxDetailsGasFees = ({ data, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
+
   if (config.slices.tx.hiddenFields?.gas_fees || !(data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas)) {
     return null;
   }

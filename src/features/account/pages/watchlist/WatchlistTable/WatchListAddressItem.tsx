@@ -7,7 +7,7 @@ import React from 'react';
 import type { WatchlistAddress } from 'src/features/account/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import config from 'src/config';
@@ -21,6 +21,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
+  const currencyUnits = useCurrencyUnits();
   const nativeTokenData = React.useMemo(() => ({
     name: config.chain.currency.name || '',
     icon_url: '',

@@ -5,7 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -29,6 +29,7 @@ interface Props {
 const getBaseKey = (item: schemas['InternalTransaction']): string => item.transaction_hash + '_' + item.index;
 
 const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });

@@ -8,6 +8,8 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
+
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
@@ -40,6 +42,7 @@ interface Props {
 }
 
 const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props) => {
+  const nativeCoinSymbol = useCurrencyUnits().ether;
 
   const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -141,13 +144,13 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     return [
       ...('inputs' in data && data.inputs ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
-        name: `Send native ${ config.chain.currency.symbol || 'coin' }`,
+        name: `Send native ${ nativeCoinSymbol }`,
         type: 'uint256' as const,
         internalType: 'uint256' as const,
         fieldType: 'native_coin' as const,
       } ] : []),
     ];
-  }, [ data ]);
+  }, [ data, nativeCoinSymbol ]);
 
   const primaryButton = (() => {
     const isDisabled = !config.features.connectWallet.isEnabled && methodType === 'write';

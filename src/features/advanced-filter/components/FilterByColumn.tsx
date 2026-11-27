@@ -8,7 +8,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import ColumnFilter from 'src/shared/filters/ColumnFilter';
 
-import { NATIVE_TOKEN } from '../utils/consts';
+import { useNativeToken } from '../hooks/useNativeToken';
+import { NATIVE_TOKEN_ADDRESS_HASH } from '../utils/consts';
 import type { AddressFilterMode } from './filters/AddressFilter';
 import AddressFilter from './filters/AddressFilter';
 import AddressRelationFilter from './filters/AddressRelationFilter';
@@ -29,6 +30,7 @@ type Props = {
 };
 
 const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searchParams, isLoading }: Props) => {
+  const nativeToken = useNativeToken();
   const commonProps = { columnName, handleFilterChange, isLoading };
   switch (column) {
     case 'type': {
@@ -135,11 +137,11 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
             'exclude' as AssetFilterMode;
           return ({ token, mode });
         }) : [];
-      if (filters.token_contract_address_hashes_to_include?.includes('native')) {
-        value.unshift({ token: NATIVE_TOKEN, mode: 'include' });
+      if (filters.token_contract_address_hashes_to_include?.includes(NATIVE_TOKEN_ADDRESS_HASH)) {
+        value.unshift({ token: nativeToken, mode: 'include' });
       }
-      if (filters.token_contract_address_hashes_to_exclude?.includes('native')) {
-        value.unshift({ token: NATIVE_TOKEN, mode: 'exclude' });
+      if (filters.token_contract_address_hashes_to_exclude?.includes(NATIVE_TOKEN_ADDRESS_HASH)) {
+        value.unshift({ token: nativeToken, mode: 'exclude' });
       }
       return (
         <ColumnFilter

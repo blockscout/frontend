@@ -4,6 +4,7 @@ import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type getBlockReward from 'src/slices/block/utils/get-block-reward';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -52,6 +53,7 @@ const BlockDetailsRewardBreakdown = ({ reward, isLoading }: Pick<Props, 'reward'
 };
 
 const BlockDetailsReward = ({ reward, validatorTitle, isLoading }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   if (rollupFeature.isEnabled || reward.totalReward.isEqualTo(ZERO) || config.slices.block.hiddenFields?.total_reward) {
     return null;
   }
@@ -60,7 +62,7 @@ const BlockDetailsReward = ({ reward, validatorTitle, isLoading }: Props) => {
     <>
       <DetailedInfo.ItemLabel
         hint={
-          `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' }
+          `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ currencyUnits.ether }
           on top of the fees paid for all transactions in the block`
         }
         isLoading={ isLoading }

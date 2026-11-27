@@ -7,7 +7,7 @@ import type { HotContractsSortingField, HotContractsSortingValue } from 'src/fea
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import { currencyUnits } from 'src/slices/chain/units';
+import { useCurrencyUnits } from 'src/slices/chain/useCurrencyUnits';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -30,6 +30,7 @@ interface Props {
 const getBaseKey = (item: schemas['HotContract']): string => item.contract_address.hash;
 
 const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate, resetKey }: Props) => {
+  const currencyUnits = useCurrencyUnits();
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: HotContractsSortingField) => {
