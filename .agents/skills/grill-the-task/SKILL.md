@@ -23,7 +23,7 @@ Gather, in roughly this order:
 
 1. **The issue** — `gh issue view <n> --repo blockscout/frontend --json
    number,title,body,author,labels,state,assignees,comments,url` (needs `gh`; follow the
-   `check-github-cli` skill if unsure). The `--comments` form printed nothing for an issue with no comments. Read every linked resource that is accessible: other issues, docs
+   `check-github-cli` skill if unsure). Read every linked resource that is accessible: other issues, docs
    pages, Notion pages (via the Notion MCP tools, if connected).
 2. **The codebase** — what already exists: similar pages/features to mirror, relevant `service:name`
    resources, feature configs, terms from `.agents/GLOSSARY.md`.

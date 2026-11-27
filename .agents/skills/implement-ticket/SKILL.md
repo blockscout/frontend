@@ -117,7 +117,7 @@ deviation.
     unchecked leaf (Step 3), never by re-invoking the skill.
   - **At the `(human)` criteria, on a ticket with a style leaf** (one linking a Figma node) → **verify**
     against the linked node at every breakpoint, **fix** by hand leaving the fixes unstaged, then say
-    **"record my corrections"** (Step 6).
+    **"record my corrections"** (Step 6). That reply also confirms the ticket's `(human)` criteria.
   - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
     criteria and ask the session to commit (Step 7).
   - **With a spec deviation**, at any of the stops above or as the only touchpoint → **rule** on the
@@ -125,7 +125,17 @@ deviation.
     would write it, or the new line and where it goes.
     - **Confirmed** → edit `spec.md` with the confirmed wording. The edit lands in the ticket's commit.
     - **Rejected** → the spec stands. Rework the code to it the way a bug reported during the hand-off
-      is fixed, run Step 4 again and hand off again.
+      is fixed. When Step 4 has already run, run it again.
+
+    A ruling closes its deviation, not the ticket. After the last ruling, key the close again from the
+    top of this step:
+
+    - An unchecked leaf remains → resume Step 3.
+    - Every leaf is checked and another touchpoint is still open → hand off again.
+    - No touchpoint is open → commit (Step 7).
+
+    A repeated hand-off skips `git add -A`: the working tree holds the developer's fixes by then. Put
+    what you changed since the first hand-off into the index by the procedure above.
 
   When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
   `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.

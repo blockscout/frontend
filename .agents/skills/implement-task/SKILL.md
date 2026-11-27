@@ -68,11 +68,15 @@ list as it stands, one line per ticket, and a last line naming the running ticke
 The list tells the developer when they will be needed, and it is not a question. When no ticket is
 runnable, the list opens the step 5 report instead.
 
-**Done when**: the turn's last message holds the list and names the running ticket.
+The next turn resumes at step 3, item 3, with the worker this step spawned.
+
+**Done when**: the turn's last message holds the list and names the running ticket, or it is the step 5
+report that the list opens.
 
 ## Step 3 — Run the tickets
 
-Repeat until no ticket is runnable:
+Repeat until no ticket is runnable. The first pass starts at item 3, because step 2 already picked the
+ticket and spawned its worker. Every later pass starts at item 1, after a verified `done`.
 
 1. **Pick the ticket.** A ticket is **runnable** when its box is unchecked, it has a `spec.md`, and every
    `Blocked by` entry has cleared: a `T<NN>` entry when that ticket's box is checked in `progress.md`, a
