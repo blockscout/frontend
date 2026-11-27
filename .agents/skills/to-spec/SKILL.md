@@ -13,14 +13,14 @@ session that hands off here. This skill's whole job is writing them down and boo
 the draft PR.
 
 This skill runs **once** per task. The spec is write-once: there is no update or merge mode. What that
-means, and why answers never rewrite it, is in [`../../tasks/concepts.md`](../../tasks/concepts.md). Not
+means, and why answers never rewrite it, is in `.agents/tasks/concepts.md`. Not
 every task gets a spec — see "Not every task needs a spec" in
-[`../../tasks/README.md`](../../tasks/README.md).
+`.agents/tasks/README.md`.
 
 ## Step 1 — Write the spec and questions
 
 Derive the task folder from the issue: `.agents/tasks/<issue-number>-<slug>/` (layout in
-[`../../tasks/structure.md`](../../tasks/structure.md)). Write files:
+`.agents/tasks/structure.md`). Write files:
 
 - **`spec.md`** from [`spec-template.md`](spec-template.md).
 - **`questions.md`** from [`questions-template.md`](questions-template.md).
@@ -46,5 +46,5 @@ again** — it authorizes the branch, commit, push, and draft PR together:
 2. **Commit** — commit `spec.md` and `questions.md` as the branch's first commit.
 3. **Draft PR** — hand off to the `create-pr` skill (draft-placeholder mode, feature branch → `main`); it
    pushes and opens the draft. Why the draft opens this early is in
-   [`../../tasks/README.md`](../../tasks/README.md).
+   `.agents/tasks/README.md`.
 

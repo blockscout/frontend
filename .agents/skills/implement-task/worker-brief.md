@@ -25,6 +25,12 @@ skill from where you stopped, with everything you had in context.
 - **Leave notifications to the orchestrator.** Where the skill fires a `PushNotification`, put its line in
   your report instead.
 
+## A denied command
+
+When the harness denies a command the skill needs, end your turn with a `touchpoint` report. Give the exact
+command on its own line, ready to paste, and say what it is for. The developer runs it with `!` and replies
+with the output. Continue the skill from that output.
+
 ## Your own sub-agents
 
 A skill may have you spawn a sub-agent that needs the developer too. Relay for it the way the orchestrator relays for you:

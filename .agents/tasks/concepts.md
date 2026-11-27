@@ -112,7 +112,8 @@ ticket. Not a rewrite of the spec.
 
 A ticket is editable until its **last leaf lands**; then it freezes, mirroring the spec one level down.
 Before it freezes, a change is a plain edit to the ticket. After, a late answer that changes shipped
-behaviour spawns a **new ticket**, never a rewrite.
+behaviour spawns a **new ticket**, never a rewrite. The freeze covers what the ticket says. Ticking its
+acceptance-criteria boxes is not an edit: `implement-ticket` ticks them until the ticket's commit.
 
 ### Functional Requirements are the acceptance contract
 

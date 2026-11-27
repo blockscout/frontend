@@ -11,7 +11,7 @@ disable-model-invocation: true
 Land a task whose every `progress.md` box is checked. Five steps, in order, each a handoff: prune the
 disposable working files, finalize the PR, run the review loop, deploy the demos, report. Why only `spec.md`
 survives — the decomposition is preserved in git history, one commit per ticket — is in
-[`../../tasks/concepts.md`](../../tasks/concepts.md). The developer returns to a PR that is reviewed, green
+`.agents/tasks/concepts.md`. The developer returns to a PR that is reviewed, green
 and deployed, with the review history on its threads.
 
 ## Step 1 — Prune
