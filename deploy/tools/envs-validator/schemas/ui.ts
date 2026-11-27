@@ -22,6 +22,7 @@ import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorMo
 import * as regexp from 'src/toolkit/utils/regexp';
 
 import { companionRule, envBoolean, envHtmlList, envJson, envUrl, requiredIf, requires } from '../utils';
+import { colorThemeOverridesSchema } from './colorThemeOverrides';
 
 const requiredString = () => v.pipe(v.string(), v.nonEmpty());
 const requiredUrl = () => v.pipe(v.string(), v.nonEmpty(), v.url());
@@ -40,7 +41,7 @@ const heroBannerSearchBorderColorSchema: v.GenericSchema<HeroBannerSearchBorderC
   _filled: colorPair(),
 });
 
-const heroBannerSchema = v.object({
+export const heroBannerSchema = v.object({
   background: colorPair(),
   text_color: colorPair(),
   border: colorPair(),
@@ -86,6 +87,8 @@ const featuredNetworkSchema: v.GenericSchema<FeaturedNetwork> = v.object({
   invertIconInDarkMode: v.optional(v.boolean()),
 });
 
+export const featuredNetworksFileSchema = v.array(featuredNetworkSchema);
+
 const navItemExternalSchema = v.object({
   text: requiredString(),
   url: requiredUrl(),
@@ -117,7 +120,7 @@ const hasItems = (value: unknown) => Array.isArray(value) && value.length > 0;
 
 export const navigationSchema = v.pipe(
   v.object({
-    NEXT_PUBLIC_FEATURED_NETWORKS: v.optional(envJson(v.array(featuredNetworkSchema))),
+    NEXT_PUBLIC_FEATURED_NETWORKS: v.optional(envJson(featuredNetworksFileSchema)),
     NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: v.optional(envUrl()),
     NEXT_PUBLIC_FEATURED_NETWORKS_MODE: v.optional(v.picklist([ 'tabs', 'list' ])),
     NEXT_PUBLIC_OTHER_LINKS: v.optional(envJson(v.array(navItemExternalSchema))),
@@ -150,8 +153,10 @@ const footerLinkGroupSchema: v.GenericSchema<CustomLinksGroup> = v.object({
   links: v.array(footerLinkSchema),
 });
 
+export const footerLinksFileSchema = v.array(footerLinkGroupSchema);
+
 export const footerSchema = v.object({
-  NEXT_PUBLIC_FOOTER_LINKS: v.optional(envJson(v.array(footerLinkGroupSchema))),
+  NEXT_PUBLIC_FOOTER_LINKS: v.optional(envJson(footerLinksFileSchema)),
 });
 
 const fontFamilySchema = v.object({
@@ -167,7 +172,7 @@ export const miscSchema = v.pipe(
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: v.optional(envHtmlList()),
     NEXT_PUBLIC_COLOR_THEMES: v.optional(envJson(v.array(v.picklist(COLOR_THEME_IDS)))),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: v.optional(v.picklist(COLOR_THEME_IDS)),
-    NEXT_PUBLIC_COLOR_THEME_OVERRIDES: v.optional(envJson(v.record(v.string(), v.unknown()))),
+    NEXT_PUBLIC_COLOR_THEME_OVERRIDES: v.optional(envJson(colorThemeOverridesSchema)),
     NEXT_PUBLIC_FONT_FAMILY_HEADING: v.optional(envJson(fontFamilySchema)),
     NEXT_PUBLIC_FONT_FAMILY_BODY: v.optional(envJson(fontFamilySchema)),
     NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: v.optional(envBoolean()),

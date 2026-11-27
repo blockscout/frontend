@@ -8,6 +8,7 @@ import {
   composeSchemas,
   envBoolean,
   envJson,
+  jsonRecord,
   envNumber,
   envPositiveInteger,
   envUrl,
@@ -62,6 +63,26 @@ describe('envUrl', () => {
 
   it('rejects anything new URL() cannot parse', () => {
     expect(getValidationErrors(withEntry(envUrl()), { NEXT_PUBLIC_X: 'example.com' })).toEqual([ 'NEXT_PUBLIC_X: Invalid URL: Received "example.com"' ]);
+  });
+});
+
+describe('jsonRecord', () => {
+  const schema = jsonRecord(v.number());
+
+  it('accepts an object of the declared values', () => {
+    expect(getValidationErrors(schema, { foo: 1 })).toEqual([]);
+  });
+
+  it('reports a value that does not match', () => {
+    expect(getValidationErrors(schema, { foo: 'bar' })).toEqual([ 'foo: Invalid type: Expected number but received "bar"' ]);
+  });
+
+  it.each([
+    [ 'a list', [ 1 ] ],
+    [ 'null', null ],
+    [ 'a string', 'foo' ],
+  ])('rejects %s', (_, value) => {
+    expect(getValidationErrors(schema, value)).toEqual([ 'Expected a JSON object' ]);
   });
 });
 

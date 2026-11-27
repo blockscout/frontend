@@ -9,6 +9,8 @@ startup.
   downloaded JSON configs, prints the report, sets the exit code. No rule lives here.
 - **`checks.ts`** — the pure core (`runChecks`). Everything the CLI decides is decided here on pre-read
   inputs, which is what the specs exercise.
+- **`json-configs.ts`** — the schemas of the JSON config values, by variable name, for validating a file
+  outside a container. **`json-configs-cli.ts`** is its CLI, built by `pnpm run build:json-configs`.
 - **`deprecations.ts`** — variables that only produce a startup warning.
 - **`schema.ts`** — the default top-level schema; selected when `NEXT_PUBLIC_MULTICHAIN_ENABLED` is unset or
   `false`.
@@ -101,6 +103,13 @@ reported once, listing every unknown name. Entries that both top-level schemas n
   `schemas/features/index.ts`.
 
 Don't let the top-level schema grow a cluster of related vars.
+
+## The schemas also gate `blockscout/frontend-configs`
+
+That repository's CI checks out this one at `main`, builds `json-configs-cli.ts` and runs every config file
+it holds through the schema of its variable. Tightening a schema listed in `json-configs.ts` fails every pull
+request there until the files that no longer pass are fixed, so run its `tools/config-validator` against the
+change first.
 
 ## Validating a real instance config by hand
 

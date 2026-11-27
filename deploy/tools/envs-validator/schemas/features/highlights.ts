@@ -18,6 +18,8 @@ const highlightsBannerConfigSchema = v.object({
   redirect_url: v.optional(v.pipe(v.string(), v.url())),
 });
 
+export const highlightsFileSchema = v.pipe(v.array(highlightsBannerConfigSchema), v.minLength(2));
+
 export const highlightsConfigSchema = v.object({
-  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: v.optional(envJson(v.pipe(v.array(highlightsBannerConfigSchema), v.minLength(2)))),
+  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: v.optional(envJson(highlightsFileSchema)),
 });
