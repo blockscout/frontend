@@ -67,9 +67,9 @@ EOA and for a contract, then `?tab=tokens` and `?tab=tokens_erc20`
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the "Multichain net worth" row to the Details tab: the aggregator total, the providers moved from "Net worth", the feature gate, with unit tests
-- [ ] 2 `[agent]` Style the Details net worth rows to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-6649)
-- [ ] 3 `[agent]` Style the plate on the Multichain portfolio sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-4620)
-- [ ] 4 `[agent]` Style the plate on the Tokens sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6363-10621)
-- [ ] 5 `[agent]` Turn the feature on in the `AddressDetails.pw.tsx` "validator" case
-- [ ] 6 `[human]` Regenerate and review the affected screenshot baselines
+- [x] 1 `[agent]` Add the "Multichain net worth" row to the Details tab: the aggregator total, the providers moved from "Net worth", the feature gate, with unit tests
+- [x] 2 `[agent]` Style the Details net worth rows to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-6649)
+- [x] 3 `[agent]` Style the plate on the Multichain portfolio sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-4620)
+- [x] 4 `[agent]` Style the plate on the Tokens sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6363-10621)
+- [x] 5 `[agent]` Turn the feature on in the `AddressDetails.pw.tsx` "validator" case
+- [x] 6 `[human]` Regenerate and review the affected screenshot baselines

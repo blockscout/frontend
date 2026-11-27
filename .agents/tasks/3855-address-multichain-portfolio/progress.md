@@ -6,4 +6,4 @@ LANDED: its commit exists, `Blocked by` edges read it to release dependents, and
 what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement-ticket` checks the box at
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
-- [ ] 08 → `tickets/08-details-net-worth-and-plate-spacing/`
+- [x] 08 → `tickets/08-details-net-worth-and-plate-spacing/`

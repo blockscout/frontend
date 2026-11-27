@@ -27,12 +27,12 @@ import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilt
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
-import * as cookies from 'src/shared/storage/cookies';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
+import { useIncludePoorReputationTokens } from './useIncludePoorReputationTokens';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -46,9 +46,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
   const hash = getQueryParamString(router.query.hash);
   const chainIdParam = getQueryParamString(router.query.chain_id);
 
-  const tokenReputationFilter = React.useMemo(() => {
-    return cookies.get(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS) === 'true' ? true : false;
-  }, []);
+  const tokenReputationFilter = useIncludePoorReputationTokens();
 
   const portfolioQuery = useApiQuery('multichainAggregator:address_portfolio', {
     pathParams: { hash },

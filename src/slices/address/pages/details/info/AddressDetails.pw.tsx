@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
+
 import type { ResourcePayload } from 'src/api/resources';
 
 import type { AddressCountersQuery } from 'src/slices/address/hooks/useAddressCountersQuery';
@@ -12,6 +14,7 @@ import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as widgetsMock from 'src/features/address-3rd-party-widgets/mocks';
+import * as portfolioMock from 'src/features/multichain/mocks/portfolio';
 
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
@@ -22,6 +25,9 @@ import AddressDetails from './AddressDetails';
 
 const WIDGETS_CONFIG_URL = 'http://localhost:4000/address-3rd-party-widgets-config.json';
 const ADDRESS_HASH = addressParamMock.hash;
+const PROVIDER_ICON_URL = 'https://localhost:3000/my-icon.png';
+const PROVIDER_ICON_URL_2 = 'https://localhost:3000/my-icon-2.png';
+const VALIDATOR_WITH_TOKENS = { ...addressMock.validator, has_tokens: true };
 const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },
@@ -39,6 +45,30 @@ const mockFundingTxs = async(mockApiResponse: TestFnArgs['mockApiResponse'], ite
 const mockStats = async(mockApiResponse: TestFnArgs['mockApiResponse'], mockAssetResponse: TestFnArgs['mockAssetResponse']) => {
   await mockApiResponse('core:stats', statsMock.base);
   await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
+};
+
+type MultichainNetWorthMocks = Pick<TestFnArgs, 'mockEnvs' | 'mockApiResponse' | 'mockAssetResponse'>;
+
+const mockMultichainNetWorth = async({ mockEnvs, mockApiResponse, mockAssetResponse }: MultichainNetWorthMocks): Promise<void> => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST', 'http://localhost:3012' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_CLUSTER', 'test' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', JSON.stringify([
+      { name: 'Duck portfolio', url_template: 'https://duck.url/{address}', logo: PROVIDER_ICON_URL },
+      { name: 'goose', url_template: 'https://duck.url/{address}', logo: PROVIDER_ICON_URL_2, view: 'icon' },
+    ] satisfies Array<MultichainProviderConfig>) ],
+  ]);
+  await mockApiResponse(
+    'multichainAggregator:address_portfolio',
+    portfolioMock.base,
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { include_poor_reputation_tokens: false } },
+  );
+  await mockApiResponse('core:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
+  await mockApiResponse('core:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
+  await mockApiResponse('core:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
+  await mockApiResponse('core:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
+  await mockAssetResponse(PROVIDER_ICON_URL, './playwright/mocks/duck.png');
+  await mockAssetResponse(PROVIDER_ICON_URL_2, './playwright/mocks/goose.png');
 };
 
 const testWidgetsFn = (isMobile: boolean) => async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockApiResponse, page }: TestFnArgs) => {
@@ -100,16 +130,19 @@ test.describe('mobile', () => {
     });
   });
 
-  test('validator', async({ render, page, mockApiResponse, mockAssetResponse }) => {
-    await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  test('validator', async({ render, page, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+    await mockMultichainNetWorth({ mockEnvs, mockApiResponse, mockAssetResponse });
+    await mockApiResponse('core:address', VALIDATOR_WITH_TOKENS, { pathParams: { hash: ADDRESS_HASH } });
     await mockStats(mockApiResponse, mockAssetResponse);
     await mockFundingTxs(mockApiResponse, [ txMock.base ]);
 
     const component = await render(
-      <AddressDetails
-        addressQuery={{ data: addressMock.validator } as AddressQuery}
-        countersQuery={{ data: countersMock.forValidator } as AddressCountersQuery}
-      />,
+      <MockAddressPage>
+        <AddressDetails
+          addressQuery={{ data: VALIDATOR_WITH_TOKENS } as AddressQuery}
+          countersQuery={{ data: countersMock.forValidator } as AddressCountersQuery}
+        />
+      </MockAddressPage>,
       { hooksConfig },
     );
 
@@ -182,16 +215,19 @@ test.fixme('token', async({ render, mockApiResponse, mockAssetResponse, injectMe
   });
 });
 
-test('validator', async({ render, mockApiResponse, mockAssetResponse, page }) => {
-  await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+test('validator', async({ render, mockEnvs, mockApiResponse, mockAssetResponse, page }) => {
+  await mockMultichainNetWorth({ mockEnvs, mockApiResponse, mockAssetResponse });
+  await mockApiResponse('core:address', VALIDATOR_WITH_TOKENS, { pathParams: { hash: ADDRESS_HASH } });
   await mockStats(mockApiResponse, mockAssetResponse);
   await mockFundingTxs(mockApiResponse, [ txMock.base ]);
 
   const component = await render(
-    <AddressDetails
-      addressQuery={{ data: addressMock.validator } as AddressQuery}
-      countersQuery={{ data: countersMock.forValidator } as AddressCountersQuery}
-    />,
+    <MockAddressPage>
+      <AddressDetails
+        addressQuery={{ data: VALIDATOR_WITH_TOKENS } as AddressQuery}
+        countersQuery={{ data: countersMock.forValidator } as AddressCountersQuery}
+      />
+    </MockAddressPage>,
     { hooksConfig },
   );
 

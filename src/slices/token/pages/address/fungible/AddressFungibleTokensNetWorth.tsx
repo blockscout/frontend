@@ -66,7 +66,7 @@ const AddressFungibleTokensNetWorth = ({ addressHash }: Props) => {
       topTokens={ summary.topTokens }
     >
       <Separator height="16px" orientation="vertical" hideBelow="lg"/>
-      <HStack w={{ base: 'full', lg: 'auto' }}>
+      <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
         <NativeTokenIcon boxSize={ 5 } flexShrink={ 0 }/>
         <Text fontWeight="medium">{ currencyUnits.ether } balance</Text>
         <NativeCoinValue
@@ -79,7 +79,7 @@ const AddressFungibleTokensNetWorth = ({ addressHash }: Props) => {
         />
       </HStack>
       <Separator height="16px" orientation="vertical" hideBelow="lg"/>
-      <HStack w={{ base: 'full', lg: 'auto' }}>
+      <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
         <SpriteIcon name="tokens" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
         <Text fontWeight="medium">Tokens</Text>
         <HStack gap={ 1 } minW={ 0 }>

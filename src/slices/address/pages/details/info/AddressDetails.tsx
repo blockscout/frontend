@@ -14,7 +14,6 @@ import useAddress3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pa
 import AddressCeloAccount from 'src/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import AddressDetailsFilecoin from 'src/features/chain-variants/filecoin/pages/address/AddressDetailsFilecoin';
 
-import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -29,7 +28,7 @@ import AddressDetailsCounterRow from './AddressDetailsCounterRow';
 import AddressFundedBy from './AddressFundedBy';
 import AddressImplementations from './AddressImplementations';
 import AddressNameInfo from './AddressNameInfo';
-import AddressNetWorth from './AddressNetWorth';
+import AddressNetWorthRows from './AddressNetWorthRows';
 import TokenSelect from './token-select/TokenSelect';
 import useAddressDetailsData from './useAddressDetailsData';
 
@@ -102,20 +101,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             </DetailedInfo.ItemValue>
           </>
         ) }
-        { (config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Total net worth in USD of all tokens for the address"
-              isLoading={ isLoading }
-            >
-              Net worth
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue multiRow>
-              <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ isLoading }/>
-            </DetailedInfo.ItemValue>
-          </>
-        )
-        }
+        <AddressNetWorthRows data={ data } addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ Boolean(isLoading) }/>
 
         <AddressDetailsCounterRow
           prop="transactions_count"

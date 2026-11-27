@@ -30,7 +30,7 @@ test('with multichain buttons +@dark-mode', async({ render, mockEnvs, mockApiRes
   await mockAssetResponse(ICON_URL, './playwright/mocks/duck.png');
   await mockAssetResponse(ICON_URL_2, './playwright/mocks/goose.png');
 
-  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
+  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH } hasMultichainButtons/>);
 
   await expect(component).toHaveScreenshot();
 });

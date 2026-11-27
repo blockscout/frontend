@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Text, Flex, HStack, VStack, Separator, Box, chakra } from '@chakra-ui/react';
+import { Text, Flex, HStack, VStack, Box, chakra } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import AdBanner from 'src/features/ads/banner/components/AdBanner';
-import AddressMultichainButton from 'src/features/multichain-button/pages/address/AddressMultichainButton';
+import AddressMultichainButtons from 'src/features/multichain-button/pages/address/AddressMultichainButtons';
 
-import config from 'src/config';
-import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
@@ -18,8 +16,6 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import type { TopToken } from './utils';
 import { formatPercentage, OTHERS_SYMBOL } from './utils';
-
-const multichainBalanceFeature = config.features.multichainButton;
 
 const TOP_TOKENS_COLORS = [
   [ 'purple.300', 'pink.300', 'blackAlpha.300' ],
@@ -55,10 +51,6 @@ const AddressPortfolioNetWorth = ({
 }: Props) => {
   const isMobile = useIsMobile();
 
-  const handleMultichainClick = React.useCallback(() => {
-    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
-  }, []);
-
   const topTokensContent = (() => {
     if (!topTokens && !isLoading) {
       return (
@@ -81,7 +73,7 @@ const AddressPortfolioNetWorth = ({
             />
           )) }
         </Skeleton>
-        <HStack flexWrap="wrap">
+        <HStack flexWrap="wrap" columnGap={ 3 }>
           { items.map((token, index) => (
             <HStack key={ token.symbol }>
               <Skeleton
@@ -110,6 +102,7 @@ const AddressPortfolioNetWorth = ({
         overflow="hidden"
         alignSelf="stretch"
         rowGap="1px"
+        minH="100px"
       >
         <Flex
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
@@ -121,38 +114,26 @@ const AddressPortfolioNetWorth = ({
           alignItems="center"
         >
           <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } maxW="100%">
-            <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
-              <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
-              <Text fontWeight={ 500 }>
-                Total net worth
-                <chakra.span color="text.secondary" fontWeight={ 400 }> (without NFT)</chakra.span>
-              </Text>
+            <HStack display={{ base: 'contents', lg: 'flex' }} minH={{ base: 'auto', lg: '32px' }}>
+              <HStack w={{ base: 'full', lg: 'auto' }}>
+                <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
+                <Text fontWeight={ 500 }>
+                  Total net worth
+                  <chakra.span color="text.secondary" fontWeight={ 400 }> (without NFT)</chakra.span>
+                </Text>
+              </HStack>
+              <SimpleValue
+                value={ BigNumber(netWorth ?? 0) }
+                prefix="$"
+                loading={ isLoading }
+                fontWeight={ 600 }
+                accuracy={ DEFAULT_ACCURACY_USD }
+                overflowed={ isOverflow }
+                color={ !netWorth ? 'text.secondary' : undefined }
+              />
             </HStack>
-            <SimpleValue
-              value={ BigNumber(netWorth ?? 0) }
-              prefix="$"
-              loading={ isLoading }
-              fontWeight={ 600 }
-              accuracy={ DEFAULT_ACCURACY_USD }
-              overflowed={ isOverflow }
-              color={ !netWorth ? 'text.secondary' : undefined }
-            />
             { children }
-            { hasMultichainButtons && multichainBalanceFeature.isEnabled && (
-              <>
-                <Separator height="16px" orientation="vertical"/>
-                <HStack gap={ 1 } flexWrap="wrap">
-                  { multichainBalanceFeature.providers.map((item) => (
-                    <AddressMultichainButton
-                      key={ item.name }
-                      item={ item }
-                      addressHash={ addressHash }
-                      onClick={ handleMultichainClick }
-                    />
-                  )) }
-                </HStack>
-              </>
-            ) }
+            { hasMultichainButtons && <AddressMultichainButtons addressHash={ addressHash }/> }
           </HStack>
         </Flex>
         <Flex
