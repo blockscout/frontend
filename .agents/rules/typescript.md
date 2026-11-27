@@ -7,6 +7,13 @@ alwaysApply: false
 ---
 # TypeScript Usage
 
+> **Frozen copy.** The general part of this rule has moved to the home repo, `blockscout/frontend-home`,
+> where it is `.agents/rules/typescript.md`. Edit it there, not here: see
+> [Frozen copies](../README.md#frozen-copies).
+
+What this repo adds to the rule or does differently is in `./typescript-local.md`, which wins where the
+two disagree.
+
 ## "any" inside generic function
 
 When building generic functions, you may need to use any inside the function body.
@@ -68,9 +75,7 @@ function process(value: unknown) {
 
 ## Default exports
 
-**React components are exported as default** — that is the established convention here (the overwhelming
-majority of `.tsx` files in `src/` do this), and Next.js requires it for `src/pages/` files. The only
-exception is the `src/toolkit/` where we follow Chakra UI convention of named exports for components.
+**React components are exported as default.**
 
 ```tsx
 // GOOD
@@ -210,9 +215,7 @@ Do not write JSDoc (`/** */`). Which comments are allowed, and in what form: [Co
 
 ## Naming conventions
 
-Casing is enforced by `@typescript-eslint/naming-convention`. The one convention it does *not* check:
-prefix type parameters with `T` (e.g. `TKey`, `TValue`). File naming lives in
-`.agents/rules/architecture.md`.
+Prefix type parameters with `T` (e.g. `TKey`, `TValue`).
 
 ```ts
 type RecordOfArrays<TItem> = Record<string, TItem[]>;
@@ -366,13 +369,13 @@ const el = ref.current as unknown as HTMLInputElement;
 
 ## Window globals
 
-Never access third-party globals via `(window as any)`. Declare the property inside the existing `declare global { interface Window { ... } }` block in `global.d.ts`:
+Never access third-party globals via `(window as any)`. Declare the property inside the `declare global { interface Window { ... } }` block of the project's global declaration file:
 
 ```ts
 // BAD
 const analytics = (window as any).analytics;
 
-// GOOD — in global.d.ts
+// GOOD — in the global declaration file
 declare global {
   interface Window {
     analytics: SegmentAnalytics.AnalyticsJS;
@@ -383,21 +386,28 @@ declare global {
 
 ## Module type declarations
 
-Use `decs.d.ts` exclusively for untyped third-party module declarations. Do not put other type definitions there.
+Declare untyped third-party modules in one declaration file kept for that purpose. Do not put other type definitions there.
 
 ```ts
-// decs.d.ts
 declare module 'some-untyped-package';
 ```
+
+## Generic type utilities
+
+A generic type utility comes from [`type-fest`](https://github.com/sindresorhus/type-fest): `SetOptional`,
+`DistributedOmit`, `Simplify`, `PartialDeep`, `NonEmptyTuple` and the rest. Add the package as a dependency
+at its first use in a repository. Don't define a type it already has.
+
+A built-in comes first where it does the job: `Exclude<T, undefined>`, `NonNullable<T>`.
 
 ## Constructive modeling
 
 Build the type from parts that are all legal instead of restricting a loose type with runtime checks.
 
-Non-empty, via a variadic tuple:
+Non-empty, via a variadic tuple, which `NonEmptyTuple` is:
 
 ```ts
-import type { NonEmptyArray } from 'src/shared/types/utils';
+import type { NonEmptyTuple } from 'type-fest';
 
 // BAD: Array<T> plus a length check every caller must repeat
 function pickWinner(entries: Array<string>): string {
@@ -406,7 +416,7 @@ function pickWinner(entries: Array<string>): string {
 }
 
 // GOOD: an empty value of the type can't exist
-function pickWinner(entries: NonEmptyArray<string>): string {
+function pickWinner(entries: NonEmptyTuple<string>): string {
   return entries[Math.floor(Math.random() * entries.length)];
 }
 ```
@@ -414,13 +424,13 @@ function pickWinner(entries: NonEmptyArray<string>): string {
 Where a plain `Array<T>` arrives, narrow once with a guard. The fact then travels in the type:
 
 ```ts
-const isNonEmpty = <T>(arr: Array<T>): arr is NonEmptyArray<T> => arr.length > 0;
+const isNonEmpty = <T>(arr: ReadonlyArray<T>): arr is NonEmptyTuple<T> => arr.length > 0;
 ```
 
-Even length, as pairs:
+Even length, as pairs. `type-fest` has no such type, so it is defined where it is used:
 
 ```ts
-import type { Pairs } from 'src/shared/types/utils';
+type Pairs<T> = Array<[T, T]>;
 const entities: Pairs<string> = [ [ 'foo', 'bar' ] ];
 ```
 
@@ -453,7 +463,7 @@ function newestSession(sessions: Array<Session>): Session {
 }
 
 // GOOD: strengthen the input; the assertion disappears
-function newestSession(sessions: NonEmptyArray<Session>): Session {
+function newestSession(sessions: NonEmptyTuple<Session>): Session {
   return sessions[0];
 }
 ```
@@ -468,7 +478,7 @@ From best to last-resort:
 2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
 3. **`typeof` / `instanceof`.** For primitives and class instances.
 4. **User-defined type guard.** When the above aren't enough.
-5. **`as` cast.**.
+5. **`as` cast.**
 
 ```ts
 function area(s: Shape): number {
@@ -491,7 +501,7 @@ const isUser = (v: unknown): v is User => typeof v === "object" && v !== null &&
 
 ## Schema-derived types
 
-When an API response type already defines a shape, derive from it instead of duplicating it. Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the exceptions; how to find which is `src/api/CONTEXT.md` ("Where a resource's response types come from"). Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
+When an API response type already defines a shape, derive from it instead of duplicating it. Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
 
 ```ts
 // BAD. Duplicate shape, drifts when the schema changes.
@@ -502,9 +512,9 @@ function renderBlockTime(s: BlockTimeStats) {
   /* ... */
 }
 
-// GOOD. Derive from the generated type.
-import type { MainPageStats } from '@blockscout/stats-types';
-function renderBlockTime(s: Pick<MainPageStats, 'average_block_time'>) {
+// GOOD. Derive from the type that already exists.
+import type { StatsResponse } from './api/types';
+function renderBlockTime(s: Pick<StatsResponse, 'average_block_time'>) {
   /* ... */
 }
 ```

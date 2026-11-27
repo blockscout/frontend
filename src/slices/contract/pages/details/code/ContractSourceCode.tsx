@@ -65,7 +65,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     <ContractCodeIdes hash={ sourceAddress } isLoading={ isLoading }/> :
     null;
 
-  const copyToClipboard = data && editorData?.length === 1 && data.source_code ? (
+  const copyToClipboard = data && editorData?.files.length === 1 && data.source_code ? (
     <CopyToClipboard
       text={ data.source_code }
       isLoading={ isLoading }
@@ -94,11 +94,12 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
     return (
       <CodeEditor
         key={ sourceAddress }
-        data={ editorData }
+        data={ editorData.files }
+        isTreePossible={ editorData.isTreePossible }
         remappings={ remappings }
         libraries={ data?.external_libraries ?? undefined }
         language={ data?.language ?? undefined }
-        mainFile={ editorData[0]?.file_path }
+        mainFile={ editorData.files[0]?.key }
         contractName={ data?.name ?? undefined }
       />
     );

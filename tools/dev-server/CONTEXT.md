@@ -32,7 +32,7 @@ its name.
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
 | `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
 | `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). |
-| `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
+| `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build \| --build-only]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output, `--build-only` stops before the start. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
 | `docker.build.sh` | `pnpm build:docker` — build the production image locally as `blockscout-frontend:local`. |
 | `docker.preset.sh` | `pnpm start:docker:preset <alias>` — fetch + run that image; the docker counterpart of `dev.preset.sh`. |
 | `docker.local.sh` | `pnpm start:docker:local` — run that image against a local backend using `.env.localhost`; the docker counterpart of `dev.local.sh`. |

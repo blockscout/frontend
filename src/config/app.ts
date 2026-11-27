@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { isPrivateMode } from 'src/shared/storage/cookies';
+import { isPrivateMode } from 'src/shared/storage/cookies/read';
 
 import { getEnvValue } from './utils/envs';
 

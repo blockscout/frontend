@@ -56,7 +56,7 @@ desktop layout adapted the way neighbouring views do. An item that is still with
 
 ## Step 4 — Verify
 
-Run every code-quality check the repo defines (per `.agents/rules/code-quality.md`) plus the relevant unit 
+Run every code-quality check the repo defines (per `.agents/rules/code-quality-local.md`) plus the relevant unit 
 tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-page` skill documents — 
 say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
 agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
@@ -65,7 +65,8 @@ dev server through the Playwright MCP, at a desktop and a mobile width, and look
 screenshot with a relative path under `.playwright-mcp/`, such as `.playwright-mcp/<route>-mobile.png`: the
 Playwright MCP refuses a path outside the workspace, the scratchpad included. A defect you can see
 is yours to fix before the hand-off; what to probe follows from the leaf. The `(human)` criteria stay the
-developer's — this pass is your own check, not their sign-off.
+developer's — this pass is your own check, not their sign-off. When the check is over, stop the dev server
+if this run started it. A server that was already running is the developer's and stays up.
 
 ## Step 5 — Close
 
@@ -108,6 +109,9 @@ acceptance criterion:
     **"record my corrections"** (Step 6).
   - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
     criteria and ask the session to commit (Step 7).
+
+  When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
+  `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.
 
   The stopping turn ends at its bullet.
 

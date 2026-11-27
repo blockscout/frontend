@@ -124,6 +124,9 @@ jobs:
             exit 1
           fi
 
+      - name: Check the imports of the built declarations resolve
+        run: pnpm lint:toolkit-declarations
+
   vitest_tests:
     name: Unit tests
     needs: [ code_quality ]

@@ -20,7 +20,6 @@ const HIDDEN_ROUTES = new Map(Object.entries({
   '/name-services': () => !isEnvSet('NEXT_PUBLIC_NAME_SERVICE_API_HOST') || !isEnvSet('NEXT_PUBLIC_CLUSTERS_API_HOST'),
   '/ops': () => !isEnvTrue('NEXT_PUBLIC_HAS_USER_OPS'),
   '/output-roots': () => !isEnvTrue('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED'),
-  '/interop-messages': () => !isEnvTrue('NEXT_PUBLIC_INTEROP_ENABLED'),
   '/pools': () => !isEnvTrue('NEXT_PUBLIC_DEX_POOLS_ENABLED'),
   '/advanced-filter': () => isEnvFalse('NEXT_PUBLIC_ADVANCED_FILTER_ENABLED'),
   '/apps': () => !isEnvTrue('NEXT_PUBLIC_MARKETPLACE_ENABLED'),

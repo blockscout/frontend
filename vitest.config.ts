@@ -24,9 +24,10 @@ export default defineConfig({
   test: {
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],
-    // the design-readout calibration set is read with fs, not imported, so a `--changed` run would
-    // not see an edited entry; its spec is what keeps the committed set green
-    forceRerunTriggers: [ 'tools/design-readout/calibration/**' ],
+    // these are read with fs, not imported, so a `--changed` run would not see an edit: the
+    // design-readout calibration set, and the Renovate config and PR template that the PR check's
+    // spec holds together
+    forceRerunTriggers: [ 'tools/design-readout/calibration/**', '.github/renovate.json', 'docs/PULL_REQUEST_TEMPLATE.md' ],
     // specs in the shared project run in one module registry and one global scope per worker, so
     // whatever a spec stubs or spies on is undone before every test rather than left to the spec
     restoreMocks: true,

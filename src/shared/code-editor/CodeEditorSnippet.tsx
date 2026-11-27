@@ -22,7 +22,7 @@ interface Props {
 const CodeEditorSnippet = ({ data, copyData, language, title, className, rightSlot, isLoading }: Props) => {
 
   const editorData = React.useMemo(() => {
-    return [ { file_path: 'index', source_code: data } ];
+    return [ { key: 'index', display_path: 'index', source_code: data } ];
   }, [ data ]);
 
   return (
@@ -34,7 +34,7 @@ const CodeEditorSnippet = ({ data, copyData, language, title, className, rightSl
           <CopyToClipboard text={ copyData ?? data } isLoading={ isLoading }/>
         </Flex>
       ) }
-      { isLoading ? <Skeleton loading height="500px" w="100%"/> : <CodeEditor data={ editorData } language={ language }/> }
+      { isLoading ? <Skeleton loading height="500px" w="100%"/> : <CodeEditor data={ editorData } isTreePossible language={ language }/> }
     </Box>
   );
 };

@@ -8,7 +8,7 @@ import type { SearchResultMatch } from './types';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props extends SearchResultMatch {
-  filePath: string;
+  fileKey: string;
   onClick: (event: React.MouseEvent) => void;
 }
 
@@ -28,7 +28,7 @@ const calculateStartPosition = (lineContent: string, startColumn: number) => {
   return start ? start - 1 : 0;
 };
 
-const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineNumber, startColumn, endColumn }: Props) => {
+const CodeEditorSearchResultItem = ({ lineContent, fileKey, onClick, startLineNumber, startColumn, endColumn }: Props) => {
   const start = calculateStartPosition(lineContent, startColumn);
   const themeColors = useThemeColors();
 
@@ -42,7 +42,7 @@ const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineN
       overflow="hidden"
       textOverflow="ellipsis"
       cursor="pointer"
-      data-file-path={ filePath }
+      data-file-key={ fileKey }
       data-line-number={ startLineNumber }
       onClick={ onClick }
       transitionDuration="0"

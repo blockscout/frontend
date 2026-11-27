@@ -42,12 +42,15 @@ const Icon = dynamic(
       case 'jazzicon': {
         const Jazzicon = await import('react-jazzicon');
 
+        // the icon is an inline block, which a tall line box pushes down and the round mask then clips
         return (props: IconProps) => {
           return (
-            <Jazzicon.default
-              diameter={ props.size }
-              seed={ Jazzicon.jsNumberForAddress(props.hash) }
-            />
+            <Box display="flex">
+              <Jazzicon.default
+                diameter={ props.size }
+                seed={ Jazzicon.jsNumberForAddress(props.hash) }
+              />
+            </Box>
           );
         };
       }

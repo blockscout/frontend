@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 // @vitest-environment jsdom
 
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -9,6 +10,7 @@ import type { ResourcePayload } from 'src/api/resources';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
@@ -19,6 +21,7 @@ import { buildRouterMock } from 'vitest/utils/mockRouter';
 
 const SCAM_ALERT_TEXT = 'This address has been flagged as a potential scam.';
 const ADDRESS_PATH = `/api/v2/addresses/${ addressParamMock.hash }`;
+const TABS_COUNTERS_PATH = `${ ADDRESS_PATH }/tabs-counters`;
 const ENS_LOOKUP_PATH = '/api/v1/addresses:lookup';
 
 // .env.vitest turns both name services on; an empty host turns one off again
@@ -46,7 +49,7 @@ function mockAddress(address: schemas['AddressResponse'], tabsCounters?: Partial
       return jsonResponse(address);
     }
 
-    if (tabsCounters && pathname === `${ ADDRESS_PATH }/tabs-counters`) {
+    if (tabsCounters && pathname === TABS_COUNTERS_PATH) {
       return jsonResponse(tabsCounters);
     }
 
@@ -142,6 +145,17 @@ describe('token tab title', () => {
       expect(await screen.findByText('Address details')).toBeTruthy();
       expect((await screen.findAllByRole('tab', { name: /^Tokens.*7/ })).length).toBeGreaterThan(0);
       expect(screen.queryByRole('tab', { name: /^Assets/ })).toBeNull();
+    });
+  });
+});
+
+describe('logs tab', () => {
+  it('shows the Logs tab without a counter when the address has logs but the tabs counters omit them', { timeout: TEST_TIMEOUT }, async() => {
+    await withEnvs([], async() => {
+      mockAddress({ ...addressMock.eoa, has_logs: true }, omit(addressTabCountersMock.base, [ 'logs_count' ]));
+      await renderAddressPage();
+
+      expect(await screen.findByRole('tab', { name: 'Logs' })).toBeTruthy();
     });
   });
 });

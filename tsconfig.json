@@ -49,6 +49,8 @@
     "./src/toolkit/package",
     ".ds-sync",
     ".design-sync",
-    "ds-bundle"
+    "ds-bundle",
+    // agents' throwaway probes (AGENTS.md → Temporary files); they are never committed
+    ".ai"
   ]
 }

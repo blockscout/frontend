@@ -5,20 +5,13 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
-import TxExternalTxs from 'src/features/external-txs/components/TxExternalTxs';
-
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
-
-const externalTxFeature = config.features.externalTxs;
 
 interface Props {
   hash: string;
@@ -27,18 +20,6 @@ interface Props {
 }
 
 const TxHash = ({ hash, isLoading, status }: Props) => {
-  const isMobile = useIsMobile();
-
-  const externalTxsQuery = useApiQuery('core:tx_external_transactions', {
-    pathParams: {
-      hash,
-    },
-    queryOptions: {
-      enabled: externalTxFeature.isEnabled,
-      placeholderData: [ '1', '2', '3' ],
-    },
-  });
-
   return (
     <>
       <DetailedInfo.ItemLabel
@@ -47,7 +28,7 @@ const TxHash = ({ hash, isLoading, status }: Props) => {
       >
         Transaction hash
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue multiRow={ config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 }>
+      <DetailedInfo.ItemValue>
         <Flex flexWrap="nowrap" alignItems="center" overflow="hidden">
           { status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
           <Skeleton loading={ isLoading } overflow="hidden">
@@ -61,12 +42,6 @@ const TxHash = ({ hash, isLoading, status }: Props) => {
             </>
           ) }
         </Flex>
-        { config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 && (
-          <Skeleton loading={ isLoading || externalTxsQuery.isPlaceholderData } display={{ base: 'block', lg: 'inline-flex' }} alignItems="center">
-            { !isMobile && <TextSeparator flexShrink={ 0 }/> }
-            <TxExternalTxs data={ externalTxsQuery.data }/>
-          </Skeleton>
-        ) }
       </DetailedInfo.ItemValue>
 
     </>

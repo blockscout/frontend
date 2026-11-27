@@ -45,7 +45,9 @@
     "@emotion/react": ">=11.14.0",
     "@internationalized/date": ">=3.12.2",
     "@uidotdev/usehooks": ">=2.4.1",
+    "bignumber.js": ">=9.3.1",
     "d3": ">=7.9.0",
+    "d3-sankey": ">=0.12.3",
     "dayjs": ">=1.11.21",
     "dom-to-image": ">=2.6.0",
     "es-toolkit": ">=1.39.10",
@@ -71,5 +73,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/d3-sankey": "^0.12.5",
+    "type-fest": "^6.0.1"
   }
 }

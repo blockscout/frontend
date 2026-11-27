@@ -2,7 +2,6 @@
 
 import * as v from 'valibot';
 
-import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'src/features/tx-interpretation/common/types/config';
 import { VALIDATORS_CHAIN_TYPE } from 'src/features/validators/types/config';
@@ -41,12 +40,6 @@ const addressProfileAPIConfigSchema: v.GenericSchema<AddressProfileAPIConfig> = 
   tag_text_color: v.optional(v.string()),
 });
 
-const txExternalTxsConfigSchema: v.GenericSchema<TxExternalTxsConfig> = v.object({
-  chain_name: v.pipe(v.string(), v.nonEmpty()),
-  chain_logo_url: v.pipe(v.string(), v.nonEmpty()),
-  explorer_url_template: v.pipe(v.string(), v.nonEmpty()),
-});
-
 const usercentricsConfigSchema = v.object({
   settingsId: v.optional(v.string()),
   rulesetId: v.optional(v.string()),
@@ -72,7 +65,6 @@ const singleVariableFeaturesSchema = v.pipe(
     NEXT_PUBLIC_XSTAR_SCORE_URL: v.optional(envUrl()),
     NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK: v.optional(envUrl()),
     NEXT_PUBLIC_PUZZLE_GAME_BADGE_CLAIM_LINK: v.optional(envUrl()),
-    NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: v.optional(envJson(txExternalTxsConfigSchema)),
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: v.optional(envBoolean()),
     NEXT_PUBLIC_USERCENTRICS_CONFIG: v.optional(envJson(usercentricsConfigSchema)),
     NEXT_PUBLIC_USERCENTRICS_DRAFT: v.optional(envBoolean()),

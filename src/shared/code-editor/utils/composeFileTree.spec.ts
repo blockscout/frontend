@@ -4,27 +4,33 @@ import composeFileTree from './composeFileTree';
 
 const files = [
   {
-    file_path: 'index.sol',
+    key: 'index.sol',
+    display_path: 'index.sol',
     source_code: 'zero',
   },
   {
-    file_path: 'contracts/Zeta.eth.sol',
+    key: 'contracts/Zeta.eth.sol',
+    display_path: 'contracts/Zeta.eth.sol',
     source_code: 'one',
   },
   {
-    file_path: '/_openzeppelin/contracts/utils/Context.sol',
+    key: '/_openzeppelin/contracts/utils/Context.sol',
+    display_path: '/_openzeppelin/contracts/utils/Context.sol',
     source_code: 'two',
   },
   {
-    file_path: '/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol',
+    key: '/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol',
+    display_path: '/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol',
     source_code: 'three',
   },
   {
-    file_path: '/_openzeppelin/contracts/token/ERC20/IERC20.sol',
+    key: '/_openzeppelin/contracts/token/ERC20/IERC20.sol',
+    display_path: '/_openzeppelin/contracts/token/ERC20/IERC20.sol',
     source_code: 'four',
   },
   {
-    file_path: '/_openzeppelin/contracts/token/ERC20/ERC20.sol',
+    key: '/_openzeppelin/contracts/token/ERC20/ERC20.sol',
+    display_path: '/_openzeppelin/contracts/token/ERC20/ERC20.sol',
     source_code: 'five',
   },
 ];
@@ -44,7 +50,8 @@ test('builds correct file tree', () => {
                   {
                     "children": [
                       {
-                        "file_path": "/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+                        "display_path": "/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+                        "key": "/_openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
                         "name": "IERC20Metadata.sol",
                         "source_code": "three",
                       },
@@ -52,12 +59,14 @@ test('builds correct file tree', () => {
                     "name": "extensions",
                   },
                   {
-                    "file_path": "/_openzeppelin/contracts/token/ERC20/ERC20.sol",
+                    "display_path": "/_openzeppelin/contracts/token/ERC20/ERC20.sol",
+                    "key": "/_openzeppelin/contracts/token/ERC20/ERC20.sol",
                     "name": "ERC20.sol",
                     "source_code": "five",
                   },
                   {
-                    "file_path": "/_openzeppelin/contracts/token/ERC20/IERC20.sol",
+                    "display_path": "/_openzeppelin/contracts/token/ERC20/IERC20.sol",
+                    "key": "/_openzeppelin/contracts/token/ERC20/IERC20.sol",
                     "name": "IERC20.sol",
                     "source_code": "four",
                   },
@@ -70,7 +79,8 @@ test('builds correct file tree', () => {
           {
             "children": [
               {
-                "file_path": "/_openzeppelin/contracts/utils/Context.sol",
+                "display_path": "/_openzeppelin/contracts/utils/Context.sol",
+                "key": "/_openzeppelin/contracts/utils/Context.sol",
                 "name": "Context.sol",
                 "source_code": "two",
               },
@@ -86,7 +96,8 @@ test('builds correct file tree', () => {
   {
     "children": [
       {
-        "file_path": "contracts/Zeta.eth.sol",
+        "display_path": "contracts/Zeta.eth.sol",
+        "key": "contracts/Zeta.eth.sol",
         "name": "Zeta.eth.sol",
         "source_code": "one",
       },
@@ -94,7 +105,8 @@ test('builds correct file tree', () => {
     "name": "contracts",
   },
   {
-    "file_path": "index.sol",
+    "display_path": "index.sol",
+    "key": "index.sol",
     "name": "index.sol",
     "source_code": "zero",
   },

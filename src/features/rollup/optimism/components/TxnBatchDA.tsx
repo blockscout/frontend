@@ -3,13 +3,12 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
 export interface Props extends Omit<BadgeProps, 'container'> {
-  container?: ExcludeUndefined<schemas['BlockResponse']['optimism']>['batch_data_container'];
+  container?: Exclude<schemas['BlockResponse']['optimism'], undefined>['batch_data_container'];
   isLoading?: boolean;
 }
 

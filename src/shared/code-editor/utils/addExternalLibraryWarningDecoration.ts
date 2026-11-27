@@ -4,9 +4,14 @@ import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 import type { SmartContractExternalLibrary } from 'src/slices/contract/types/api';
 
+import formatFilePath from './formatFilePath';
 import sortByEndLineNumberAsc from './sortByEndLineNumberAsc';
 
-export default function addExternalLibraryWarningDecoration(model: monaco.editor.ITextModel, libraries: Array<SmartContractExternalLibrary>) {
+export default function addExternalLibraryWarningDecoration(
+  model: monaco.editor.ITextModel,
+  filePath: string,
+  libraries: Array<SmartContractExternalLibrary>,
+) {
   const options: monaco.editor.IModelDecorationOptions = {
     isWholeLine: true,
     hoverMessage: [
@@ -17,7 +22,7 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
     ],
   };
 
-  const names = libraries.map(getLibraryName(model)).filter(Boolean).join('|');
+  const names = libraries.map(getLibraryName(filePath)).filter(Boolean).join('|');
 
   if (!names) {
     return;
@@ -70,7 +75,7 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
   model.deltaDecorations([], [ firstLineDecoration, restDecoration ]);
 }
 
-const getLibraryName = (model: monaco.editor.ITextModel) => (library: SmartContractExternalLibrary) => {
+const getLibraryName = (filePath: string) => (library: SmartContractExternalLibrary) => {
   const containsFileName = library.name?.includes(':');
 
   if (!containsFileName) {
@@ -79,7 +84,7 @@ const getLibraryName = (model: monaco.editor.ITextModel) => (library: SmartContr
 
   const [ fileName, libraryName ] = library.name?.split(':') ?? [];
 
-  if (model.uri.path !== `/${ fileName }`) {
+  if (formatFilePath(filePath) !== `/${ fileName }`) {
     return;
   }
 

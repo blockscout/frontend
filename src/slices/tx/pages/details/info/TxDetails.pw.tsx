@@ -4,7 +4,6 @@ import * as txMock from 'src/slices/tx/mocks/details';
 import { stabilityTx } from 'src/features/chain-variants/stability/mocks/tx';
 import { suaveTxn } from 'src/features/chain-variants/suave/mocks/tx';
 import { withBlob } from 'src/features/data-availability/mocks/tx';
-import { withInteropInMessage, withInteropOutMessage } from 'src/features/op-interop/mocks/tx';
 import { arbitrumTxn } from 'src/features/rollup/arbitrum/mocks/tx';
 import { l2tx } from 'src/features/rollup/common/mocks/tx';
 import { scrollTxn } from 'src/features/rollup/scroll/mocks/tx';
@@ -158,44 +157,5 @@ test('suave kettle', async({ render, page }) => {
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
-  });
-});
-
-test('with external txs +@mobile', async({ page, render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
-  await mockEnvs(ENVS_MAP.externalTxs);
-  await mockApiResponse('core:tx_external_transactions', [ 'tx1', 'tx2', 'tx3' ], { pathParams: { hash: txMock.base.hash } });
-  await mockAssetResponse('http://example.url', './playwright/mocks/image_s.jpg');
-  const component = await render(<TxDetails data={ txMock.base } isLoading={ false }/>);
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-  });
-});
-
-test('with interop message in +@mobile', async({ render, page, mockEnvs, mockAssetResponse }) => {
-  await mockEnvs(ENVS_MAP.interop);
-  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
-  const component = await render(<TxDetails data={ withInteropInMessage } isLoading={ false }/>);
-  await page.getByText('View details').first().click();
-  await expect(page.getByText('Interop status')).toBeVisible();
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-  });
-});
-
-test('with interop message out +@mobile', async({ page, render, mockEnvs, mockAssetResponse }) => {
-  await mockEnvs(ENVS_MAP.interop);
-  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
-  const component = await render(<TxDetails data={ withInteropOutMessage } isLoading={ false }/>);
-  await component.getByText('View details').first().click();
-  await expect(component.getByText('Interop status')).toBeVisible();
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-    maxDiffPixels: 20,
   });
 });

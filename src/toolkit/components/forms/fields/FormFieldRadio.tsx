@@ -5,7 +5,6 @@ import type { FieldValues, Path } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import type { RadioGroupProps, RadioProps } from '../../../chakra/radio';
 import { Radio, RadioGroup } from '../../../chakra/radio';
@@ -16,7 +15,7 @@ export interface FormFieldRadioProps<
 > extends Pick<FormFieldPropsBase<FormFields>, 'rules' | 'controllerProps'>,
   RadioGroupProps {
   name: Name;
-  options: Array<{ value: ExcludeUndefined<FormFields[Name]>; label: string }>;
+  options: Array<{ value: Exclude<FormFields[Name], undefined>; label: string }>;
   itemProps?: RadioProps;
 }
 

@@ -80,6 +80,12 @@ export function buildClientConfig(accessToken: string): Configuration {
       // with code 3000. A wrong system clock on the visitor's machine, not a fault we can fix; the
       // timestamps in the message make every burst a new title, so match the shared relay prefix.
       'JWT validation error',
+
+      // React Query's CancelledError constructor sets `this.revert` after `super()`, which only throws when the
+      // page's global `Error` was replaced by one returning a non-extensible object. Automation stacks patch it
+      // this way (datacenter IPs, no plugins, rate-limited); a stock browser never does. Each release's chunk
+      // names give the trace a new fingerprint, so a mute does not hold across releases.
+      'Cannot add property revert, object is not extensible',
     ],
     maxItems: 10, // Max items per page load
     // uncaught / unhandledrejection coverage is owned by the early window listeners in queue.ts —

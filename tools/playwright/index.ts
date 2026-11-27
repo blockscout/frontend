@@ -1,12 +1,12 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to drive playwright and print to stdout */
 import { execFileSync, spawnSync } from 'child_process';
 import dotenv from 'dotenv';
+import { getChangedFiles, resolveBaseCommit } from 'frontend-home/code-complexity';
 import fs from 'fs';
 import path from 'path';
 
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
-import { getChangedFiles, resolveBaseCommit } from '../code-complexity/select/diff';
 import {
   DEFAULT_BASE_REF,
   ENV_FILE,

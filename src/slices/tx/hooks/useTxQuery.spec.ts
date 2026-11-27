@@ -137,4 +137,19 @@ describe('useTxQuery', () => {
     await vi.advanceTimersByTimeAsync(API_POLL_INTERVAL);
     expect(apiRequests()).toHaveLength(2);
   });
+
+  it('reports the API error and never asks the RPC node when the RPC fallback is off', async() => {
+    mockApiAndRpc({ api: () => API_NOT_FOUND, rpc: RPC_NODE_WITH_TX });
+
+    const { result } = renderHook(() => useTxQuery({ isRpcFallbackEnabled: false }), { wrapper: routerStandIn.appWrapper });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    expect(result.current.error?.status).toBe(404);
+    expect(result.current.apiError?.status).toBe(404);
+    expect(result.current.isDegradedData).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(API_POLL_INTERVAL);
+    expect(rpcRequests()).toEqual([]);
+    expect(apiRequests()).toHaveLength(1);
+  });
 });

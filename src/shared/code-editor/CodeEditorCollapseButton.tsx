@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useThemeColors from './utils/useThemeColors';
+import CodeEditorActionButton from './CodeEditorActionButton';
 
 interface Props {
   onClick: () => void;
@@ -13,27 +12,15 @@ interface Props {
 }
 
 const CodeEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: Props) => {
-  const themeColors = useThemeColors();
-
   return (
-    <Box
+    <CodeEditorActionButton
       ml="auto"
       alignSelf="center"
-      className={ isCollapsed ? 'codicon codicon-search-expand-results' : 'codicon codicon-collapse-all' }
-      opacity={ isDisabled ? 0.6 : 1 }
-      boxSize="20px"
-      p="2px"
-      borderRadius="sm"
-      _before={{
-        content: isCollapsed ? '"\\eb95"' : '"\\eac5"',
-      }}
-      _hover={{
-        bgColor: themeColors['custom.inputOption.hoverBackground'],
-      }}
+      iconName={ isCollapsed ? 'search-expand-results' : 'collapse-all' }
+      iconContent={ isCollapsed ? '\\eb95' : '\\eac5' }
+      label={ label }
       onClick={ onClick }
-      cursor="pointer"
-      title={ label }
-      aria-label={ label }
+      isDisabled={ isDisabled }
     />
   );
 };

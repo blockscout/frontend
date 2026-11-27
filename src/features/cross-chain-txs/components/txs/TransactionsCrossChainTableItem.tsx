@@ -12,7 +12,6 @@ import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
 import { route } from 'src/shared/router/routes';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -23,6 +22,7 @@ import CrossChainBridgeLink from '../CrossChainBridgeLink';
 import CrossChainFromToTagTx from '../CrossChainFromToTagTx';
 import CrossChainMessageEntity from '../CrossChainMessageEntity';
 import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
+import TokenValueInterchain from '../TokenValueInterchain';
 
 interface Props {
   data: InterchainMessage;

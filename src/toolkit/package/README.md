@@ -35,7 +35,9 @@ Ensure you have the following peer dependencies installed:
     "@chakra-ui/react": ">=3.36.1",
     "@emotion/react": ">=11.14.0",
     "@uidotdev/usehooks": ">=2.4.1",
+    "bignumber.js": ">=9.3.1",
     "d3": ">=7.6.1",
+    "d3-sankey": ">=0.12.3",
     "dayjs": ">=1.11.5",
     "dom-to-image": ">=2.6.0",
     "es-toolkit": ">=1.39.10",
@@ -49,10 +51,12 @@ Ensure you have the following peer dependencies installed:
     "@types/node": "^20",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
-    "typescript": "5.4.2"
+    "typescript": ">=6"
   }
 }
 ```
+
+TypeScript 6 or newer is required: the package's type declarations import `type-fest`, which needs it.
 
 ## Quick Start
 

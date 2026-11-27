@@ -83,7 +83,6 @@ The value is used as set: apostrophes and single-quoted attribute values stay as
   - [DeFi dropdown](#defi-dropdown)
   - [DEX pools](#dex-pools)
   - [Easter eggs](#easter-eggs)
-  - [External transactions](#external-transactions)
   - [Flashblocks](#flashblocks)
   - [Gas tracker](#gas-tracker)
   - [Get gas button](#get-gas-button)
@@ -248,7 +247,7 @@ Chain statistics and charts.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` | v1.29.0+ |
+| NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Path prefix the Stats API is served under on its host; it is put between the host and the path of every request to the service | - | - | `/poa/core` | v1.29.0+ |
 | NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | v2.9.0+ |
 
 &nbsp;
@@ -280,7 +279,7 @@ Solidity-to-UML smart contract visualizer.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | Required | - | `https://visualizer.services.blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_VISUALIZE_API_BASE_PATH | `string` | Base path for Visualize API endpoint url | - | - | `/poa/core` | v1.29.0+ |
+| NEXT_PUBLIC_VISUALIZE_API_BASE_PATH | `string` | Path prefix the Visualize API is served under on its host; it is put between the host and the path of every request to the service | - | - | `/poa/core` | v1.29.0+ |
 
 &nbsp;
 
@@ -979,14 +978,6 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 &nbsp;
 
-### External transactions
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG | `{ chain_name: string; chain_logo_url: string; explorer_url_template: string; }` | Configuration of the external transactions links that should be added to the transaction details. | - | - | `{ chain_name: 'ethereum', chain_logo_url: 'https://example.com/logo.png', explorer_url_template: 'https://explorer.com/tx/{hash}' }` | v1.38.0+ |
-
-&nbsp;
-
 ### Flashblocks
 
 Real-time feed of sub-second pre-confirmation blocks, shown as a tab on the blocks page. The same feature backs two stacks. On **OP Stack** chains the blocks are streamed from the endpoint below, and the chain's own name for them is set with `NEXT_PUBLIC_FLASHBLOCKS_NAME`: the newer **Subblocks** name (the default) or the legacy **Flashblocks** name. Chains are split between the two and both run the same wire protocol, so only the labels differ. On **MegaETH** they are called **mini-blocks** and are streamed from the MegaETH RPC endpoint (see [MegaETH](#megaeth)). The `FLASHBLOCKS` variable name is retained across both.
@@ -1195,7 +1186,6 @@ Enables Blockscout Merits / rewards program. Requires the [Account](#account) an
 | NEXT_PUBLIC_ROLLUP_LAYER_NUMBER | `number` | Layer number of the rollup | - | `2` | `3` | v2.7.0+ |
 | NEXT_PUBLIC_ROLLUP_STAGE_INDEX | `1 \| 2` | Reflects the maturity and decentralization level of the chain based on [L2BEAT's framework](https://medium.com/l2beat/introducing-stages-a-framework-to-evaluate-rollups-maturity-d290bb22befe). The label will be added to the sidebar according to the provided stage index. Not applicable for testnets. | - | - | `1` | v2.1.0+ |
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (Optimistic stack only) | - | - | `true` | v1.31.0+ |
-| NEXT_PUBLIC_INTEROP_ENABLED | `boolean` | Enables "Interop messages" page (Optimistic stack only) | - | `false` | `true` | v1.39.0+ |
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
 | NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only) | - | `false` | `true` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the [Celenium explorer](https://celenium.io). "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |

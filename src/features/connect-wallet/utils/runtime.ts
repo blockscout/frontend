@@ -3,7 +3,7 @@
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import type { createAppKit } from '@reown/appkit/react';
 import type { Config } from 'wagmi';
-import type { disconnect, signMessage, switchChain } from 'wagmi/actions';
+import type { disconnect, getAccount, signMessage, switchChain } from 'wagmi/actions';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
@@ -34,7 +34,25 @@ export interface Web3Runtime {
   // the wagmi/actions subset the boot-time consumers call imperatively before they live under a provider
   disconnect: (parameters?: Parameters<typeof disconnect>[1]) => ReturnType<typeof disconnect>;
   signMessage: (parameters: Parameters<typeof signMessage>[1]) => ReturnType<typeof signMessage>;
-  switchChain: (parameters: Parameters<typeof switchChain>[1]) => ReturnType<typeof switchChain>;
+  // sends no request when the wallet is already on the chain
+  switchChain: (parameters: SwitchChainParameters) => Promise<void>;
+}
+
+type SwitchChainParameters = Parameters<typeof switchChain>[1];
+
+interface ChainActions {
+  readonly getAccount: typeof getAccount;
+  readonly switchChain: typeof switchChain;
+}
+
+// wagmi sends `wallet_switchEthereumChain` even when the wallet is already on the chain, and MetaMask's popup
+// fails when that request lands right after the switch the connect itself asked for (#3926).
+async function switchChainUnlessActive(actions: ChainActions, wagmiConfig: Config, parameters: SwitchChainParameters): Promise<void> {
+  const connector = parameters.connector ?? actions.getAccount(wagmiConfig).connector;
+  const activeChainId = await connector?.getChainId();
+  if (activeChainId !== parameters.chainId) {
+    await actions.switchChain(wagmiConfig, parameters);
+  }
 }
 
 const feature = config.features.connectWallet;
@@ -117,7 +135,7 @@ async function loadRuntime(): Promise<Web3Runtime> {
       },
       disconnect: (parameters) => actions.disconnect(wagmiConfig, parameters),
       signMessage: (parameters) => actions.signMessage(wagmiConfig, parameters),
-      switchChain: (parameters) => actions.switchChain(wagmiConfig, parameters),
+      switchChain: (parameters) => switchChainUnlessActive(actions, wagmiConfig, parameters),
     };
   } catch {
     return DISABLED_RUNTIME;

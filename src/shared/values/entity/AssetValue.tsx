@@ -26,6 +26,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   historicalExchangeRate?: string | null;
   hasExchangeRateToggle?: boolean;
   usdProps?: Omit<BoxProps, 'prefix'>;
+  usdColor?: BoxProps['color'];
 }
 
 const AssetValue = ({
@@ -45,6 +46,7 @@ const AssetValue = ({
   tooltipContent,
   multiplier,
   usdProps,
+  usdColor = 'text.secondary',
   ...rest
 }: Props) => {
   const hasHistorical = Boolean(historicalExchangeRate);
@@ -144,7 +146,7 @@ const AssetValue = ({
       endElement={ layout === 'horizontal' ? <span>)</span> : undefined }
       tooltipContentBefore={ tooltipContentBefore }
       loading={ loading }
-      color="text.secondary"
+      color={ usdColor }
       { ...usdProps }
     />
   );

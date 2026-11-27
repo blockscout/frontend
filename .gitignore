@@ -58,9 +58,6 @@ npm-debug.log*
 # compiled preset-list sync tool
 /tools/dev-server/sync-presets/dist/
 
-# compiled code-complexity gate
-/tools/code-complexity/dist/
-
 # react-doctor standalone install (not part of the root workspace)
 /tools/react-doctor/node_modules/
 
@@ -82,6 +79,9 @@ npm-debug.log*
 # compiled release tool
 /tools/release/dist/
 
+# compiled check of the toolkit declarations
+/tools/toolkit-declarations/dist/
+
 # typescript
 *.tsbuildinfo
 
@@ -89,12 +89,15 @@ npm-debug.log*
 
 **.decrypted~**
 /playwright-results/
+/test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
 /.playwright-mcp/
+/tools/smoke/results/
+/tools/smoke/report/
 
 **.dec**
 

@@ -32,11 +32,11 @@ export default defineConfig({
     }),
     dts({
       include: [
-        '../chakra/**/*.tsx',
+        '../chakra/**/*.{ts,tsx}',
         '../theme/**/*.ts',
         '../components/**/*',
         '../utils/**/*.ts',
-        '../hooks/**/*.tsx',
+        '../hooks/**/*.{ts,tsx}',
         '../router/**/*',
         './src/**/*.ts',
         '../../../global.d.ts',
@@ -83,6 +83,8 @@ export default defineConfig({
         /^dayjs(\/.*)?$/,
         '@internationalized/date',
         'd3',
+        'd3-sankey',
+        'bignumber.js',
         'dom-to-image',
         '@uidotdev/usehooks',
       ],

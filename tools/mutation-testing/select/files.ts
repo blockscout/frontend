@@ -1,10 +1,8 @@
+import type { LineRange, ScopeRule } from 'frontend-home/code-complexity';
+import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, hasCoLocatedSpec, resolveBaseCommit } from 'frontend-home/code-complexity';
 import fs from 'fs';
 import path from 'path';
 
-import type { LineRange } from '../../code-complexity/select/diff';
-import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, resolveBaseCommit } from '../../code-complexity/select/diff';
-import { hasCoLocatedSpec } from '../../code-complexity/select/eligibility';
-import { isInScope } from '../../code-complexity/select/scope';
 import { computeMutationRanges } from './ranges';
 
 export interface SelectionRequest {
@@ -54,8 +52,8 @@ function toWholeFileTargets(cwd: string, files: ReadonlyArray<string>): Array<Mu
 }
 
 // Full mode: every in-scope file in the repo that has a spec beside it.
-function selectAll(cwd: string): Selection {
-  const eligible = getAllSourceFiles(cwd).filter((file) => isEligible(cwd, file));
+function selectAll(cwd: string, isInScope: ScopeRule): Selection {
+  const eligible = getAllSourceFiles(cwd, isInScope).filter((file) => isEligible(cwd, file));
   if (eligible.length === 0) return { outcome: 'empty', reason: 'No source file in scope has a co-located vitest spec — nothing to mutate.' };
 
   const targets = toWholeFileTargets(cwd, eligible);
@@ -79,7 +77,7 @@ function selectFocused(cwd: string, focusPaths: ReadonlyArray<string>): Selectio
   return { outcome: 'selected', targets, ineligible };
 }
 
-function selectChanged(cwd: string, baseRef: string): Selection {
+function selectChanged(cwd: string, baseRef: string, isInScope: ScopeRule): Selection {
   const baseCommit = resolveBaseCommit(baseRef, cwd);
   const changed = getChangedFiles(baseCommit, cwd).filter(isInScope).filter((file) => fs.existsSync(path.resolve(cwd, file)));
   if (changed.length === 0) return { outcome: 'empty', reason: `No source file in scope changed vs ${ baseRef } — nothing to mutate.` };
@@ -93,9 +91,10 @@ function selectChanged(cwd: string, baseRef: string): Selection {
 }
 
 // `cwd` is the repository to resolve the selection in, passed rather than read off the process:
-// process.chdir() throws in the worker threads Stryker runs vitest in.
-export function selectFiles(request: SelectionRequest, cwd: string): Selection {
+// process.chdir() throws in the worker threads Stryker runs vitest in. `isInScope` is the complexity
+// gate's rule, built by the caller from that gate's config file, so the two gates keep one scope.
+export function selectFiles(request: SelectionRequest, cwd: string, isInScope: ScopeRule): Selection {
   if (request.focusPaths.length > 0) return selectFocused(cwd, request.focusPaths);
-  if (request.diffSelected) return selectChanged(cwd, request.baseRef);
-  return selectAll(cwd);
+  if (request.diffSelected) return selectChanged(cwd, request.baseRef, isInScope);
+  return selectAll(cwd, isInScope);
 }

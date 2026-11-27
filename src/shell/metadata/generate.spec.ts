@@ -33,6 +33,34 @@ it('transaction route with enhanced og data', () => {
   );
 });
 
+describe('transaction receipt route', () => {
+  const route = { pathname: '/tx/[hash]/receipt' as const, query: { hash: transaction.hash } };
+
+  it('enhanced data', () => {
+    const result = generate(route, {
+      tx_status: 'Success',
+      tx_action: 'Transfer 100 DUCK to 0xd7...5859',
+      tx_timestamp: 'Oct 10, 2022 14:34 UTC',
+    });
+
+    expect(result.opengraph.title).toBe('Blockscout transaction receipt 0x62...3193 | Blockscout');
+    expect(result.opengraph.description).toBe('Success · Transfer 100 DUCK to 0xd7...5859 · Oct 10, 2022 14:34 UTC');
+    expect(result.title).toBe(`Blockscout transaction receipt ${ transaction.hash } | Blockscout`);
+    expect(result.description).toBe(
+      'Blockscout detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+    );
+  });
+
+  it('no enhanced data', () => {
+    const result = generate(route);
+
+    expect(result.opengraph.title).toBe('Blockscout transaction receipt 0x62...3193 | Blockscout');
+    expect(result.opengraph.description).toBe(
+      'Blockscout detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+    );
+  });
+});
+
 describe('address route', () => {
   it('enhanced data', () => {
     const result = generate({ pathname: '/address/[hash]', query: { hash: addressHash } }, { domain_name: 'duck.eth' });

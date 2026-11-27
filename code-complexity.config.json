@@ -1,0 +1,11 @@
+{
+  "roots": [ "src/", "tools/", "deploy/tools/" ],
+  "extensions": [ ".ts", ".tsx", ".mjs", ".js", ".cjs" ],
+  "specPatterns": [ "\\.spec\\.", "\\.pw\\.tsx$", "\\.pwstory\\.tsx$", "\\.config\\." ],
+  "generatedPatterns": [ "^src/toolkit/package/", "/dist/", "(^|/)envs\\.js$" ],
+  "maxCognitiveJsx": 25,
+  "maxCognitiveBehavior": 20,
+  "maxCrap": 80,
+  "baseRef": "origin/main",
+  "coverage": { "vitestConfig": "tools/code-complexity/vitest.config.ts" }
+}
