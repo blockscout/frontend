@@ -52,16 +52,21 @@ explorer's.
     chain links to that chain's explorer. Rows carry no add-to-wallet control.
 13. Links that mean "this chain's tokens" — the "view all" link of the token select on the Details tab and
     the Etherscan-style `#asset-tokens` redirect — open the Tokens sub-tab, not the portfolio.
+14. The Details tab shows a "Multichain net worth" row below "Net worth": the address's total across all
+    chains, followed by the multichain-button providers. "Net worth" keeps the current chain's value and
+    no longer carries the providers. The row is shown for every address, contracts included.
 
 **When the feature is disabled**
 
-14. The tab is titled "Tokens", has the Tokens and NFTs sub-tabs only, and makes no request to the
-    aggregator.
+15. The tab is titled "Tokens", has the Tokens and NFTs sub-tabs only, and makes no request to the
+    aggregator. The Details tab has no "Multichain net worth" row and its "Net worth" row keeps the
+    providers.
 
 **Multichain explorer**
 
-15. Its own address page behaves as before: same portfolio, same tab ids, no add-to-wallet control. It
-    picks up the shared table and plate components without a visible change.
+16. Its own address page behaves as before: same portfolio, same tab ids, no add-to-wallet control. It
+    picks up the shared table and plate components without a visible change beyond the plate's spacing
+    and dividers.
 
 ## Data & API
 
@@ -100,6 +105,9 @@ Route: `/address/[hash]`, tab `tokens`. No new route or navigation entry.
 | Assets → Multichain portfolio | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6330-3356 |
 | Assets → Tokens | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6337-4418 |
 | Assets → NFTs | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6339-2653 |
+| Details → net worth rows | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-6649 |
+| Net-worth plate, Multichain portfolio | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6435-4620 |
+| Net-worth plate, Tokens | https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6363-10621 |
 
 - Mockups are desktop only.
 - **Deliberate deviation**: the Tokens mockup still draws the old five-column table with a Contract address
