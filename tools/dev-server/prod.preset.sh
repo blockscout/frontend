@@ -72,7 +72,7 @@ if [ "$skip_build" = false ]; then
   # Fetch the instance config into ./.env.tmp (compile-on-run)
   ./tools/dev-server/fetch.sh "$preset_name" || exit 1
 
-  prepare_assets "$preset_name"
+  prepare_assets
 
   # build the app
   run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && pnpm lint:tsc && next build${build_flags}" || exit 1

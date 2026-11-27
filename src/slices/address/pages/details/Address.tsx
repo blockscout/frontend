@@ -23,7 +23,7 @@ import AddressDetails from 'src/slices/address/pages/details/info/AddressDetails
 import AddressInternalTxs from 'src/slices/address/pages/details/internal-txs/AddressInternalTxs';
 import AddressLogs from 'src/slices/address/pages/details/logs/AddressLogs';
 import AddressTokenTransfers, { ADDRESS_TOKEN_TRANSFERS_TAB_IDS } from 'src/slices/address/pages/details/token-transfers/AddressTokenTransfers';
-import AddressTokens from 'src/slices/address/pages/details/tokens/AddressTokens';
+import AddressTokens, { ADDRESS_TOKENS_TAB_IDS } from 'src/slices/address/pages/details/tokens/AddressTokens';
 import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'src/slices/address/pages/details/txs/AddressTxs';
 import { ADDRESS_TABS_COUNTERS } from 'src/slices/address/stubs/address';
 import getCheckedSummedAddress from 'src/slices/address/utils/get-checked-summed-address';
@@ -56,8 +56,6 @@ import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
-
-const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
@@ -234,10 +232,11 @@ const AddressPageContent = () => {
       },
       {
         id: 'tokens',
-        title: 'Tokens',
-        count: addressTabsCountersQuery.data?.token_balances_count,
+        ...(config.features.multichainPortfolio.isEnabled ?
+          { title: 'Assets' } :
+          { title: 'Tokens', count: addressTabsCountersQuery.data?.token_balances_count }),
         component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-        subTabs: TOKEN_TABS,
+        subTabs: ADDRESS_TOKENS_TAB_IDS,
       },
       config.slices.internalTx.isEnabled ? {
         id: 'internal_txns',

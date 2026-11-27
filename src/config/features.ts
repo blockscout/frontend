@@ -27,6 +27,7 @@ export { default as megaEth } from 'src/features/chain-variants/mega-eth/config'
 export { default as metasuites } from 'src/features/metasuites/config';
 export { default as multichain } from 'src/features/multichain/config';
 export { default as multichainButton } from 'src/features/multichain-button/config';
+export { default as multichainPortfolio } from 'src/features/multichain-portfolio/config';
 export { default as nameServices } from 'src/features/name-services/config';
 export { default as dexPools } from 'src/features/dex-pools/config';
 export { default as rewards } from 'src/features/rewards/config';

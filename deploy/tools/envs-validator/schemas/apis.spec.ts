@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 import { toEnvValue } from '../test-utils';
 import { getValidationErrors } from '../utils';
-import apisSchema from './apis';
+import apisSchema, { multichainAggregatorApiSchema } from './apis';
 
 const REQUIRED = { NEXT_PUBLIC_API_HOST: 'blockscout.com' };
 
@@ -126,5 +126,20 @@ describe('apisSchema', () => {
     'NEXT_PUBLIC_METADATA_SERVICE_API_HOST',
   ])('rejects a malformed %s', (name) => {
     expect(getValidationErrors(apisSchema, { ...REQUIRED, [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
+  });
+});
+
+describe('multichainAggregatorApiSchema', () => {
+  it('accepts the host together with the cluster', () => {
+    expect(getValidationErrors(multichainAggregatorApiSchema, {
+      NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'https://aggregator.example.com',
+      NEXT_PUBLIC_MULTICHAIN_CLUSTER: 'test',
+    })).toEqual([]);
+  });
+
+  it('rejects a malformed host', () => {
+    expect(getValidationErrors(multichainAggregatorApiSchema, { NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'not a url' })).toEqual([
+      'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: Invalid URL: Received "not a url"',
+    ]);
   });
 });

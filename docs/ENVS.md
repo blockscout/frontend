@@ -91,6 +91,7 @@ The value is used as set: apostrophes and single-quoted attribute values stay as
   - [MetaSuites extension](#metasuites-extension)
   - [Multichain button](#multichain-button)
   - [Multichain explorer](#multichain-explorer)
+  - [Multichain portfolio](#multichain-portfolio)
   - [Name services](#name-services)
   - [Rewards](#rewards)
   - [Rollup](#rollup)
@@ -210,7 +211,7 @@ Address metadata (public tags, profiles) and the public-tag submission flow.
 
 ### Multichain Aggregator API
 
-Primary backend for the multichain explorer — aggregated chain, address, and transaction data.
+Aggregated chain, address, and transaction data across the chains of a cluster. Primary backend for the [Multichain explorer](#multichain-explorer); also serves the [Multichain portfolio](#multichain-portfolio) on a single-chain instance.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -1129,6 +1130,19 @@ This feature enables the application to act as an explorer of multiple blockchai
 | [NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST](#multichain-aggregator-api) | Required |
 | [NEXT_PUBLIC_MULTICHAIN_CLUSTER](#multichain-aggregator-api) | Required |
 | [NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST](#multichain-stats-api) | Required |
+
+&nbsp;
+
+### Multichain portfolio
+
+Shows an address's assets across all chains of a cluster on the address page of a single-chain explorer. The feature has no variable of its own: it is enabled when the Multichain Aggregator API is configured and the [Multichain explorer](#multichain-explorer) is not enabled.
+
+**Dependencies**
+
+| Variable | Compulsoriness |
+| --- | --- |
+| [NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST](#multichain-aggregator-api) | Required |
+| [NEXT_PUBLIC_MULTICHAIN_CLUSTER](#multichain-aggregator-api) | Required |
 
 &nbsp;
 

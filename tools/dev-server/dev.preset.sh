@@ -41,7 +41,7 @@ build_port_args "$port" "$usage"
 ./tools/dev-server/fetch.sh "$preset_name" || exit 1
 
 build_env_args ./.env.tmp
-prepare_assets "$preset_name"
+prepare_assets
 
 # generate envs.js file and run the app
 run_with_envs 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |

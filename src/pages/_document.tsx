@@ -10,6 +10,7 @@ import logRequestFromBot from 'src/server/utils/logRequestFromBot';
 import * as serverTiming from 'src/server/utils/serverTiming';
 
 import config from 'src/config';
+import { CLUSTER_CONFIG_SCRIPT_URL } from 'src/shared/external-chains/cluster-config';
 import { SPRITE_URL } from 'src/sprite/SpriteInjector';
 
 import { ColorModeProvider } from 'src/toolkit/chakra/color-mode';
@@ -72,7 +73,7 @@ class MyDocument extends Document {
           { config.features.multichain.isEnabled && (
             <>
               { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
-              <script src="/assets/multichain/config.js"/>
+              <script src={ CLUSTER_CONFIG_SCRIPT_URL }/>
             </>
           ) }
           { marketplaceFeature.isEnabled && marketplaceFeature.essentialDapps && (

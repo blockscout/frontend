@@ -74,7 +74,7 @@ const TokenSelect = () => {
       }
       <Tooltip content="Show all tokens">
         <Link
-          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }, { chain: multichainContext?.chain }) }
+          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens_erc20' } }, { chain: multichainContext?.chain }) }
           asChild
           scroll={ false }
         >

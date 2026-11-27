@@ -2,7 +2,7 @@
 
 import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { groupBy, mapValues } from 'es-toolkit';
+import { mapValues } from 'es-toolkit';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -13,9 +13,13 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import multichainConfig from 'src/features/multichain/chains-config';
+import AddressPortfolioNetWorth from 'src/slices/token/pages/address/portfolio/AddressPortfolioNetWorth';
+import AddressPortfolioTokensTable from 'src/slices/token/pages/address/portfolio/AddressPortfolioTokensTable';
+import { calculateUsdValue, getTopTokens } from 'src/slices/token/pages/address/portfolio/utils';
+
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
+import { clusterConfig } from 'src/shared/external-chains/cluster-config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -23,16 +27,12 @@ import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilt
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
-import * as cookies from 'src/shared/storage/cookies';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
-import { ZERO } from 'src/toolkit/utils/consts';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
-import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
-import MultichainAddressTokensTable from './MultichainAddressTokensTable';
-import { calculateUsdValue } from './utils';
+import { useIncludePoorReputationTokens } from './useIncludePoorReputationTokens';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -40,15 +40,13 @@ interface Props {
 }
 
 const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => {
-  const config = multichainConfig();
+  const config = clusterConfig();
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
   const chainIdParam = getQueryParamString(router.query.chain_id);
 
-  const tokenReputationFilter = React.useMemo(() => {
-    return cookies.get(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS) === 'true' ? true : false;
-  }, []);
+  const tokenReputationFilter = useIncludePoorReputationTokens();
 
   const portfolioQuery = useApiQuery('multichainAggregator:address_portfolio', {
     pathParams: { hash },
@@ -123,50 +121,12 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
   });
 
   const topTokens = React.useMemo(() => {
-    if (allTokensQuery.data?.items?.length === 0) {
-      return;
-    }
-
-    const totalUsd = BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0');
-    if (totalUsd.isZero()) {
-      const hasOneToken = allTokensQuery.data?.items?.length === 1;
-      if (hasOneToken) {
-        return [
-          { symbol: allTokensQuery.data?.items?.[0]?.token.symbol ?? 'Unknown', share: 1 },
-        ];
-      }
-      return [
-        { symbol: 'Others', share: 1 },
-      ];
-    }
-
-    const usdBalances = allTokensQuery.data?.items?.map((item) => ({
+    const holdings = allTokensQuery.data?.items?.map((item) => ({
       symbol: item.token.symbol ?? 'Unknown',
       usd: calculateUsdValue(item)?.usd,
     }));
-    const groups = groupBy(usdBalances ?? [], (item) => item.symbol);
-    const topTokens = Object.entries(groups)
-      .map(([ symbol, items ]) => ({
-        symbol,
-        usd: items.reduce((acc, item) => acc.plus(item.usd ?? ZERO), ZERO),
-      }))
-      .filter((item) => item.usd.gt(0))
-      .sort((a, b) => b.usd.minus(a.usd).toNumber())
-      .slice(0, 2)
-      .map((item) => ({
-        symbol: item.symbol,
-        share: item.usd.div(totalUsd).toNumber(),
-      }));
 
-    const othersShare = 1 - topTokens.reduce((acc, item) => acc + item.share, 0);
-
-    return [
-      ...topTokens,
-      othersShare > 0 ? {
-        symbol: 'Others',
-        share: othersShare,
-      } : undefined,
-    ].filter(Boolean);
+    return getTopTokens(holdings, BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0'));
   }, [ allTokensQuery.data?.items, portfolioQuery.data?.portfolio?.total_value ]);
 
   const searchInput = (
@@ -181,7 +141,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
 
   const tokensContent = tokensQuery.data?.items ? (
     <TableContainerScrollable>
-      <MultichainAddressTokensTable
+      <AddressPortfolioTokensTable
         data={ tokensQuery.data.items }
         top={ ACTION_BAR_HEIGHT_DESKTOP }
         isLoading={ tokensQuery.isInitialLoading }
@@ -208,11 +168,13 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
 
   return (
     <Box>
-      <MultichainAddressPortfolioNetWorth
+      <AddressPortfolioNetWorth
         addressHash={ hash }
         netWorth={ portfolioQuery.data?.portfolio?.total_value }
         isLoading={ portfolioQuery.isPlaceholderData || allTokensQuery.isPlaceholderData || isLoading }
         topTokens={ topTokens }
+        hasAdBanner
+        hasMultichainButtons
       />
       <MultichainAddressPortfolioCards
         chainValues={ portfolioData }

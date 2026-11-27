@@ -9,6 +9,11 @@ const statsApiRefetchIntervalSchema = envJson(v.strictObject({
   'stats:pages_main': v.optional(v.pipe(v.number(), v.integer(), v.minValue(1))),
 }));
 
+export const multichainAggregatorApiSchema = v.object({
+  NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: v.optional(envUrl()),
+  NEXT_PUBLIC_MULTICHAIN_CLUSTER: v.optional(v.string()),
+});
+
 export default v.pipe(
   v.object({
     NEXT_PUBLIC_API_PROTOCOL: v.optional(v.picklist(protocols)),

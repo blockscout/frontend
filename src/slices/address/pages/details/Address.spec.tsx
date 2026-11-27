@@ -6,6 +6,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import type { ResourcePayload } from 'src/api/resources';
+
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
@@ -39,7 +41,7 @@ function jsonResponse(body: unknown): { headers: Record<string, string>; body: s
   return { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
 }
 
-function mockAddress(address: schemas['AddressResponse'], tabsCounters?: schemas['AddressTabsCounters']): void {
+function mockAddress(address: schemas['AddressResponse'], tabsCounters?: Partial<ResourcePayload<'core:address_tabs_counters'>>): void {
   fetchMock.mockResponse((request) => {
     const { pathname } = new URL(request.url);
 
@@ -111,6 +113,38 @@ describe('address scam flag', () => {
       // so the page reads "Contract details" until the EOA response replaces it
       expect(await screen.findByText('Address details')).toBeTruthy();
       expect(screen.queryByText(SCAM_ALERT_TEXT)).toBeNull();
+    });
+  });
+});
+
+describe('token tab title', () => {
+  const MULTICHAIN_PORTFOLIO_ENVS: Array<[ string, string ]> = [
+    [ 'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST', 'https://aggregator.example.com' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_CLUSTER', 'test' ],
+  ];
+
+  const TABS_COUNTERS = { token_balances_count: 7 };
+
+  it('is "Assets" with the multichain portfolio, without the current chain\'s token count', { timeout: TEST_TIMEOUT }, async() => {
+    await withEnvs(MULTICHAIN_PORTFOLIO_ENVS, async() => {
+      mockAddress(addressMock.eoa, TABS_COUNTERS);
+      await renderAddressPage();
+
+      expect(await screen.findByText('Address details')).toBeTruthy();
+      expect((await screen.findAllByRole('tab', { name: 'Assets' })).length).toBeGreaterThan(0);
+      expect(screen.queryByRole('tab', { name: /^Assets.*7/ })).toBeNull();
+      expect(screen.queryByRole('tab', { name: /^Tokens/ })).toBeNull();
+    });
+  });
+
+  it('is "Tokens" with the token count without it', { timeout: TEST_TIMEOUT }, async() => {
+    await withEnvs([], async() => {
+      mockAddress(addressMock.eoa, TABS_COUNTERS);
+      await renderAddressPage();
+
+      expect(await screen.findByText('Address details')).toBeTruthy();
+      expect((await screen.findAllByRole('tab', { name: /^Tokens.*7/ })).length).toBeGreaterThan(0);
+      expect(screen.queryByRole('tab', { name: /^Assets/ })).toBeNull();
     });
   });
 });

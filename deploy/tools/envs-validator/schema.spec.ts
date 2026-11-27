@@ -34,6 +34,28 @@ describe('single-chain schema', () => {
     ]);
   });
 
+  describe('multichain aggregator API', () => {
+    it('accepts the aggregator host and the cluster', () => {
+      expect(getValidationErrors(schema, {
+        ...REQUIRED,
+        NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'https://example.com',
+        NEXT_PUBLIC_MULTICHAIN_CLUSTER: 'test',
+      })).toEqual([]);
+    });
+
+    it('rejects a malformed aggregator host', () => {
+      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'not a url' })).toEqual([
+        'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: Invalid URL: Received "not a url"',
+      ]);
+    });
+
+    it('treats the Multichain-explorer-only stats host as unknown', () => {
+      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST: 'https://example.com' })).toEqual([
+        'Unknown ENV variables were provided: NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST',
+      ]);
+    });
+  });
+
   describe('cross-schema dependencies', () => {
     it('accepts DEX pools together with the contract info API host', () => {
       expect(getValidationErrors(schema, {

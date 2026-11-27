@@ -5,17 +5,13 @@ import React from 'react';
 
 import type { NftTokenType } from 'src/slices/token/types/api';
 
-import ActionBar from 'src/shell/page/action-bar/ActionBar';
-
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NftFallback from 'src/slices/token/components/nft-media/NftFallback';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
-import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import { route } from 'src/shared/router/routes';
 
@@ -24,7 +20,8 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import AddressNftItem from './AddressNftItem';
 import AddressNftItemContainer from './AddressNftItemContainer';
-import AddressNftTypeFilter from './AddressNftTypeFilter';
+import type { NftDisplayTypeSwitch } from './AddressNftsActionBar';
+import AddressNftsActionBar from './AddressNftsActionBar';
 
 // each rendered row is a whole collection with its own nested grid of NFTs, so the initial
 // window is smaller than the flat-grid layouts
@@ -35,10 +32,10 @@ type Props = {
   address: string;
   tokenTypes: Array<NftTokenType> | undefined;
   onTokenTypesChange: (value: Array<NftTokenType>) => void;
+  displayTypeSwitch?: NftDisplayTypeSwitch;
 };
 
-const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onTokenTypesChange }: Props) => {
-  const isMobile = useIsMobile();
+const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onTokenTypesChange, displayTypeSwitch }: Props) => {
   const multichainContext = useMultichainContext();
 
   const { isError, isInitialLoading, isTransitioning, data, pagination } = collectionsQuery;
@@ -53,11 +50,13 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
 
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
-  const actionBar = isMobile && pagination.isVisible && (
-    <ActionBar mt={ multichainContext ? -6 : -3 }>
-      <AddressNftTypeFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
+  const actionBar = (
+    <AddressNftsActionBar
+      tokenTypes={ tokenTypes }
+      onTokenTypesChange={ onTokenTypesChange }
+      pagination={ pagination }
+      displayTypeSwitch={ displayTypeSwitch }
+    />
   );
 
   const renderedCollections = items?.slice(0, renderedItemsNum).map((item, index) => {
