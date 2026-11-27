@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Keep this module free of `src/config` imports, direct or transitive: it is the part of the cookies module the config
-// itself may import, and an import back into the config is a cycle that fails when this module loads first.
+// Keep this module free of `src/config` imports, direct or transitive.
 
 import Cookies from 'js-cookie';
 
