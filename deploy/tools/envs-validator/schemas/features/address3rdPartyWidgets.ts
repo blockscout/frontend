@@ -4,7 +4,7 @@ import * as v from 'valibot';
 
 import { ADDRESS_3RD_PARTY_WIDGET_PAGES } from 'src/features/address-3rd-party-widgets/types/view';
 
-import { envJson, jsonRecord, requires } from '../../utils';
+import { envJson, envJsonFile, jsonRecord, requires } from '../../utils';
 
 const widgetSchema = v.object({
   name: v.pipe(v.string(), v.nonEmpty()),
@@ -22,7 +22,7 @@ export const address3rdPartyWidgetsFileSchema = jsonRecord(widgetSchema);
 
 export const address3rdPartyWidgetsConfigSchema = v.pipe(
   v.looseObject({
-    NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: v.optional(envJson(address3rdPartyWidgetsFileSchema)),
+    NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: v.optional(envJsonFile(address3rdPartyWidgetsFileSchema)),
     NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: v.optional(envJson(v.array(v.string()))),
   }),
   requires('NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS', 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', {

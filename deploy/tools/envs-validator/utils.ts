@@ -61,11 +61,14 @@ export const envHtmlList = (): v.GenericSchema<string, string> => v.pipe(
   v.check((value) => isAllowedHtml(parseEnvHtmlList(value)), (issue) => disallowedHtmlMessage(parseEnvHtmlList(issue.input))),
 );
 
-export const envJson = <TSchema extends v.GenericSchema>(schema: TSchema): v.GenericSchema<string, v.InferOutput<TSchema>> => v.pipe(
+const jsonString = <TSchema extends v.GenericSchema>(
+  schema: TSchema,
+  parse: (value: string) => unknown,
+): v.GenericSchema<string, v.InferOutput<TSchema>> => v.pipe(
   v.string(),
   v.rawTransform(({ dataset, addIssue, NEVER }): unknown => {
     try {
-      return JSON.parse(replaceQuotes(dataset.value) as string);
+      return parse(dataset.value);
     } catch {
       addIssue({ message: `Invalid JSON: Received ${ JSON.stringify(dataset.value) }` });
       return NEVER;
@@ -73,6 +76,14 @@ export const envJson = <TSchema extends v.GenericSchema>(schema: TSchema): v.Gen
   }),
   schema,
 );
+
+export const envJson = <TSchema extends v.GenericSchema>(schema: TSchema): v.GenericSchema<string, v.InferOutput<TSchema>> =>
+  jsonString(schema, (value) => JSON.parse(replaceQuotes(value) as string));
+
+// For a variable that carries the content of a downloaded JSON config file. The quote rewrite of `envJson`
+// would turn an apostrophe inside a string into a closing quote.
+export const envJsonFile = <TSchema extends v.GenericSchema>(schema: TSchema): v.GenericSchema<string, v.InferOutput<TSchema>> =>
+  jsonString(schema, (value) => JSON.parse(value));
 
 const isJsonObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 

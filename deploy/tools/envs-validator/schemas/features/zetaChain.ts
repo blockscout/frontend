@@ -2,7 +2,7 @@
 
 import * as v from 'valibot';
 
-import { companionRule, envJson, envUrl, requires } from '../../utils';
+import { companionRule, envJson, envJsonFile, envUrl, requires } from '../../utils';
 
 const zetaChainCCTXConfigSchema = v.object({
   chain_id: v.number(),
@@ -22,7 +22,7 @@ const externalSearchItemSchema = v.object({
 export const zetaChainSchema = v.pipe(
   v.looseObject({
     NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: v.optional(envUrl()),
-    NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: v.optional(envJson(v.array(zetaChainCCTXConfigSchema))),
+    NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: v.optional(envJsonFile(v.array(zetaChainCCTXConfigSchema))),
     NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: v.optional(envJson(v.array(externalSearchItemSchema))),
   }),
   requires('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {

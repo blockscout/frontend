@@ -69,6 +69,13 @@ describe('marketplaceSchema', () => {
   });
 
   describe('NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL', () => {
+    it('accepts a file with an apostrophe in a link title', () => {
+      expect(getValidationErrors(marketplaceSchema, {
+        ...ENABLED,
+        NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: JSON.stringify({ aave: [ { title: 'Aave\'s V3', url: 'https://example.com/aave' } ] }),
+      })).toEqual([]);
+    });
+
     it('rejects a list in place of the links by app id', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,

@@ -21,7 +21,7 @@ import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorMo
 
 import * as regexp from 'src/toolkit/utils/regexp';
 
-import { companionRule, envBoolean, envHtmlList, envJson, envUrl, requiredIf, requires } from '../utils';
+import { companionRule, envBoolean, envHtmlList, envJson, envJsonFile, envUrl, requiredIf, requires } from '../utils';
 import { colorThemeOverridesSchema } from './colorThemeOverrides';
 
 const requiredString = () => v.pipe(v.string(), v.nonEmpty());
@@ -120,7 +120,7 @@ const hasItems = (value: unknown) => Array.isArray(value) && value.length > 0;
 
 export const navigationSchema = v.pipe(
   v.object({
-    NEXT_PUBLIC_FEATURED_NETWORKS: v.optional(envJson(featuredNetworksFileSchema)),
+    NEXT_PUBLIC_FEATURED_NETWORKS: v.optional(envJsonFile(featuredNetworksFileSchema)),
     NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: v.optional(envUrl()),
     NEXT_PUBLIC_FEATURED_NETWORKS_MODE: v.optional(v.picklist([ 'tabs', 'list' ])),
     NEXT_PUBLIC_OTHER_LINKS: v.optional(envJson(v.array(navItemExternalSchema))),
@@ -156,7 +156,7 @@ const footerLinkGroupSchema: v.GenericSchema<CustomLinksGroup> = v.object({
 export const footerLinksFileSchema = v.array(footerLinkGroupSchema);
 
 export const footerSchema = v.object({
-  NEXT_PUBLIC_FOOTER_LINKS: v.optional(envJson(footerLinksFileSchema)),
+  NEXT_PUBLIC_FOOTER_LINKS: v.optional(envJsonFile(footerLinksFileSchema)),
 });
 
 const fontFamilySchema = v.object({

@@ -20,7 +20,9 @@ async function main(): Promise<void> {
 
   let failedCount = 0;
   for (const filePath of filePaths) {
-    const errors = validateJsonConfigFile(schema, await readFile(filePath, 'utf8'));
+    const errors = await readFile(filePath, 'utf8')
+      .then((content) => validateJsonConfigFile(schema, content))
+      .catch((error: unknown) => [ `Unable to read file: ${ error instanceof Error ? error.message : String(error) }` ]);
     if (errors.length > 0) {
       failedCount++;
       console.log(`🚨 ${ filePath }`);

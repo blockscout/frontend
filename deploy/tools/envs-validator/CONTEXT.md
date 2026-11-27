@@ -10,7 +10,7 @@ startup.
 - **`checks.ts`** — the pure core (`runChecks`). Everything the CLI decides is decided here on pre-read
   inputs, which is what the specs exercise.
 - **`json-configs.ts`** — the schemas of the JSON config values, by variable name, for validating a file
-  outside a container. **`json-configs-cli.ts`** is its CLI, built by `pnpm run build:json-configs`.
+  outside a container. **`json-configs-cli.ts`** is its CLI.
 - **`deprecations.ts`** — variables that only produce a startup warning.
 - **`schema.ts`** — the default top-level schema; selected when `NEXT_PUBLIC_MULTICHAIN_ENABLED` is unset or
   `false`.
@@ -35,9 +35,10 @@ own: the Dockerfile ships `dist/index.js`.
    with an accepted value and one per rejection path asserting the exact message. A JSON-shaped value is a
    typed object passed through `toEnvValue`, which produces the single-quoted form operators use. A
    variable applying in both modes needs a line in both top-level specs.
-   - **JSON config URL variable** → register it in `ENVS_WITH_JSON_CONFIG` in `checks.ts`; at validation
-     time the variable carries the downloaded file content, not the URL, so the spec feeds it
-     `JSON.stringify(content)`.
+   - **JSON config URL variable** → register it in `ENVS_WITH_JSON_CONFIG` in `checks.ts`, export the
+     schema of its file and add it to `JSON_CONFIG_FILE_SCHEMAS` in `json-configs.ts`. At validation
+     time the variable carries the downloaded file content, not the URL, so its entry wraps the file schema
+     in `envJsonFile`, not `envJson`, and the spec feeds it `JSON.stringify(content)`.
 
 4. **Run the suite:**
    ```bash

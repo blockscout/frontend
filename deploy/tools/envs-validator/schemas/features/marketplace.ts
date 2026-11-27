@@ -2,7 +2,7 @@
 
 import * as v from 'valibot';
 
-import { envBoolean, envJson, envUrl, jsonRecord, requiredIf, requires } from '../../utils';
+import { envBoolean, envJson, envJsonFile, envUrl, jsonRecord, requiredIf, requires } from '../../utils';
 
 const nestedUrlSchema = v.pipe(v.string(), v.url());
 const nestedRequiredStringSchema = v.pipe(v.string(), v.nonEmpty());
@@ -69,14 +69,14 @@ const dependentOnMarketplaceEnabled = (name: string) => requires(name, 'NEXT_PUB
 export const marketplaceSchema = v.pipe(
   v.object({
     NEXT_PUBLIC_MARKETPLACE_ENABLED: v.optional(envBoolean()),
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: v.optional(envJson(marketplaceAppsFileSchema)),
-    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: v.optional(envJson(marketplaceCategoriesFileSchema)),
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: v.optional(envJsonFile(marketplaceAppsFileSchema)),
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: v.optional(envJsonFile(marketplaceCategoriesFileSchema)),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: v.optional(envUrl()),
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: v.optional(envUrl()),
     NEXT_PUBLIC_MARKETPLACE_FEATURED_APP: v.optional(v.string()),
     NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL: v.optional(envUrl()),
     NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL: v.optional(envUrl()),
-    NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: v.optional(envJson(marketplaceGraphLinksFileSchema)),
+    NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: v.optional(envJsonFile(marketplaceGraphLinksFileSchema)),
     NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: v.optional(envJson(essentialDappsConfigSchema)),
     NEXT_PUBLIC_MARKETPLACE_TITLES: v.optional(envJson(marketplaceTitlesSchema)),
     NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: v.optional(envBoolean()),

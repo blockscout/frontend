@@ -6,12 +6,13 @@ import { ENVS_WITH_JSON_CONFIG } from './checks';
 import { JSON_CONFIG_FILE_SCHEMAS, validateJsonConfigFile } from './json-configs';
 import { marketplaceCategories } from './mocks/marketplace';
 
-const DEPRECATED_CHAIN_VARIANT_ENVS = [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' ];
+// ZetaChain support is being removed, so its config gets no file schema - https://github.com/blockscout/frontend/issues/3897
+const ENVS_WITHOUT_FILE_SCHEMA = [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' ];
 
 describe('JSON_CONFIG_FILE_SCHEMAS', () => {
   it('has a schema for every variable that links to a JSON config file', () => {
     const missing = ENVS_WITH_JSON_CONFIG
-      .filter((name) => !DEPRECATED_CHAIN_VARIANT_ENVS.includes(name))
+      .filter((name) => !ENVS_WITHOUT_FILE_SCHEMA.includes(name))
       .filter((name) => !(name in JSON_CONFIG_FILE_SCHEMAS));
     expect(missing).toEqual([]);
   });

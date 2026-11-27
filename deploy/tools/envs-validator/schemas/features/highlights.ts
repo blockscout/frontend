@@ -2,7 +2,7 @@
 
 import * as v from 'valibot';
 
-import { envJson } from '../../utils';
+import { envJsonFile } from '../../utils';
 
 const colorPairSchema = v.optional(v.pipe(v.array(v.string()), v.maxLength(2)));
 
@@ -21,5 +21,5 @@ const highlightsBannerConfigSchema = v.object({
 export const highlightsFileSchema = v.pipe(v.array(highlightsBannerConfigSchema), v.minLength(2));
 
 export const highlightsConfigSchema = v.object({
-  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: v.optional(envJson(highlightsFileSchema)),
+  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: v.optional(envJsonFile(highlightsFileSchema)),
 });
