@@ -5,14 +5,15 @@ import { currencyUnits } from 'src/slices/chain/units';
 import { txInterpretation } from 'src/features/tx-interpretation/blockscout/mocks';
 import { TX_INTERPRETATION } from 'src/features/tx-interpretation/blockscout/stubs';
 
-import { it, expect, beforeEach, vi } from 'vitest';
+import { it, expect, beforeEach } from 'vitest';
+import { mockLocalUtcOffset } from 'vitest/utils/mockTimeZone';
 
 import summaryToPlainText from './summary-to-plain-text';
 
 // A timestamp variable is rendered in local time, as on the page — pin the zone so the assertion holds
 // wherever the suite runs.
 beforeEach(() => {
-  vi.stubEnv('TZ', 'UTC');
+  mockLocalUtcOffset(0);
 });
 
 it('renders every variable type the way the page does', () => {

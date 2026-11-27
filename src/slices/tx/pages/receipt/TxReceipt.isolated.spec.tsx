@@ -25,6 +25,7 @@ import { render, screen, cleanup, act, waitFor, fireEvent, within } from 'vitest
 import withEnvs from 'vitest/utils/mockEnvs';
 import { apiRequests, mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
+import { mockLocalUtcOffset } from 'vitest/utils/mockTimeZone';
 import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
 vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
@@ -44,7 +45,7 @@ const writeTextMock = vi.fn();
 beforeEach(() => {
   fetchMock.resetMocks();
   vi.useFakeTimers({ shouldAdvanceTime: true });
-  vi.stubEnv('TZ', 'UTC');
+  mockLocalUtcOffset(0);
   Object.defineProperty(navigator, 'clipboard', { value: { writeText: writeTextMock.mockResolvedValue(undefined) }, configurable: true });
 });
 

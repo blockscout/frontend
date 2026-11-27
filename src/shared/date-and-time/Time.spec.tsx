@@ -5,15 +5,17 @@ import React from 'react';
 
 import { SettingsContext } from 'src/shell/top-bar/settings/context';
 
+import { HOUR } from 'src/toolkit/utils/consts';
 import { nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from 'vitest/lib';
+import { mockLocalUtcOffset } from 'vitest/utils/mockTimeZone';
 
 import Time from './Time';
 
 const TIMESTAMP = '2026-11-04T22:51:55.000000Z';
-const LOCAL_TIME_ZONE = 'Asia/Dubai';
+const LOCAL_UTC_OFFSET = 4 * HOUR;
 
 type Settings = NonNullable<React.ContextType<typeof SettingsContext>>;
 
@@ -39,6 +41,7 @@ const renderTime = (format: string | undefined, isLocalTime: boolean): string | 
 };
 
 describe('Time', () => {
+  beforeEach(() => mockLocalUtcOffset(LOCAL_UTC_OFFSET));
   afterEach(cleanup);
 
   describe('with the UTC setting', () => {
@@ -50,8 +53,6 @@ describe('Time', () => {
       [ undefined, 'Nov 4, 2026 22:51' ],
       [ 'DD MMM, HH:mm:ss', '04 Nov, 22:51:55' ],
     ])('formats %s', (format, expected) => {
-      vi.stubEnv('TZ', LOCAL_TIME_ZONE);
-
       expect(renderTime(format, false)).toBe(expected);
     });
   });
@@ -65,8 +66,6 @@ describe('Time', () => {
       [ undefined, 'Nov 5, 2026 2:51' ],
       [ 'DD MMM, HH:mm:ss', '05 Nov, 02:51:55' ],
     ])('formats %s', (format, expected) => {
-      vi.stubEnv('TZ', LOCAL_TIME_ZONE);
-
       expect(renderTime(format, true)).toBe(expected);
     });
   });
