@@ -22,7 +22,7 @@ What the tool does on its own and where its record lives: `tools/design-readout/
 | API response type | the resource's type file, when the task names a resource | the context override has one leg less; say so in the dispatch |
 
 One link is one screen in one state. A second state or the mobile variant is a second run. The task
-folder is resolved from the branch (`issue-<number>`, layout in `../../tasks/structure.md`); with no
+folder is resolved from the branch (`issue-<number>`, layout in `.agents/tasks/structure.md`); with no
 URL, steps 1–4 run once per link still without a block, in the spec's order.
 
 The tool needs a Figma personal access token in the environment. A run that fails on the token prints

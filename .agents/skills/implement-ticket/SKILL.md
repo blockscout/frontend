@@ -10,8 +10,8 @@ disable-model-invocation: true
 Execute a single **ticket** of a task, on the already-checked-out feature branch. It runs **once per
 session, for one ticket**: a fresh session picks up the ticket, does it, and either commits it or hands off
 at a human touchpoint. The ticket is the unit of a run and of a commit — the ticket model, and the
-branch/status conventions this skill relies on, are in [`../../tasks/concepts.md`](../../tasks/concepts.md)
-and [`../../tasks/structure.md`](../../tasks/structure.md).
+branch/status conventions this skill relies on, are in `.agents/tasks/concepts.md` and
+`.agents/tasks/structure.md`.
 
 ## Invocation
 
@@ -20,7 +20,7 @@ checked out.
 
 ## Step 1 — Load
 
-Resolve the task folder from the branch (`issue-<number>`) and read the main `spec.md`, the target ticket's
+Resolve the task folder from the branch: `issue-<number>` is `.agents/tasks/<number>-*/`. Read the main `spec.md`, the target ticket's
 `tickets/NN-<slug>/spec.md`, `progress.md`, `questions.md`, and `.agents/delegation.md`. If ticket `NN` has
 only a `brief.md`, it isn't scoped — tell the developer to scope it with a `to-tickets` run, and stop. An
 `inbox.md` with a section whose status is `pending` is a stop too: tell the developer to run
@@ -54,12 +54,17 @@ Every style leaf covers **all breakpoints**: the mobile node when the ticket lin
 desktop layout adapted the way neighbouring views do. An item that is still with the designer is a
 `Blocked by Q<NN>` edge on the ticket and nothing else — the leaf leaves no marker in the code for it.
 
+**A cause you write down is a hypothesis** until a fix or a source confirms it. This holds in a note, a
+doc, a code comment and your report. Label it as a hypothesis. When you write that something cannot be
+done, cite the source that says so.
+
 ## Step 4 — Verify
 
 Run every code-quality check the repo defines (per `.agents/rules/code-quality-local.md`) plus the relevant unit 
 tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-page` skill documents — 
 say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
-agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
+agent-checkable one holds, ticking its box once it does. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
+Then compare what you built with the main `spec.md`. A **spec deviation** is a touchpoint Step 5 stops for too.
 When the ticket's **How to verify** line names a `pnpm dev:preset` alias and a route, open that route on the
 dev server through the Playwright MCP, at a desktop and a mobile width, and look at what you built. Save a
 screenshot with a relative path under `.playwright-mcp/`, such as `.playwright-mcp/<route>-mobile.png`: the
@@ -70,15 +75,21 @@ if this run started it. A server that was already running is the developer's and
 
 ## Step 5 — Close
 
-Key the close to whether the ticket has any **human touchpoint** — a `[human]` leaf, or a `(human)`
-acceptance criterion:
+Key the close to whether the ticket has any **human touchpoint** — a `[human]` leaf, a `(human)`
+acceptance criterion, or a spec deviation.
 
-- **No open touchpoint** — no unchecked `[human]` leaf, and no `(human)` criterion the developer has not
-  yet confirmed → commit (Step 7). Done. A ticket with no touchpoint at all lands here on its first run; a
-  ticket whose touchpoints are all `[human]` leaves lands here once the last one is checked.
+A **spec deviation** is work that goes beyond or against the main `spec.md`: its Functional Requirements,
+Data & API or UI inventory. The developer rules on every one, so it is a touchpoint even on a ticket that
+has no other. The ticket's own `spec.md` is yours to edit until it freezes, and a change there is never a
+deviation.
+
+- **No open touchpoint** — no unchecked `[human]` leaf, no `(human)` criterion the developer has not
+  yet confirmed, and no spec deviation the developer has not ruled on → commit (Step 7). Done. A ticket
+  with no touchpoint at all lands here on its first run; a ticket whose touchpoints are all `[human]`
+  leaves lands here once the last one is checked.
 - **An open touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when no
-  unchecked `[human]` leaf remains but an unconfirmed `(human)` criterion does, after implementing the
-  leaves and **before** committing. **Stage** the work (`git add -A`, then `git reset -- '*/inbox.md'`:
+  unchecked `[human]` leaf remains but an unconfirmed `(human)` criterion or an unruled spec deviation
+  does, after implementing the leaves and **before** committing. **Stage** the work (`git add -A`, then `git reset -- '*/inbox.md'`:
   an `inbox.md` that appeared mid-run belongs to `process-task-inbox`, not to the ticket) and stop — nothing is committed or stashed. From
   here the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
   **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
@@ -109,6 +120,12 @@ acceptance criterion:
     **"record my corrections"** (Step 6).
   - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
     criteria and ask the session to commit (Step 7).
+  - **With a spec deviation**, at any of the stops above or as the only touchpoint → **rule** on the
+    proposed amendment. For each deviation the hand-off quotes the `spec.md` line as it stands and as you
+    would write it, or the new line and where it goes.
+    - **Confirmed** → edit `spec.md` with the confirmed wording. The edit lands in the ticket's commit.
+    - **Rejected** → the spec stands. Rework the code to it the way a bug reported during the hand-off
+      is fixed, run Step 4 again and hand off again.
 
   When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
   `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.
@@ -125,7 +142,7 @@ with the developer and records it; it edits no source file. After the batch, com
 
 ## Step 7 — Commit
 
-Check the ticket's box in `progress.md`, then **commit** the entire body of work — the box tick folded
+Tick the box of each `(human)` criterion the developer confirmed. Check the ticket's box in `progress.md`, then **commit** the entire body of work — the box tick folded
 into the commit so the worktree is clean after, except an `inbox.md` written mid-run, which stays
 uncommitted for `process-task-inbox`. A plain descriptive subject, the repo's `Co-Authored-By`
 trailer, and **no** `#issue` reference (the PR's `Resolves #N` already links it; a commit that names the

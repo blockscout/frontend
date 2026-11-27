@@ -12,8 +12,8 @@ disable-model-invocation: true
 Turn this session into the **orchestrator** of a scoped task, on the already-checked-out feature branch. The
 orchestrator delegates: one fresh **worker** sub-agent runs `implement-ticket` per ticket, one after another,
 and a last worker runs `finalize-task`. The developer is called in only at a **touchpoint**, a point where a
-worker needs a person. The ticket model and the files read below are in
-[`../../tasks/concepts.md`](../../tasks/concepts.md) and [`../../tasks/structure.md`](../../tasks/structure.md).
+worker needs a person. The ticket model and the files read below are in `.agents/tasks/concepts.md` and
+`.agents/tasks/structure.md`.
 
 ## Invocation
 
@@ -40,17 +40,18 @@ not hold, hand it to the ticket's worker or stop the run (step 5).
 
 1. Confirm the Agent tool and `SendMessage` are available. Outside Claude Code they are not: say so, point
    the developer at `implement-ticket <NN>` run by hand, and stop.
-2. Resolve the task folder from the branch (`issue-<number>`). Read `progress.md`, `questions.md`, `inbox.md`
-   if present, and each ticket's `Blocked by` row.
+2. Resolve the task folder from the branch: `issue-<number>` is `.agents/tasks/<number>-*/`. Read
+   `progress.md`, `questions.md`, `inbox.md` if present, and each ticket's `Blocked by` row.
 3. If `inbox.md` has a section whose status is `pending`, tell the developer to run `process-task-inbox`
-   and stop. This is the inbox gate [`concepts.md`](../../tasks/concepts.md) defines, applied before any
-   worker is spawned.
+   and stop. This is the inbox gate `.agents/tasks/concepts.md` defines, applied before any worker is
+   spawned.
 
 **Done when**: the task folder and every ticket's blockers are known, and no inbox section is pending.
 
 ## Step 2 — Pre-flight
 
-Print the progress list as it stands, one line per ticket, and nothing else:
+Pick the first ticket and spawn its worker (step 3, items 1 and 2). Then end the turn with one message: the progress
+list as it stands, one line per ticket, and a last line naming the running ticket.
 
 ```
 - [x] 01 → tickets/01-api-resource/
@@ -64,8 +65,10 @@ Print the progress list as it stands, one line per ticket, and nothing else:
   entry gets no marker: it clears inside the run, when that ticket commits.
 - `⛔ not scoped` — the folder holds a `brief.md` and no `spec.md`.
 
-Then start step 3 in the same turn. The list tells the developer when they will be needed, and it is not a
-question.
+The list tells the developer when they will be needed, and it is not a question. When no ticket is
+runnable, the list opens the step 5 report instead.
+
+**Done when**: the turn's last message holds the list and names the running ticket.
 
 ## Step 3 — Run the tickets
 

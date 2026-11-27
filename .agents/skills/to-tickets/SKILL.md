@@ -10,8 +10,8 @@ disable-model-invocation: true
 Break a spec into a set of tickets: tracer-bullet vertical slices, each declaring the tickets that block it.
 Its input is the **spec** and **open questions**.
 
-The ticket model is defined in [`../../tasks/concepts.md`](../../tasks/concepts.md). Layout and file ownership 
-are in [`../../tasks/structure.md`](../../tasks/structure.md). This skill carries the steps only.
+The ticket model is defined in `.agents/tasks/concepts.md`. Layout and file ownership 
+are in `.agents/tasks/structure.md`. This skill carries the steps only.
 
 **Feasibility is the forcing function.** Every gap you hit here — a requirement the spec never pinned, an
 executor question the spec can't answer — is a gap that spec should have closed. Ask the developer to fill it
