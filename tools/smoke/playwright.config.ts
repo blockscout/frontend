@@ -41,6 +41,10 @@ export default defineConfig({
   // the set runs against a live backend, whose slow or dropped responses are not what it tests
   retries: 2,
 
+  // On a pull request in CI the diff capture runs `git fetch --depth=1` on the base commit, which makes the
+  // clone shallow there. The server's start script then finds no release tag for `git describe` and fails.
+  captureGitInfo: { diff: false },
+
   reporter: [
     [ 'list' ],
     [ 'html', { outputFolder: 'report', open: 'never' } ],
