@@ -98,7 +98,7 @@ describe('colorThemeOverridesSchema', () => {
     ]);
   });
 
-  it('rejects a list of overrides', () => {
-    expect(getValidationErrors(colorThemeOverridesSchema, [])).toEqual([ 'Expected a JSON object' ]);
+  it('rejects a list of overrides without reading its items as color tokens', () => {
+    expect(getValidationErrors(colorThemeOverridesSchema, [ { _light: { value: 'red' } } ])).toEqual([ 'Expected a JSON object' ]);
   });
 });
