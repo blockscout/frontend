@@ -237,7 +237,7 @@ describe('miscSchema', () => {
       NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: '<a href="#">Hello</a>',
       NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
       NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dim',
-      NEXT_PUBLIC_COLOR_THEME_OVERRIDES: toEnvValue({ light: { colors: { link: 'red' } } }),
+      NEXT_PUBLIC_COLOR_THEME_OVERRIDES: toEnvValue({ link: { primary: { _light: { value: 'red' } } } }),
       NEXT_PUBLIC_FONT_FAMILY_HEADING: toEnvValue(fontFamilyHeading),
       NEXT_PUBLIC_FONT_FAMILY_BODY: toEnvValue(fontFamilyBody),
       NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: 'false',
@@ -359,6 +359,12 @@ describe('miscSchema', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_OVERRIDES: 'not json' })).toEqual([
         'NEXT_PUBLIC_COLOR_THEME_OVERRIDES: Invalid JSON: Received "not json"',
       ]);
+    });
+
+    it('rejects theme overrides for a color token the app does not have', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEME_OVERRIDES: toEnvValue({ light: { colors: { link: 'red' } } }),
+      })).toEqual([ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES: Unknown color token "light"' ]);
     });
   });
 

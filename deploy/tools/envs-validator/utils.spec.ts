@@ -8,6 +8,8 @@ import {
   composeSchemas,
   envBoolean,
   envJson,
+  envJsonFile,
+  jsonRecord,
   envNumber,
   envPositiveInteger,
   envUrl,
@@ -65,6 +67,26 @@ describe('envUrl', () => {
   });
 });
 
+describe('jsonRecord', () => {
+  const schema = jsonRecord(v.number());
+
+  it('accepts an object of the declared values', () => {
+    expect(getValidationErrors(schema, { foo: 1 })).toEqual([]);
+  });
+
+  it('reports a value that does not match', () => {
+    expect(getValidationErrors(schema, { foo: 'bar' })).toEqual([ 'foo: Invalid type: Expected number but received "bar"' ]);
+  });
+
+  it.each([
+    [ 'a list', [ 1 ] ],
+    [ 'null', null ],
+    [ 'a string', 'foo' ],
+  ])('rejects %s', (_, value) => {
+    expect(getValidationErrors(schema, value)).toEqual([ 'Expected a JSON object' ]);
+  });
+});
+
 describe('envJson', () => {
   const schema = withEntry(envJson(v.array(v.object({ name: v.string() }))));
 
@@ -80,6 +102,30 @@ describe('envJson', () => {
 
   it('rejects a value that is not JSON', () => {
     expect(getValidationErrors(schema, { NEXT_PUBLIC_X: 'nope' })).toEqual([ 'NEXT_PUBLIC_X: Invalid JSON: Received "nope"' ]);
+  });
+});
+
+describe('envJsonFile', () => {
+  const itemsSchema = v.array(v.object({ name: v.string() }));
+  const schema = withEntry(envJsonFile(itemsSchema));
+  const contentWithApostrophe = JSON.stringify([ { name: 'Aave\'s V3' } ]);
+
+  it('accepts an apostrophe inside a string, which envJson reads as a quote', () => {
+    expect(getValidationErrors(schema, { NEXT_PUBLIC_X: contentWithApostrophe })).toEqual([]);
+    expect(getValidationErrors(withEntry(envJson(itemsSchema)), { NEXT_PUBLIC_X: contentWithApostrophe })).toEqual([
+      `NEXT_PUBLIC_X: Invalid JSON: Received ${ JSON.stringify(contentWithApostrophe) }`,
+    ]);
+  });
+
+  it('rejects the single-quoted form, which is not JSON', () => {
+    const value = '[{\'name\':\'a\'}]';
+    expect(getValidationErrors(schema, { NEXT_PUBLIC_X: value })).toEqual([ `NEXT_PUBLIC_X: Invalid JSON: Received ${ JSON.stringify(value) }` ]);
+  });
+
+  it('reports a nested problem with its dot path', () => {
+    expect(getValidationErrors(schema, { NEXT_PUBLIC_X: JSON.stringify([ { title: 'a' } ]) })).toEqual([
+      'NEXT_PUBLIC_X.0.name: Invalid key: Expected "name" but received undefined',
+    ]);
   });
 });
 

@@ -36,6 +36,12 @@ describe('address3rdPartyWidgetsConfigSchema', () => {
     })).toEqual([ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS.0: Invalid type: Expected string but received Object' ]);
   });
 
+  it('rejects a list in place of the widgets by name', () => {
+    expect(getValidationErrors(address3rdPartyWidgetsConfigSchema, {
+      NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify(Object.values(address3rdPartyWidgetsConfig)),
+    })).toEqual([ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: Expected a JSON object' ]);
+  });
+
   it('rejects a widget config missing a required field', () => {
     const { valuePath, ...widget } = address3rdPartyWidgetsConfig['widget-2'];
     expect(getValidationErrors(address3rdPartyWidgetsConfigSchema, {

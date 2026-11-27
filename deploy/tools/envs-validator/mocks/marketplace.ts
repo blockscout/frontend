@@ -51,6 +51,10 @@ export const marketplaceApps: Array<MarketplaceAppConfig> = [
 
 export const marketplaceCategories: Array<string> = [ 'Swaps', 'Bridges', 'NFT' ];
 
+export const marketplaceGraphLinks: Record<string, Array<{ readonly title: string; readonly url: string }>> = {
+  aave: [ { title: 'Aave V3', url: 'https://example.com/aave' } ],
+};
+
 export const essentialDappsConfig: EssentialDappsConfig = {
   swap: { chains: [ '1', '10', '100', '11155111' ], fee: '0.004', integrator: 'blockscout' },
   revoke: { chains: [ '1', '10', '100', '11155111' ] },

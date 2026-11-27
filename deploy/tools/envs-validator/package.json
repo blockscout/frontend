@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "vite build --logLevel error",
-    "validate": "node ./dist/index.js"
+    "build:json-configs": "vite build --mode json-configs --logLevel error",
+    "validate": "node ./dist/index.js",
+    "validate:json-configs": "node ./dist/json-configs-cli.js"
   },
   "devDependencies": {
     "vite": "8.3.5",

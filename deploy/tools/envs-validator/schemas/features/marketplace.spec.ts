@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { essentialDappsConfig, marketplaceApps, marketplaceCategories, marketplaceTitles } from '../../mocks/marketplace';
+import { essentialDappsConfig, marketplaceApps, marketplaceCategories, marketplaceGraphLinks, marketplaceTitles } from '../../mocks/marketplace';
 import { toEnvValue } from '../../test-utils';
 import { getValidationErrors } from '../../utils';
 import { marketplaceSchema } from './marketplace';
@@ -17,7 +17,7 @@ const dependents: Array<[ string, string ]> = [
   [ 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP', 'aave' ],
   [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', 'https://example.com/banner.html' ],
   [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', 'https://www.basename.app' ],
-  [ 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL', 'https://example.com' ],
+  [ 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL', JSON.stringify(marketplaceGraphLinks) ],
   [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', toEnvValue(essentialDappsConfig) ],
   [ 'NEXT_PUBLIC_MARKETPLACE_TITLES', toEnvValue(marketplaceTitles) ],
   [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED', 'true' ],
@@ -66,6 +66,36 @@ describe('marketplaceSchema', () => {
     'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL',
   ])('rejects a malformed %s', (name) => {
     expect(getValidationErrors(marketplaceSchema, { ...ENABLED, [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
+  });
+
+  describe('NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL', () => {
+    it('accepts a file with an apostrophe in a link title', () => {
+      expect(getValidationErrors(marketplaceSchema, {
+        ...ENABLED,
+        NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: JSON.stringify({ aave: [ { title: 'Aave\'s V3', url: 'https://example.com/aave' } ] }),
+      })).toEqual([]);
+    });
+
+    it('rejects a list in place of the links by app id', () => {
+      expect(getValidationErrors(marketplaceSchema, {
+        ...ENABLED,
+        NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: JSON.stringify(marketplaceGraphLinks.aave),
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: Expected a JSON object' ]);
+    });
+
+    it('rejects a link without a title', () => {
+      expect(getValidationErrors(marketplaceSchema, {
+        ...ENABLED,
+        NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: JSON.stringify({ aave: [ { url: 'https://example.com/aave' } ] }),
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL.aave.0.title: Invalid key: Expected "title" but received undefined' ]);
+    });
+
+    it('rejects a link with a malformed URL', () => {
+      expect(getValidationErrors(marketplaceSchema, {
+        ...ENABLED,
+        NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: JSON.stringify({ aave: [ { title: 'Aave V3', url: 'not a url' } ] }),
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL.aave.0.url: Invalid URL: Received "not a url"' ]);
+    });
   });
 
   describe('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', () => {
