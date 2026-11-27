@@ -79,6 +79,9 @@ npm-debug.log*
 # compiled release tool
 /tools/release/dist/
 
+# compiled check of the toolkit declarations
+/tools/toolkit-declarations/dist/
+
 # typescript
 *.tsbuildinfo
 
